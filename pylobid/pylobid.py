@@ -60,8 +60,39 @@ class PyLobidClient():
             "http://d-nb.info/gnd/4003366-1",
             "https://d-nb.info/gnd/16254097-8",
             "141768134",
-            "https://lobid.org/gnd/4075434-0"
+            "http://lobid.org/gnd/4075434-0"
         ]
         self.HEADERS = {
             'Accept': 'application/json'
         }
+
+
+class PyLobidEntity(PyLobidClient):
+    """ A python class representing a LOBID-OBJECT """
+
+    def place_of_values(self, place_of='Birth'):
+        value = f"placeOf{place_of}"
+        result = self.ent_dict.get(value, False)
+        if isinstance(result, list):
+            return result[0]
+        else:
+            return False
+
+    def place_of_dict(self, place_of='Birth'):
+        result = self.place_of_values(place_of)
+        if result:
+            place_id = result['id']
+            return PyLobidEntity(place_id).ent_dict
+        else:
+            False
+
+    def __str__(self):
+        return self.gnd_id
+
+    def __init__(self, gnd_id=None):
+        """ __init__
+        """
+        super().__init__()
+        self.gnd_id = self.get_entity_lobid_url(gnd_id)
+        self.ent_dict = self.get_entity_json(gnd_id)
+        self.ent_type = self.ent_dict['type']
