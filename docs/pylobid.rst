@@ -12,6 +12,14 @@ pylobid.pylobid module
     :undoc-members:
     :show-inheritance:
 
+pylobid.utils module
+--------------------
+
+.. automodule:: pylobid.utils
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 
 Module contents
 ---------------

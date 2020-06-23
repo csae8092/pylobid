@@ -1,20 +1,23 @@
-import json
 import re
 import requests
 
-from jsonpath_ng import jsonpath, parse
+from jsonpath_ng import parse
 
 from . utils import extract_coords
 
 
 class PyLobidClient():
 
-    """ Main Class to interact with LOBID-API """
+    """Main Class to interact with LOBID-API """
 
     def extract_id(self, url):
-        """ extracts the GND-ID from an GND-URL
-            :param url: A GND-URL, e.g. http://d-nb.info/gnd/118650130
-            :returns: The GND-ID, e.g. 118650130
+        """extracts the GND-ID from an GND-URL
+
+        :param url: A GND-URL, e.g. http://d-nb.info/gnd/118650130
+        :type url: str
+
+        :return: The GND-ID, e.g. 118650130
+        :rtype: str
         """
         try:
             gnd_id = re.findall(self.ID_PATTERN, url)[0]
@@ -23,9 +26,13 @@ class PyLobidClient():
         return gnd_id
 
     def get_entity_lobid_url(self, url):
-        """ creates a lobid-entity URL from an GND-URL
-            :param url: A GND-URL, e.g. http://d-nb.info/gnd/118650130
-            :return: A LOBID-ENTITY-URL, e.g. http://lobid.org/gnd/116000562
+        """creates a lobid-entity URL from an GND-URL
+
+        :param url: A GND-URL, e.g. http://d-nb.info/gnd/118650130
+        :type url: str
+
+        :return: A LOBID-ENTITY-URL, e.g. http://lobid.org/gnd/116000562
+        :rtype: str
         """
         gnd_id = self.extract_id(url)
         if gnd_id:
@@ -35,9 +42,13 @@ class PyLobidClient():
         return lobid_url
 
     def get_entity_json(self, url):
-        """ fetches the LOBID-JSON response of a given GND-URL
-            :param url: A GND_URL
-            :return: The matching JSON representation fetched from LOBID
+        """fetches the LOBID-JSON response of a given GND-URL
+
+        :param url: A GND_URL
+        :type url: str
+
+        :return: The matching JSON representation fetched from LOBID
+        :rtype: dict
         """
         request_url = self.get_entity_lobid_url(url)
         try:
@@ -75,6 +86,16 @@ class PyLobidEntity(PyLobidClient):
     """ A python class representing a LOBID-OBJECT """
 
     def place_of_values(self, place_of='Birth'):
+        """find values for PlaceOfBirth/Death
+
+        :param place_of: Passed in value concatenates to 'PlaceOfBirth|Death' \
+        defaults to 'Birth'
+        :type place_of: str
+
+        :return: The ID of the Place
+        :rtype: str
+
+        """
         value = f"placeOf{place_of}"
         result = self.ent_dict.get(value, False)
         if isinstance(result, list):
@@ -97,7 +118,7 @@ class PyLobidEntity(PyLobidClient):
 
     def get_coords(self, place_of='Birth'):
         coords_str = self.get_coords_str(place_of=place_of)
-        return re.findall(self.coords_regex, coords_str)
+        return extract_coords(coords_str)
 
     def __str__(self):
         return self.gnd_id
