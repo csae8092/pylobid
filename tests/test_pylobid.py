@@ -5,7 +5,27 @@
 
 import unittest
 
+from pylobid import utils
 from pylobid import pylobid as pl
+
+
+class TestUtilsFunctions(unittest.TestCase):
+    def test_000_extract_points(self):
+        test_strings = [
+            (
+                "[[{'type': 'Point', 'asWKT': ['Point ( +023.599440 +038.463610 )']}]]",
+                ['+023.599440', '+038.463610']
+            ),
+            (
+                "[[{'type': 'Point', 'asWKT': ['Point (-023.599440 +038,\
+                 +038.463610 +038.463610 )']}]]",
+                ['-023.599440', '+038']
+            )
+        ]
+        for x in test_strings:
+            points = utils.extract_coords(x[0])
+            self.assertEqual(points[0], x[1][0], f"should be {x[0][0]}")
+            self.assertEqual(points[1], x[1][1], f"should be {x[1][1]}")
 
 
 class TestPylobidClient(unittest.TestCase):

@@ -2,6 +2,10 @@ import json
 import re
 import requests
 
+from jsonpath_ng import jsonpath, parse
+
+from . utils import extract_coords
+
 
 class PyLobidClient():
 
@@ -86,6 +90,15 @@ class PyLobidEntity(PyLobidClient):
         else:
             False
 
+    def get_coords_str(self, place_of='Birth'):
+        ent_dict = self.place_of_dict(place_of=place_of)
+        coords_str = f"{[match.value for match in self.coords_xpath.find(ent_dict)]}"
+        return coords_str
+
+    def get_coords(self, place_of='Birth'):
+        coords_str = self.get_coords_str(place_of=place_of)
+        return re.findall(self.coords_regex, coords_str)
+
     def __str__(self):
         return self.gnd_id
 
@@ -96,3 +109,5 @@ class PyLobidEntity(PyLobidClient):
         self.gnd_id = self.get_entity_lobid_url(gnd_id)
         self.ent_dict = self.get_entity_json(gnd_id)
         self.ent_type = self.ent_dict['type']
+        self.coords_xpath = parse('$..hasGeometry')
+        self.coords_regex = r'[+|-]\d+(?:\.\d*)?'
