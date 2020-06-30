@@ -102,7 +102,7 @@ class PyLobidEntity(PyLobidClient):
         if isinstance(result, list):
             return result[0]
         else:
-            return False
+            return {}
 
     def place_of_dict(self, place_of='Birth'):
         result = self.place_of_values(place_of)
@@ -110,12 +110,37 @@ class PyLobidEntity(PyLobidClient):
             place_id = result['id']
             return PyLobidEntity(place_id).ent_dict
         else:
-            False
+            {}
 
     def get_coords_str(self, place_of='Birth'):
         ent_dict = self.place_of_dict(place_of=place_of)
         coords_str = f"{[match.value for match in self.coords_xpath.find(ent_dict)]}"
         return coords_str
+
+    def get_place_of_id(self, place_of='Birth'):
+        ent_dict = self.place_of_dict(place_of=place_of)
+        if isinstance(ent_dict, dict):
+            try:
+                result = ent_dict['id']
+            except KeyError:
+                print(ent_dict)
+                result = ''
+        else:
+            result = ''
+        return result
+
+    def get_place_pref_name(self, place_of='Birth'):
+        ent_dict = self.place_of_dict(place_of=place_of)
+        try:
+            result = [match.value for match in self.pref_name_xpath.find(ent_dict)][0]
+        except IndexError:
+            result = ''
+        return result
+
+    def get_place_alt_name(self, place_of='Birth'):
+        ent_dict = self.place_of_dict(place_of=place_of)
+        result = [match.value for match in self.pref_alt_names_xpath.find(ent_dict)]
+        return result
 
     def get_coords(self, place_of='Birth'):
         coords_str = self.get_coords_str(place_of=place_of)
@@ -132,4 +157,6 @@ class PyLobidEntity(PyLobidClient):
         self.ent_dict = self.get_entity_json(gnd_id)
         self.ent_type = self.ent_dict.get('type', False)
         self.coords_xpath = parse('$..hasGeometry')
+        self.pref_name_xpath = parse('$.preferredName')
+        self.pref_alt_names_xpath = parse('$.variantName')
         self.coords_regex = r'[+|-]\d+(?:\.\d*)?'
