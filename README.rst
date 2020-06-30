@@ -16,7 +16,8 @@ pylobid
 
 
 
-A lobid-REST-API client
+`pylobid` is a  LOBID-REST-API client. Lobid_ is a web service providing data from the GND_ - Gemeinsame Normdatei of the German National Library.
+
 
 
 * Free software: MIT license
@@ -26,12 +27,15 @@ A lobid-REST-API client
 Features
 --------
 
-* TODO
+* Harmonize GND-URIs and URLS
+* wrap up several LOBID-API requests in a single methods
 
 Credits
 -------
 
 This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template.
 
+.. _Lobid: https://lobid.org/
+.. _GND: https://www.dnb.de/DE/Professionell/Standardisierung/GND/gnd_node.html
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
 .. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage

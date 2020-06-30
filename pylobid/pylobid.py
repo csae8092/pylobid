@@ -55,11 +55,11 @@ class PyLobidClient():
             response = requests.request("GET", request_url, headers=self.HEADERS)
         except Exception as e:
             print(f"Request to LOBID-API for GND-URL {url} failed due to Error: {e}")
-            return False
+            return {}
         if response.ok:
             return response.json()
         else:
-            False
+            return {}
 
     def __str__(self):
         return self.BASE_URL
@@ -69,12 +69,13 @@ class PyLobidClient():
         """
 
         self.BASE_URL = "http://lobid.org/gnd"
-        self.ID_PATTERN = "([0-9]+-*[0-9]*)$"
+        self.ID_PATTERN = "([0-9]\w*-*[0-9]\w*)"
         self.TEST_IDS = [
             "http://d-nb.info/gnd/118650130",
             "http://d-nb.info/gnd/4003366-1",
             "https://d-nb.info/gnd/16254097-8",
             "141768134",
+            "http://lobid.org/gnd/12328631X",
             "http://lobid.org/gnd/4075434-0"
         ]
         self.HEADERS = {
@@ -129,6 +130,6 @@ class PyLobidEntity(PyLobidClient):
         super().__init__()
         self.gnd_id = self.get_entity_lobid_url(gnd_id)
         self.ent_dict = self.get_entity_json(gnd_id)
-        self.ent_type = self.ent_dict['type']
+        self.ent_type = self.ent_dict.get('type', False)
         self.coords_xpath = parse('$..hasGeometry')
         self.coords_regex = r'[+|-]\d+(?:\.\d*)?'
