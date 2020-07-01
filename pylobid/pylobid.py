@@ -86,6 +86,25 @@ class PyLobidClient():
 class PyLobidEntity(PyLobidClient):
     """ A python class representing a LOBID-OBJECT """
 
+    def get_life_dates(self):
+        """ returns birth- and death dates
+        :return: A dict with keys birth_date_str and death_date_str
+        :rtype: dict
+
+        """
+        try:
+            birth = self.ent_dict.get('dateOfBirth', [])[0]
+        except IndexError:
+            birth = ''
+        try:
+            death = self.ent_dict.get('dateOfDeath', [])[0]
+        except IndexError:
+            death = ''
+        return {
+            "birth_date_str": birth,
+            "death_date_str": death
+        }
+
     def place_of_values(self, place_of='Birth'):
         """find values for PlaceOfBirth/Death
 
@@ -111,7 +130,7 @@ class PyLobidEntity(PyLobidClient):
         defaults to 'Birth'
         :type place_of: str
 
-        :return: The LOBID-JSOn of the PlaceOfBirth|Death
+        :return: The LOBID-JSON of the PlaceOfBirth|Death
         :rtype: dict
 
         """
@@ -128,6 +147,16 @@ class PyLobidEntity(PyLobidClient):
         return coords_str
 
     def get_place_of_id(self, place_of='Birth'):
+        """get the GND-ID of PlaceOfBirth|Death (if present)
+
+        :param place_of: Passed in value concatenates to 'PlaceOfBirth|Death' \
+        defaults to 'Birth'
+        :type place_of: str
+
+        :return: The GND-ID  of the PlaceOfBirth|Death
+        :rtype: str
+
+        """
         ent_dict = self.place_of_dict(place_of=place_of)
         if isinstance(ent_dict, dict):
             try:
@@ -155,6 +184,7 @@ class PyLobidEntity(PyLobidClient):
     def get_coords(self, place_of='Birth'):
         coords_str = self.get_coords_str(place_of=place_of)
         return extract_coords(coords_str)
+
 
     def __str__(self):
         return self.gnd_id
