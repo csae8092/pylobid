@@ -105,6 +105,16 @@ class PyLobidEntity(PyLobidClient):
             return {}
 
     def place_of_dict(self, place_of='Birth'):
+        """get the lobid-json of a PlaceOfBirth|Death (if present)
+
+        :param place_of: Passed in value concatenates to 'PlaceOfBirth|Death' \
+        defaults to 'Birth'
+        :type place_of: str
+
+        :return: The LOBID-JSOn of the PlaceOfBirth|Death
+        :rtype: dict
+
+        """
         result = self.place_of_values(place_of)
         if result:
             place_id = result['id']
