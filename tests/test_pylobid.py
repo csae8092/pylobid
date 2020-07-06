@@ -41,7 +41,7 @@ class TestPylobidClient(unittest.TestCase):
     """Tests for `pylobid` package."""
 
     def setUp(self):
-        """Set up test fixtures, if any."""
+        pass
 
     def tearDown(self):
         """Tear down test fixtures, if any."""
@@ -57,11 +57,11 @@ class TestPylobidClient(unittest.TestCase):
             lobid_url = pl_client.get_entity_lobid_url(x)
             self.assertEqual(lobid_url[0], 'h', "should be 'h'")
 
-    # def test_002_get_lobid_json(self):
-    #     pl_client = pl.PyLobidClient()
-    #     for x in pl_client.TEST_IDS:
-    #         lobid_json = pl_client.get_entity_json(x)
-    #         self.assertEqual(type(lobid_json), dict, f"{type(lobid_json)} should be a dict")
+    def test_002_get_lobid_json(self):
+        pl_client = pl.PyLobidClient()
+        for x in pl_client.TEST_IDS:
+            lobid_json = pl_client.get_entity_json(x)
+            self.assertEqual(type(lobid_json), dict, f"{type(lobid_json)} should be a dict")
 
     def test_0003_str(self):
         pl_client = pl.PyLobidClient()
@@ -77,6 +77,35 @@ class TestPylobidEntity(unittest.TestCase):
 
     def setUp(self):
         """Set up test fixtures, if any."""
+        self.test_person_gnd = [
+            {
+                'id': "http://d-nb.info/gnd/119315122",
+                'pylobid_born': {
+                    'id': 'https://d-nb.info/gnd/4066009-6'
+                },
+                'pylobid_died': {
+                    'id': 'https://d-nb.info/gnd/4066009-6'
+                }
+            },
+            {
+                'id': "1069009253",
+                'pylobid_born': {
+                    'id': 'https://d-nb.info/gnd/1028714-0'
+                },
+                'pylobid_died': {
+                    'id': 'https://d-nb.info/gnd/4317058-4'
+                }
+            },
+            {
+                'id': "136037585",
+                'pylobid_born': {
+                    'id': ''
+                },
+                'pylobid_died': {
+                    'id': ''
+                }
+            }
+        ]
 
     def tearDown(self):
         """Tear down test fixtures, if any."""
@@ -117,38 +146,19 @@ class TestPylobidEntity(unittest.TestCase):
                 self.assertTrue('pylobid_born' in ent_dict.keys())
 
     def test_004_born_died_keys(self):
-        test_person_gnd = [
-            {
-                'id': "http://d-nb.info/gnd/119315122",
-                'pylobid_born': {
-                    'id': 'https://d-nb.info/gnd/4066009-6'
-                },
-                'pylobid_died': {
-                    'id': 'https://d-nb.info/gnd/4066009-6'
-                }
-            },
-            {
-                'id': "1069009253",
-                'pylobid_born': {
-                    'id': 'https://d-nb.info/gnd/1028714-0'
-                },
-                'pylobid_died': {
-                    'id': 'https://d-nb.info/gnd/4317058-4'
-                }
-            }
-        ]
+        test_person_gnd = self.test_person_gnd
         for x in test_person_gnd:
             pl_ent = pl.PyLobidEntity(
                 x['id'],
                 fetch_related=True
             )
             self.assertEqual(
-                pl_ent.ent_dict['pylobid_born']['id'],
+                pl_ent.ent_dict['pylobid_born'].get('id', ''),
                 x['pylobid_born']['id'],
-                f"should be: x['pylobid_born']['id']"
+                f"should be: {x['pylobid_born']['id']}"
             )
             self.assertEqual(
-                pl_ent.ent_dict['pylobid_died']['id'],
+                pl_ent.ent_dict['pylobid_died'].get('id', ''),
                 x['pylobid_died']['id'],
-                f"should be: x['pylobid_died']['id']"
+                f"should be: {x['pylobid_died']['id']}"
             )

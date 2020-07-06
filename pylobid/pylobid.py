@@ -139,7 +139,7 @@ class PyLobidEntity(PyLobidClient):
             place_id = result['id']
             return PyLobidEntity(place_id).ent_dict
         else:
-            {}
+            return {}
 
     def get_coords_str(self, place_of='Birth'):
         ent_dict = self.place_of_dict(place_of=place_of)
@@ -215,7 +215,7 @@ class PyLobidEntity(PyLobidClient):
         self.coords_regex = r'[+|-]\d+(?:\.\d*)?'
         if self.fetch_related and self.is_person:
             self.ent_dict['pylobid_born'] = self.place_of_dict()
-            if self.place_of_values()['id'] == self.place_of_values(place_of="Death")['id']:
+            if self.place_of_values().get('id', '') == self.place_of_values(place_of="Death").get('id', ''):
                 self.ent_dict['pylobid_died'] = self.ent_dict['pylobid_born']
             else:
                 self.ent_dict['pylobid_died'] = self.place_of_dict(place_of='Death')
