@@ -8,6 +8,15 @@ import unittest
 from pylobid import utils
 from pylobid import pylobid as pl
 
+TEST_IDS = {
+    "persons": [
+        "http://d-nb.info/gnd/143073923",
+        "http://d-nb.info/gnd/139696725",
+        "138379769",
+        "http://d-nb.info/gnd/118650130",
+    ]
+}
+
 
 class TestUtilsFunctions(unittest.TestCase):
     def test_000_extract_points(self):
@@ -48,11 +57,11 @@ class TestPylobidClient(unittest.TestCase):
             lobid_url = pl_client.get_entity_lobid_url(x)
             self.assertEqual(lobid_url[0], 'h', "should be 'h'")
 
-    def test_002_get_lobid_json(self):
-        pl_client = pl.PyLobidClient()
-        for x in pl_client.TEST_IDS:
-            lobid_json = pl_client.get_entity_json(x)
-            self.assertEqual(type(lobid_json), dict, f"{type(lobid_json)} should be a dict")
+    # def test_002_get_lobid_json(self):
+    #     pl_client = pl.PyLobidClient()
+    #     for x in pl_client.TEST_IDS:
+    #         lobid_json = pl_client.get_entity_json(x)
+    #         self.assertEqual(type(lobid_json), dict, f"{type(lobid_json)} should be a dict")
 
     def test_0003_str(self):
         pl_client = pl.PyLobidClient()
@@ -90,3 +99,56 @@ class TestPylobidEntity(unittest.TestCase):
             lobid_url,
             f"should be {lobid_url}"
         )
+
+    def test_002_is_person(self):
+        ids = TEST_IDS['persons']
+        for x in ids:
+            pl_ent = pl.PyLobidEntity(x)
+            self.assertTrue(
+                pl_ent.is_person
+            )
+
+    def test_003_born_died_keys(self):
+        ids = pl.PyLobidClient().TEST_IDS
+        for x in ids:
+            pl_ent = pl.PyLobidEntity(x)
+            if pl_ent.is_person:
+                ent_dict = pl_ent.ent_dict
+                self.assertTrue('pylobid_born' in ent_dict.keys())
+
+    def test_004_born_died_keys(self):
+        test_person_gnd = [
+            {
+                'id': "http://d-nb.info/gnd/119315122",
+                'pylobid_born': {
+                    'id': 'https://d-nb.info/gnd/4066009-6'
+                },
+                'pylobid_died': {
+                    'id': 'https://d-nb.info/gnd/4066009-6'
+                }
+            },
+            {
+                'id': "1069009253",
+                'pylobid_born': {
+                    'id': 'https://d-nb.info/gnd/1028714-0'
+                },
+                'pylobid_died': {
+                    'id': 'https://d-nb.info/gnd/4317058-4'
+                }
+            }
+        ]
+        for x in test_person_gnd:
+            pl_ent = pl.PyLobidEntity(
+                x['id'],
+                fetch_related=True
+            )
+            self.assertEqual(
+                pl_ent.ent_dict['pylobid_born']['id'],
+                x['pylobid_born']['id'],
+                f"should be: x['pylobid_born']['id']"
+            )
+            self.assertEqual(
+                pl_ent.ent_dict['pylobid_died']['id'],
+                x['pylobid_died']['id'],
+                f"should be: x['pylobid_died']['id']"
+            )

@@ -185,18 +185,37 @@ class PyLobidEntity(PyLobidClient):
         coords_str = self.get_coords_str(place_of=place_of)
         return extract_coords(coords_str)
 
-
     def __str__(self):
         return self.gnd_id
 
-    def __init__(self, gnd_id=None):
-        """ __init__
+    def __init__(self, gnd_id, fetch_related=False):
+        """ initializes the class
+
+        :param gnd_id: any kind of GND_URI/URL
+        :type gnd_id: str
+        :param fetch_related: should related objects be fetched
+        :type fetch_related: bool
+
+        :return: A PyLobidEntity instance
         """
         super().__init__()
         self.gnd_id = self.get_entity_lobid_url(gnd_id)
         self.ent_dict = self.get_entity_json(gnd_id)
         self.ent_type = self.ent_dict.get('type', False)
+        if 'Person' in self.ent_type:
+            self.is_person = True
+        else:
+            self.is_person = False
+        if self.is_person:
+            self.ent_dict.update(pylobid_born={}, pylobid_died={})
+        self.fetch_related = fetch_related
         self.coords_xpath = parse('$..hasGeometry')
         self.pref_name_xpath = parse('$.preferredName')
         self.pref_alt_names_xpath = parse('$.variantName')
         self.coords_regex = r'[+|-]\d+(?:\.\d*)?'
+        if self.fetch_related and self.is_person:
+            self.ent_dict['pylobid_born'] = self.place_of_dict()
+            if self.place_of_values()['id'] == self.place_of_values(place_of="Death")['id']:
+                self.ent_dict['pylobid_died'] = self.ent_dict['pylobid_born']
+            else:
+                self.ent_dict['pylobid_died'] = self.place_of_dict(place_of='Death')
