@@ -70,24 +70,17 @@ class PyLobidClient():
 
         self.BASE_URL = "http://lobid.org/gnd"
         self.ID_PATTERN = "([0-9]\w*-*[0-9]\w*)"
-        self.TEST_IDS = [
-            "http://d-nb.info/gnd/118650130",
-            "http://d-nb.info/gnd/4003366-1",
-            "https://d-nb.info/gnd/16254097-8",
-            "141768134",
-            "http://lobid.org/gnd/12328631X",
-            "http://lobid.org/gnd/4075434-0"
-        ]
         self.HEADERS = {
             'Accept': 'application/json'
         }
 
 
-class PyLobidEntity(PyLobidClient):
-    """ A python class representing a LOBID-OBJECT """
+class PyLobidPerson(PyLobidClient):
+    """ A python class representing a Person Entity """
 
     def get_life_dates(self):
         """ returns birth- and death dates
+
         :return: A dict with keys birth_date_str and death_date_str
         :rtype: dict
 
@@ -124,7 +117,7 @@ class PyLobidEntity(PyLobidClient):
             return {}
 
     def place_of_dict(self, place_of='Birth'):
-        """get the lobid-json of a PlaceOfBirth|Death (if present)
+        """get the LOBID-JSON of a PlaceOfBirth|Death (if present)
 
         :param place_of: Passed in value concatenates to 'PlaceOfBirth|Death' \
         defaults to 'Birth'
@@ -137,53 +130,64 @@ class PyLobidEntity(PyLobidClient):
         result = self.place_of_values(place_of)
         if result:
             place_id = result['id']
-            return PyLobidEntity(place_id).ent_dict
+            return PyLobidPerson(place_id).ent_dict
         else:
             return {}
 
     def get_coords_str(self, place_of='Birth'):
-        ent_dict = self.place_of_dict(place_of=place_of)
-        coords_str = f"{[match.value for match in self.coords_xpath.find(ent_dict)]}"
-        return coords_str
-
-    def get_place_of_id(self, place_of='Birth'):
-        """get the GND-ID of PlaceOfBirth|Death (if present)
+        """get a string of coordinates
 
         :param place_of: Passed in value concatenates to 'PlaceOfBirth|Death' \
         defaults to 'Birth'
         :type place_of: str
 
-        :return: The GND-ID  of the PlaceOfBirth|Death
+        :return: A string containing coordinates
         :rtype: str
 
         """
-        ent_dict = self.place_of_dict(place_of=place_of)
-        if isinstance(ent_dict, dict):
-            try:
-                result = ent_dict['id']
-            except KeyError:
-                print(ent_dict)
-                result = ''
+        if place_of == "Birth":
+            place_of_key = "pylobid_born"
         else:
-            result = ''
-        return result
-
-    def get_place_pref_name(self, place_of='Birth'):
-        ent_dict = self.place_of_dict(place_of=place_of)
-        try:
-            result = [match.value for match in self.pref_name_xpath.find(ent_dict)][0]
-        except IndexError:
-            result = ''
-        return result
-
-    def get_place_alt_name(self, place_of='Birth'):
-        ent_dict = self.place_of_dict(place_of=place_of)
-        result = [match.value for match in self.pref_alt_names_xpath.find(ent_dict)]
-        return result
+            place_of_key = "pylobid_died"
+        ent_dict = self.ent_dict.get(place_of_key, {})
+        coords_str = f"{[match.value for match in self.coords_xpath.find(ent_dict)]}"
+        return coords_str
 
     def get_coords(self, place_of='Birth'):
+        """get a list of coordiantes
+
+        :param place_of: Passed in value concatenates to 'PlaceOfBirth|Death' \
+        defaults to 'Birth'
+        :type place_of: str
+
+        :return: A list of longitute, latitude coords like ['+009.689780', '+051.210970']
+        :rtype: list
+
+        """
         coords_str = self.get_coords_str(place_of=place_of)
         return extract_coords(coords_str)
+
+    def get_place_alt_name(self, place_of='Birth'):
+        """a list of alternative names
+
+        :param place_of: Passed in value concatenates to 'PlaceOfBirth|Death' \
+        defaults to 'Birth'
+        :type place_of: str
+
+        :return: a list of alternative names
+        :rtype: list
+
+        """
+        if place_of == "Birth":
+            place_of_key = "pylobid_born"
+        else:
+            place_of_key = "pylobid_died"
+        ent_dict = self.ent_dict.get(place_of_key, {})
+        try:
+            result = [match.value for match in self.pref_alt_names_xpath.find(ent_dict)][0]
+        except IndexError:
+            result = []
+        return result
 
     def __str__(self):
         return self.gnd_id
@@ -196,7 +200,7 @@ class PyLobidEntity(PyLobidClient):
         :param fetch_related: should related objects be fetched
         :type fetch_related: bool
 
-        :return: A PyLobidEntity instance
+        :return: A PyLobidPerson instance
         """
         super().__init__()
         self.gnd_id = self.get_entity_lobid_url(gnd_id)
@@ -219,3 +223,19 @@ class PyLobidEntity(PyLobidClient):
                 self.ent_dict['pylobid_died'] = self.ent_dict['pylobid_born']
             else:
                 self.ent_dict['pylobid_died'] = self.place_of_dict(place_of='Death')
+
+        self.birth_place = {
+            'person_id': self.gnd_id,
+            'name': self.place_of_values().get('label', ''),
+            'id': self.place_of_values().get('id', ''),
+            'coords': self.get_coords(),
+            'alt_names': self.get_place_alt_name()
+        }
+        self.death_place = {
+            'person_id': self.gnd_id,
+            'name': self.place_of_values(place_of='Death').get('label', ''),
+            'id': self.place_of_values(place_of='Death').get('id', ''),
+            'coords': self.get_coords(place_of='Death'),
+            'alt_names': self.get_place_alt_name(place_of='Death')
+        }
+        self.life_span = self.get_life_dates()
