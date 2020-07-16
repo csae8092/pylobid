@@ -61,6 +61,18 @@ class PyLobidClient():
         else:
             return {}
 
+    def get_same_as(self):
+        """ returns a list of alternative norm-data-ids
+
+        :return: A list of tuples like ('GeoNames', 'http://sws.geonames.org/2782067'),
+        :rtype: list
+        """
+        try:
+            result = [(x['collection']['abbr'], x['id']) for x in self.ent_dict['sameAs']]
+        except Exception as e:
+            result = []
+        return result
+
     def __str__(self):
         return self.BASE_URL
 
@@ -70,9 +82,72 @@ class PyLobidClient():
 
         self.BASE_URL = "http://lobid.org/gnd"
         self.ID_PATTERN = "([0-9]\w*-*[0-9]\w*)"
+        self.coords_xpath = parse('$..hasGeometry')
+        self.coords_regex = r'[+|-]\d+(?:\.\d*)?'
+        self.pref_alt_names_xpath = parse('$.variantName')
         self.HEADERS = {
             'Accept': 'application/json'
         }
+
+
+class PyLobidPlace(PyLobidClient):
+    """ A python class representing a Person Entity """
+
+    def __init__(self, gnd_id, fetch_related=False):
+        """ initializes the class
+
+        :param gnd_id: any kind of GND_URI/URL
+        :type gnd_id: str
+        :param fetch_related: should related objects be fetched
+        :type fetch_related: bool
+
+        :return: A PyLobidPlace instance
+        """
+        super().__init__()
+        self.gnd_id = self.get_entity_lobid_url(gnd_id)
+        self.ent_dict = self.get_entity_json(gnd_id)
+        self.ent_type = self.ent_dict.get('type', False)
+        if 'PlaceOrGeographicName' in self.ent_type:
+            self.is_place = True
+        else:
+            self.is_place = False
+        self.coords = self.get_coords()
+        self.alt_names = self.get_alt_names()
+        self.same_as = self.get_same_as()
+
+    def get_coords_str(self):
+        """get a string of coordinates
+
+        :return: A string containing coordinates
+        :rtype: str
+
+        """
+        coords_str = f"{[match.value for match in self.coords_xpath.find(self.ent_dict)]}"
+        return coords_str
+
+    def get_coords(self):
+        """get a list of coordiantes
+
+        :return: A list of longitute, latitude coords like ['+009.689780', '+051.210970']
+        :rtype: list
+
+        """
+        coords_str = self.get_coords_str()
+        return extract_coords(coords_str)
+
+    def get_alt_names(self):
+        """a list of alternative names
+
+        :return: a list of alternative names
+        :rtype: list
+
+        """
+        ent_dict = self.ent_dict
+        try:
+            result = [match.value for match in self.pref_alt_names_xpath.find(ent_dict)][0]
+        except IndexError:
+            result = []
+        return result
 
 
 class PyLobidPerson(PyLobidClient):
@@ -213,10 +288,7 @@ class PyLobidPerson(PyLobidClient):
         if self.is_person:
             self.ent_dict.update(pylobid_born={}, pylobid_died={})
         self.fetch_related = fetch_related
-        self.coords_xpath = parse('$..hasGeometry')
         self.pref_name_xpath = parse('$.preferredName')
-        self.pref_alt_names_xpath = parse('$.variantName')
-        self.coords_regex = r'[+|-]\d+(?:\.\d*)?'
         if self.fetch_related and self.is_person:
             self.ent_dict['pylobid_born'] = self.place_of_dict()
             if self.place_of_values().get('id', '') == self.place_of_values(place_of="Death").get('id', ''):
@@ -239,3 +311,4 @@ class PyLobidPerson(PyLobidClient):
             'alt_names': self.get_place_alt_name(place_of='Death')
         }
         self.life_span = self.get_life_dates()
+        self.same_as = self.get_same_as()

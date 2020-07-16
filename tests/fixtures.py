@@ -73,3 +73,10 @@ TEST_STRINGS_WKT = [
         ['-023.599440', '+038']
     )
 ]
+
+
+TEST_PLACE_IDS = [
+    ("http://lobid.org/gnd/4012995-0", True),
+    ("https://d-nb.info/gnd/4056905-6", True),
+    ("https://d-nb.info/gnd/1069009253", False),
+]

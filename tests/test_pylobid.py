@@ -20,6 +20,56 @@ class TestUtilsFunctions(unittest.TestCase):
             self.assertEqual(points[1], x[1][1], f"should be {x[1][1]}")
 
 
+class TestPylobidPlace(unittest.TestCase):
+    """Tests for `pylobid` package."""
+
+    def setUp(self):
+        pass
+
+    def tearDown(self):
+        """Tear down test fixtures, if any."""
+
+    def test_000_check_type(self):
+        for x in TEST_PLACE_IDS:
+            pl_place = pl.PyLobidPlace(x[0], fetch_related=False)
+            self.assertEqual(pl_place.is_place, x[1], f"should be {x[1]}")
+
+    def test_001_check_coords_type(self):
+        for x in TEST_PLACE_IDS:
+            pl_place = pl.PyLobidPlace(x[0], fetch_related=False)
+            self.assertEqual(type(pl_place.coords), list, f"should be a list")
+
+    def test_002_check_coords(self):
+        id = "https://d-nb.info/gnd/4066009-6"
+        coords = ['+016.371690', '+048.208199']
+        pl_place = pl.PyLobidPlace(id, fetch_related=False)
+        self.assertEqual(pl_place.coords, coords, f"should be {coords}")
+
+    def test_003_check_alt_names(self):
+        id = "https://d-nb.info/gnd/4004168-2"
+        alt_names = [
+            'Baden, Wienerwald',
+            'Baden bei Wien',
+            'Stadtgemeinde Baden',
+            'Stadtgemeinde Baden bei Wien'
+        ]
+        pl_place = pl.PyLobidPlace(id, fetch_related=False)
+        self.assertEqual(pl_place.alt_names, alt_names, f"should be {alt_names}")
+
+    def test_004_same_as(self):
+        id = "https://d-nb.info/gnd/4004168-2"
+        same_as = [
+            ('DNB', 'http://d-nb.info/gnd/4004168-2/about'),
+            ('GeoNames', 'http://sws.geonames.org/2782067'),
+            ('VIAF', 'http://viaf.org/viaf/234093638'),
+            ('WIKIDATA', 'http://www.wikidata.org/entity/Q486450'),
+            ('DNB', 'https://d-nb.info/gnd/2005587-0'),
+            ('dewiki', 'https://de.wikipedia.org/wiki/Bahnhof_Baden_bei_Wien')
+        ]
+        pl_place = pl.PyLobidPlace(id, fetch_related=False)
+        self.assertEqual(pl_place.same_as, same_as, f"should be {same_as}")
+
+
 class TestPylobidClient(unittest.TestCase):
     """Tests for `pylobid` package."""
 
@@ -126,3 +176,12 @@ class TestPyLobidPerson(unittest.TestCase):
                 self.assertEqual(
                     type(lifespan), dict, "should be a dict"
                 )
+
+    def test_006_same_as(self):
+        id = "1069009253"
+        same_as = [
+            ('VIAF', 'http://viaf.org/viaf/120106865'),
+            ('DNB', 'https://d-nb.info/gnd/1069009253/about')
+        ]
+        pl_ent = pl.PyLobidPerson(id, fetch_related=False)
+        self.assertEqual(pl_ent.same_as, same_as, f"should be {same_as}")
