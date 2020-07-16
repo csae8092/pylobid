@@ -69,6 +69,12 @@ class TestPylobidPlace(unittest.TestCase):
         pl_place = pl.PyLobidPlace(id, fetch_related=False)
         self.assertEqual(pl_place.same_as, same_as, f"should be {same_as}")
 
+    def test_005_pref_name(self):
+        id = "https://d-nb.info/gnd/4004168-2"
+        pref_name = 'Baden (Niederösterreich)'
+        pl_place = pl.PyLobidPlace(id, fetch_related=False)
+        self.assertEqual(pl_place.pref_name, pref_name, f"should be {pref_name}")
+
 
 class TestPylobidClient(unittest.TestCase):
     """Tests for `pylobid` package."""
@@ -185,3 +191,9 @@ class TestPyLobidPerson(unittest.TestCase):
         ]
         pl_ent = pl.PyLobidPerson(id, fetch_related=False)
         self.assertEqual(pl_ent.same_as, same_as, f"should be {same_as}")
+
+    def test_007_pref_name(self):
+        id = "http://d-nb.info/gnd/1069009253"
+        pref_name = 'Assmann, Richard'
+        pl_item = pl.PyLobidPerson(id, fetch_related=False)
+        self.assertEqual(pl_item.pref_name, pref_name, f"should be {pref_name}")

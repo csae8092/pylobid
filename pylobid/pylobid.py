@@ -73,6 +73,15 @@ class PyLobidClient():
             result = []
         return result
 
+    def get_pref_name(self):
+        """ returns the preferred name
+
+        :return: The preferred Name vale, e.g. 'Assmann, Richard'
+        :rtype: str
+        """
+        result = self.ent_dict.get('preferredName', '')
+        return result
+
     def __str__(self):
         return self.BASE_URL
 
@@ -114,6 +123,7 @@ class PyLobidPlace(PyLobidClient):
         self.coords = self.get_coords()
         self.alt_names = self.get_alt_names()
         self.same_as = self.get_same_as()
+        self.pref_name = self.get_pref_name()
 
     def get_coords_str(self):
         """get a string of coordinates
@@ -287,6 +297,7 @@ class PyLobidPerson(PyLobidClient):
             self.is_person = False
         if self.is_person:
             self.ent_dict.update(pylobid_born={}, pylobid_died={})
+        self.pref_name = self.get_pref_name()
         self.fetch_related = fetch_related
         self.pref_name_xpath = parse('$.preferredName')
         if self.fetch_related and self.is_person:
