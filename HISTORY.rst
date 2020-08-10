@@ -6,6 +6,12 @@ History
 ------------------
 
 * added a `PylobidPlace` class
+
+
+1.1.0 (2020-07-16)
+------------------
+
+* added a `PylobidPlace` class
 * added `same_as` and `pref_name` properties to `PyLobidPerson` and `PyLobidPlace` classes
 
 
