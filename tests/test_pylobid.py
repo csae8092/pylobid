@@ -59,21 +59,35 @@ class TestPylobidPlace(unittest.TestCase):
     def test_004_same_as(self):
         id = "https://d-nb.info/gnd/4004168-2"
         same_as = [
-            ('DNB', 'http://d-nb.info/gnd/4004168-2/about'),
             ('GeoNames', 'http://sws.geonames.org/2782067'),
             ('VIAF', 'http://viaf.org/viaf/234093638'),
             ('WIKIDATA', 'http://www.wikidata.org/entity/Q486450'),
             ('DNB', 'https://d-nb.info/gnd/2005587-0'),
-            ('dewiki', 'https://de.wikipedia.org/wiki/Bahnhof_Baden_bei_Wien')
+            ('dewiki', 'https://de.wikipedia.org/wiki/Bahnhof_Baden_bei_Wien'),
         ]
         pl_place = pl.PyLobidPlace(id, fetch_related=False)
-        self.assertEqual(pl_place.same_as, same_as, f"should be {same_as}")
+        for x in same_as:
+            self.assertTrue(x in pl_place.same_as)
 
     def test_005_pref_name(self):
         id = "https://d-nb.info/gnd/4004168-2"
         pref_name = 'Baden (Niederösterreich)'
         pl_place = pl.PyLobidPlace(id, fetch_related=False)
         self.assertEqual(pl_place.pref_name, pref_name, f"should be {pref_name}")
+
+    def test_006_alt_name(self):
+        id = "https://d-nb.info/gnd/4004168-2"
+        alt_names = [
+            "Baden, Wienerwald",
+            "Baden bei Wien",
+            "Stadtgemeinde Baden",
+            "Stadtgemeinde Baden bei Wien"
+        ]
+        pl_place = pl.PyLobidPlace(id, fetch_related=False)
+        for x in alt_names:
+            self.assertTrue(
+                x in pl_place.alt_names
+            )
 
 
 class TestPylobidClient(unittest.TestCase):
@@ -197,3 +211,24 @@ class TestPyLobidPerson(unittest.TestCase):
         pref_name = 'Assmann, Richard'
         pl_item = pl.PyLobidPerson(id, fetch_related=False)
         self.assertEqual(pl_item.pref_name, pref_name, f"should be {pref_name}")
+
+
+class TestPylobidOrg(unittest.TestCase):
+    """Tests for `pylobid` package."""
+
+    def test_001_pref_name(self):
+        for x in TEST_ORG_NAMES_LOCATIONS:
+            item = pl.PyLobidOrg(x['id'])
+            self.assertEqual(
+                item.pref_name,
+                x['pref_name'], f"{item.pref_name} should be {x['pref_name']}"
+            )
+
+    def test_002_located_in(self):
+        for x in TEST_ORG_NAMES_LOCATIONS:
+            item = pl.PyLobidOrg(x['id'])
+            self.assertEqual(
+                item.located_in,
+                x['located_in'],
+                f"{item.located_in} should be {x['located_in']}"
+            )

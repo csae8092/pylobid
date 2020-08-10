@@ -43,7 +43,7 @@ To use pylobid in a project::
 Places
 --------
 
-To use pylobid in a project::
+How to use PyLobidPlace object::
 
     from pylobid.pylobid import PyLobidPlace
 
@@ -59,3 +59,23 @@ To use pylobid in a project::
 
     print(pl_place.same_as)
     [('DNB', 'http://d-nb.info/gnd/4004168-2/about'), ('GeoNames', 'http://sws.geonames.org/2782067'), ('VIAF', 'http://viaf.org/viaf/234093638'), ('WIKIDATA', 'http://www.wikidata.org/entity/Q486450'), ('DNB', 'https://d-nb.info/gnd/2005587-0'), ('dewiki', 'https://de.wikipedia.org/wiki/Bahnhof_Baden_bei_Wien')]
+
+
+Organisations
+--------
+
+How to use PyLobidOrg object::
+
+    from pylobid.pylobid import PyLobidOrg
+
+    pl_org = PyLobidOrg('4443305-0', fetch_related=False)
+    for x in ['located_in', 'alt_names', 'same_as', 'pref_name']:
+        print(f"{x}: {getattr(pl_org, x)}\n")
+
+        located_in: [{'id': 'https://d-nb.info/gnd/4076860-0', 'label': 'Rovereto'}]
+
+    alt_names: ['Imperial Regia Accademia scientifica e letteraria degli Agiati (Rovereto)', 'Accademia di scienze, lettere ed arti degli Agiati di Rovereto', 'Imperiale Regia Accademia Roveretana', 'Accademia degli Agiati (Rovereto)', 'Accademia Roveretana', 'I. R. Accademia Roveretana degli Agiati', 'I. R. Accademia di lettere e scienze degli Agiati (Rovereto)', 'Regia Accademia Roveretana degli Agiati', 'I. R. Accademia scientifica e letteraria degli Agiati (Rovereto)', 'Imperial Regia Accademia di lettere e scienze degli Agiati (Rovereto)', 'I. R. Accademia degli Agiati (Rovereto)', 'Imperiale Regia Accademia Scientifica e Letteraia degli Agiati', 'Imperiale Regia Accademia di Lettere e Scienze degli Agiati', 'Imperiale Regia Accademia di scienze, lettere ed arti degli Agiati (Rovereto)', 'Imperiale Regia Accademia di Scienze, Lettere ed Arti degli Agiati', 'Accademia degli Agiati (Rovereto, Accademia Roveretana degli Agiati)', 'Imperial Regia Accademia degli Agiati (Rovereto)', 'Imperial Regia Accademia Roveretana', 'Imperiale Regia Accademia di Scienze, Lettere ed Arti degli Agiati (Rovereto)', 'Accademia degli Agiati', 'Imperial Regia Accademia roveretana', 'Imperiale Regia Accademia Roveretana degli Agiati', 'Imperial Regia Accademia di scienze e lettere (Rovereto)', 'I. R. Accademia di scienze e lettere (Rovereto)']
+
+    same_as: [('VIAF', 'http://viaf.org/viaf/310513758'), ('WIKIDATA', 'http://www.wikidata.org/entity/Q3603948'), ('DNB', 'https://d-nb.info/gnd/1085251314'), ('DNB', 'https://d-nb.info/gnd/4443305-0/about')]
+
+    pref_name: Accademia Roveretana degli Agiati

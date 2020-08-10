@@ -82,6 +82,20 @@ class PyLobidClient():
         result = self.ent_dict.get('preferredName', '')
         return result
 
+    def get_alt_names(self):
+        """a list of alternative names
+
+        :return: a list of alternative names
+        :rtype: list
+
+        """
+        ent_dict = self.ent_dict
+        try:
+            result = [match.value for match in self.pref_alt_names_xpath.find(ent_dict)][0]
+        except IndexError:
+            result = []
+        return result
+
     def __str__(self):
         return self.BASE_URL
 
@@ -145,19 +159,32 @@ class PyLobidPlace(PyLobidClient):
         coords_str = self.get_coords_str()
         return extract_coords(coords_str)
 
-    def get_alt_names(self):
-        """a list of alternative names
 
-        :return: a list of alternative names
-        :rtype: list
+class PyLobidOrg(PyLobidClient):
+    """ A python class representing an Organisation Entity """
 
+    def __init__(self, gnd_id, fetch_related=False):
+        """ initializes the class
+
+        :param gnd_id: any kind of GND_URI/URL
+        :type gnd_id: str
+        :param fetch_related: should related objects be fetched
+        :type fetch_related: bool
+
+        :return: A PyLobidOrg instance
         """
-        ent_dict = self.ent_dict
-        try:
-            result = [match.value for match in self.pref_alt_names_xpath.find(ent_dict)][0]
-        except IndexError:
-            result = []
-        return result
+        super().__init__()
+        self.gnd_id = self.get_entity_lobid_url(gnd_id)
+        self.ent_dict = self.get_entity_json(gnd_id)
+        self.ent_type = self.ent_dict.get('type', False)
+        if 'CorporateBody' in self.ent_type:
+            self.is_org = True
+        else:
+            self.is_org = False
+        self.alt_names = self.get_alt_names()
+        self.same_as = self.get_same_as()
+        self.pref_name = self.get_pref_name()
+        self.located_in = self.ent_dict.get('placeOfBusiness', [])
 
 
 class PyLobidPerson(PyLobidClient):
