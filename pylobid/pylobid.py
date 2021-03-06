@@ -16,11 +16,7 @@ class PyLobidClient():
         :return: The GND-ID, e.g. 118650130
         :rtype: str
         """
-        try:
-            gnd_id = re.findall(self.ID_PATTERN, url)[0]
-        except IndexError:
-            gnd_id = False
-        return gnd_id
+        return next(iter(re.findall(self.ID_PATTERN, url)), False)
 
     def get_entity_lobid_url(self, url: str) -> str:
         """creates a lobid-entity URL from an GND-URL
@@ -80,11 +76,7 @@ class PyLobidClient():
 
         """
         ent_dict = self.ent_dict
-        try:
-            result = [match.value for match in self.pref_alt_names_xpath.find(ent_dict)][0]
-        except IndexError:
-            result = []
-        return result
+        return next(iter([match.value for match in self.pref_alt_names_xpath.find(ent_dict)]), [])
 
     def __str__(self) -> str:
         return self.BASE_URL
@@ -179,17 +171,9 @@ class PyLobidPerson(PyLobidClient):
         :rtype: dict
 
         """
-        try:
-            birth = self.ent_dict.get('dateOfBirth', [])[0]
-        except IndexError:
-            birth = ''
-        try:
-            death = self.ent_dict.get('dateOfDeath', [])[0]
-        except IndexError:
-            death = ''
         return {
-            "birth_date_str": birth,
-            "death_date_str": death
+            "birth_date_str": next(iter(self.ent_dict.get('dateOfBirth', [])), ''),
+            "death_date_str": next(iter(self.ent_dict.get('dateOfDeath', [])), '')
         }
 
     def place_of_values(self, place_of: str = 'Birth') -> dict:
@@ -268,11 +252,7 @@ class PyLobidPerson(PyLobidClient):
         """
         place_of_key = "pylobid_born" if place_of == "Birth" else "pylobid_died"
         ent_dict = self.ent_dict.get(place_of_key, {})
-        try:
-            result = [match.value for match in self.pref_alt_names_xpath.find(ent_dict)][0]
-        except IndexError:
-            result = []
-        return result
+        return next(iter([match.value for match in self.pref_alt_names_xpath.find(ent_dict)]), [])
 
     def __str__(self) -> str:
         return self.gnd_id
