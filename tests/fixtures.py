@@ -99,14 +99,98 @@ TEST_ORG_IDS = [
 ]
 
 TEST_ORG_NAMES_LOCATIONS = [
-    {'id': 'http://d-nb.info/gnd/4443305-0', 'pref_name': 'Accademia Roveretana degli Agiati', 'located_in': [{'id': 'https://d-nb.info/gnd/4076860-0', 'label': 'Rovereto'}]},
-    {'id': 'http://d-nb.info/gnd/5034132-7', 'pref_name': 'K.K. Akademisches Staats-Gymnasium (Lemberg)', 'located_in': [{'id': 'https://d-nb.info/gnd/4035304-7', 'label': 'Lemberg'}]},
-    {'id': 'http://d-nb.info/gnd/600902-5', 'pref_name': 'Akademisches Gymnasium (Wien)', 'located_in': [{'id': 'https://d-nb.info/gnd/4066009-6', 'label': 'Wien'}]},
-    {'id': 'http://d-nb.info/gnd/116616103X', 'pref_name': 'Augsburger Allgemeine (-Alles was uns bewegt-)', 'located_in': [{'id': 'https://d-nb.info/gnd/4003614-5', 'label': 'Augsburg'}]},
-    {'id': 'http://d-nb.info/gnd/401873-4', 'pref_name': 'Kaiserlich-Königliches Altstädter Akademisches Gymnasium (Prag)', 'located_in': [{'id': 'https://d-nb.info/gnd/4076310-9', 'label': 'Prag'}]},
-    {'id': 'http://d-nb.info/gnd/1224816-2', 'pref_name': 'Stift Engelszell', 'located_in': [{'id': 'https://d-nb.info/gnd/4342017-5', 'label': 'Engelhartszell'}, {'id': 'https://d-nb.info/gnd/4085581-8', 'label': 'Engelhartszell-Engelszell'}]},
-    {'id': 'http://d-nb.info/gnd/4011750-9', 'pref_name': 'Deutscher Bund (Körperschaft)', 'located_in': []},
-    {'id': 'http://d-nb.info/gnd/4534475-9', 'pref_name': 'Diözese Großwardein (Katholische Kirche)', 'located_in': []},
-    {'id': 'http://d-nb.info/gnd/2168247-1', 'pref_name': 'Carl Gerold’s Sohn Verlagsbuchhandlung', 'located_in': [{'id': 'https://d-nb.info/gnd/4066009-6', 'label': 'Wien'}]},
-    {'id': 'http://d-nb.info/gnd/82742-3', 'pref_name': 'Landesschule (Schulpforte)', 'located_in': [{'id': 'https://d-nb.info/gnd/1048249190', 'label': 'Schulpforte'}]},
+    {
+        'id': 'http://d-nb.info/gnd/4443305-0',
+        'pref_name': 'Accademia Roveretana degli Agiati',
+        'located_in': [
+            {
+                'id': 'https://d-nb.info/gnd/4076860-0',
+                'label': 'Rovereto'
+            }
+        ]
+    },
+    {
+        'id': 'http://d-nb.info/gnd/5034132-7',
+        'pref_name': 'K.K. Akademisches Staats-Gymnasium (Lemberg)',
+        'located_in': [
+            {
+                'id': 'https://d-nb.info/gnd/4035304-7',
+                'label': 'Lemberg'
+            }
+        ]
+    },
+    {
+        'id': 'http://d-nb.info/gnd/600902-5',
+        'pref_name': 'Akademisches Gymnasium (Wien)',
+        'located_in': [
+            {
+                'id': 'https://d-nb.info/gnd/4066009-6',
+                'label': 'Wien'
+            }
+        ]
+    },
+    {
+        'id': 'http://d-nb.info/gnd/116616103X',
+        'pref_name': 'Augsburger Allgemeine (-Alles was uns bewegt-)',
+        'located_in': [
+            {
+                'id': 'https://d-nb.info/gnd/4003614-5',
+                'label': 'Augsburg'
+            }
+        ]
+    },
+    {
+        'id': 'http://d-nb.info/gnd/401873-4',
+        'pref_name': 'Kaiserlich-Königliches Altstädter Akademisches Gymnasium (Prag)',
+        'located_in': [
+            {
+                'id': 'https://d-nb.info/gnd/4076310-9',
+                'label': 'Prag'
+            }
+        ]
+    },
+    {
+        'id': 'http://d-nb.info/gnd/1224816-2',
+        'pref_name': 'Stift Engelszell',
+        'located_in': [
+            {
+                'id': 'https://d-nb.info/gnd/4342017-5',
+                'label': 'Engelhartszell'
+            },
+            {
+                'id': 'https://d-nb.info/gnd/4085581-8',
+                'label': 'Engelhartszell-Engelszell'
+            }
+        ]
+    },
+    {
+        'id': 'http://d-nb.info/gnd/4011750-9',
+        'pref_name': 'Deutscher Bund (Körperschaft)',
+        'located_in': []
+    },
+    {
+        'id': 'http://d-nb.info/gnd/4534475-9',
+        'pref_name': 'Diözese Großwardein (Katholische Kirche)',
+        'located_in': []
+    },
+    {
+        'id': 'http://d-nb.info/gnd/2168247-1',
+        'pref_name': 'Carl Gerold’s Sohn Verlagsbuchhandlung',
+        'located_in': [
+            {
+                'id': 'https://d-nb.info/gnd/4066009-6',
+                'label': 'Wien'
+            }
+        ]
+    },
+    {
+        'id': 'http://d-nb.info/gnd/82742-3',
+        'pref_name': 'Landesschule (Schulpforte)',
+        'located_in': [
+            {
+                'id': 'https://d-nb.info/gnd/1048249190',
+                'label': 'Schulpforte'
+            }
+        ]
+    },
 ]
