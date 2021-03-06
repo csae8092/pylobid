@@ -32,11 +32,7 @@ class PyLobidClient():
         :rtype: str
         """
         gnd_id = self.extract_id(url)
-        if gnd_id:
-            lobid_url = f"{self.BASE_URL}/{gnd_id}"
-        else:
-            lobid_url = False
-        return lobid_url
+        return f"{self.BASE_URL}/{gnd_id}" if gnd_id else False
 
     def get_entity_json(self, url: str) -> dict:
         """fetches the LOBID-JSON response of a given GND-URL
@@ -53,10 +49,7 @@ class PyLobidClient():
         except Exception as e:
             print(f"Request to LOBID-API for GND-URL {url} failed due to Error: {e}")
             return {}
-        if response.ok:
-            return response.json()
-        else:
-            return {}
+        return response.json() if response.ok else {}
 
     def get_same_as(self) -> list:
         """ returns a list of alternative norm-data-ids
@@ -125,10 +118,7 @@ class PyLobidPlace(PyLobidClient):
         self.gnd_id = self.get_entity_lobid_url(gnd_id)
         self.ent_dict = self.get_entity_json(gnd_id)
         self.ent_type = self.ent_dict.get('type', False)
-        if 'PlaceOrGeographicName' in self.ent_type:
-            self.is_place = True
-        else:
-            self.is_place = False
+        self.is_place = 'PlaceOrGeographicName' in self.ent_type
         self.coords = self.get_coords()
         self.alt_names = self.get_alt_names()
         self.same_as = self.get_same_as()
@@ -172,10 +162,7 @@ class PyLobidOrg(PyLobidClient):
         self.gnd_id = self.get_entity_lobid_url(gnd_id)
         self.ent_dict = self.get_entity_json(gnd_id)
         self.ent_type = self.ent_dict.get('type', False)
-        if 'CorporateBody' in self.ent_type:
-            self.is_org = True
-        else:
-            self.is_org = False
+        self.is_org = 'CorporateBody' in self.ent_type
         self.alt_names = self.get_alt_names()
         self.same_as = self.get_same_as()
         self.pref_name = self.get_pref_name()
@@ -218,10 +205,7 @@ class PyLobidPerson(PyLobidClient):
         """
         value = f"placeOf{place_of}"
         result = self.ent_dict.get(value, False)
-        if isinstance(result, list):
-            return result[0]
-        else:
-            return {}
+        return result[0] if isinstance(result, list) else {}
 
     def place_of_dict(self, place_of: str = 'Birth') -> dict:
         """get the LOBID-JSON of a PlaceOfBirth|Death (if present)
@@ -252,10 +236,7 @@ class PyLobidPerson(PyLobidClient):
         :rtype: str
 
         """
-        if place_of == "Birth":
-            place_of_key = "pylobid_born"
-        else:
-            place_of_key = "pylobid_died"
+        place_of_key = "pylobid_born" if place_of == "Birth" else "pylobid_died"
         ent_dict = self.ent_dict.get(place_of_key, {})
         coords_str = f"{[match.value for match in self.coords_xpath.find(ent_dict)]}"
         return coords_str
@@ -285,10 +266,7 @@ class PyLobidPerson(PyLobidClient):
         :rtype: list
 
         """
-        if place_of == "Birth":
-            place_of_key = "pylobid_born"
-        else:
-            place_of_key = "pylobid_died"
+        place_of_key = "pylobid_born" if place_of == "Birth" else "pylobid_died"
         ent_dict = self.ent_dict.get(place_of_key, {})
         try:
             result = [match.value for match in self.pref_alt_names_xpath.find(ent_dict)][0]
@@ -313,10 +291,7 @@ class PyLobidPerson(PyLobidClient):
         self.gnd_id = self.get_entity_lobid_url(gnd_id)
         self.ent_dict = self.get_entity_json(gnd_id)
         self.ent_type = self.ent_dict.get('type', False)
-        if 'Person' in self.ent_type:
-            self.is_person = True
-        else:
-            self.is_person = False
+        self.is_person = 'Person' in self.ent_type
         if self.is_person:
             self.ent_dict.update(pylobid_born={}, pylobid_died={})
         self.pref_name = self.get_pref_name()
