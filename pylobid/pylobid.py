@@ -4,17 +4,17 @@ import requests
 from jsonpath_ng import parse
 
 from . utils import extract_coords
-
+from typing import Union
 
 class PyLobidClient():
 
     """Main Class to interact with LOBID-API """
 
-    def extract_id(self, url):
+    def extract_id(self, url: str) -> Union[str, bool]:
         """extracts the GND-ID from an GND-URL
 
         :param url: A GND-URL, e.g. http://d-nb.info/gnd/118650130
-        :type url: str
+        :type url: str, bool
 
         :return: The GND-ID, e.g. 118650130
         :rtype: str
@@ -25,7 +25,7 @@ class PyLobidClient():
             gnd_id = False
         return gnd_id
 
-    def get_entity_lobid_url(self, url):
+    def get_entity_lobid_url(self, url: str) -> str:
         """creates a lobid-entity URL from an GND-URL
 
         :param url: A GND-URL, e.g. http://d-nb.info/gnd/118650130
@@ -41,7 +41,7 @@ class PyLobidClient():
             lobid_url = False
         return lobid_url
 
-    def get_entity_json(self, url):
+    def get_entity_json(self, url: str) -> dict:
         """fetches the LOBID-JSON response of a given GND-URL
 
         :param url: A GND_URL
@@ -61,7 +61,7 @@ class PyLobidClient():
         else:
             return {}
 
-    def get_same_as(self):
+    def get_same_as(self) -> list:
         """ returns a list of alternative norm-data-ids
 
         :return: A list of tuples like ('GeoNames', 'http://sws.geonames.org/2782067'),
@@ -73,7 +73,7 @@ class PyLobidClient():
             result = []
         return result
 
-    def get_pref_name(self):
+    def get_pref_name(self) -> str:
         """ returns the preferred name
 
         :return: The preferred Name vale, e.g. 'Assmann, Richard'
@@ -82,7 +82,7 @@ class PyLobidClient():
         result = self.ent_dict.get('preferredName', '')
         return result
 
-    def get_alt_names(self):
+    def get_alt_names(self) -> list:
         """a list of alternative names
 
         :return: a list of alternative names
@@ -96,13 +96,11 @@ class PyLobidClient():
             result = []
         return result
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.BASE_URL
 
-    def __init__(self):
-        """__init__
-        """
-
+    def __init__(self) -> None:
+        """Class constructor"""
         self.BASE_URL = "http://lobid.org/gnd"
         self.ID_PATTERN = "([0-9]\w*-*[0-9]\w*)"
         self.coords_xpath = parse('$..hasGeometry')
@@ -116,7 +114,7 @@ class PyLobidClient():
 class PyLobidPlace(PyLobidClient):
     """ A python class representing a Person Entity """
 
-    def __init__(self, gnd_id, fetch_related=False):
+    def __init__(self, gnd_id: str, fetch_related: bool = False) -> None:
         """ initializes the class
 
         :param gnd_id: any kind of GND_URI/URL
@@ -139,7 +137,7 @@ class PyLobidPlace(PyLobidClient):
         self.same_as = self.get_same_as()
         self.pref_name = self.get_pref_name()
 
-    def get_coords_str(self):
+    def get_coords_str(self) -> str:
         """get a string of coordinates
 
         :return: A string containing coordinates
@@ -149,7 +147,7 @@ class PyLobidPlace(PyLobidClient):
         coords_str = f"{[match.value for match in self.coords_xpath.find(self.ent_dict)]}"
         return coords_str
 
-    def get_coords(self):
+    def get_coords(self) -> list:
         """get a list of coordiantes
 
         :return: A list of longitute, latitude coords like ['+009.689780', '+051.210970']
@@ -163,7 +161,7 @@ class PyLobidPlace(PyLobidClient):
 class PyLobidOrg(PyLobidClient):
     """ A python class representing an Organisation Entity """
 
-    def __init__(self, gnd_id, fetch_related=False):
+    def __init__(self, gnd_id: str, fetch_related: bool = False) -> None:
         """ initializes the class
 
         :param gnd_id: any kind of GND_URI/URL
@@ -190,7 +188,7 @@ class PyLobidOrg(PyLobidClient):
 class PyLobidPerson(PyLobidClient):
     """ A python class representing a Person Entity """
 
-    def get_life_dates(self):
+    def get_life_dates(self) -> dict:
         """ returns birth- and death dates
 
         :return: A dict with keys birth_date_str and death_date_str
@@ -210,7 +208,7 @@ class PyLobidPerson(PyLobidClient):
             "death_date_str": death
         }
 
-    def place_of_values(self, place_of='Birth'):
+    def place_of_values(self, place_of: str = 'Birth') -> dict:
         """find values for PlaceOfBirth/Death
 
         :param place_of: Passed in value concatenates to 'PlaceOfBirth|Death' \
@@ -218,7 +216,7 @@ class PyLobidPerson(PyLobidClient):
         :type place_of: str
 
         :return: The ID of the Place
-        :rtype: str
+        :rtype: dict
 
         """
         value = f"placeOf{place_of}"
@@ -228,7 +226,7 @@ class PyLobidPerson(PyLobidClient):
         else:
             return {}
 
-    def place_of_dict(self, place_of='Birth'):
+    def place_of_dict(self, place_of: str = 'Birth') -> dict:
         """get the LOBID-JSON of a PlaceOfBirth|Death (if present)
 
         :param place_of: Passed in value concatenates to 'PlaceOfBirth|Death' \
@@ -246,7 +244,7 @@ class PyLobidPerson(PyLobidClient):
         else:
             return {}
 
-    def get_coords_str(self, place_of='Birth'):
+    def get_coords_str(self, place_of: str = 'Birth') -> str:
         """get a string of coordinates
 
         :param place_of: Passed in value concatenates to 'PlaceOfBirth|Death' \
@@ -265,7 +263,7 @@ class PyLobidPerson(PyLobidClient):
         coords_str = f"{[match.value for match in self.coords_xpath.find(ent_dict)]}"
         return coords_str
 
-    def get_coords(self, place_of='Birth'):
+    def get_coords(self, place_of: str = 'Birth') -> list:
         """get a list of coordiantes
 
         :param place_of: Passed in value concatenates to 'PlaceOfBirth|Death' \
@@ -279,7 +277,7 @@ class PyLobidPerson(PyLobidClient):
         coords_str = self.get_coords_str(place_of=place_of)
         return extract_coords(coords_str)
 
-    def get_place_alt_name(self, place_of='Birth'):
+    def get_place_alt_name(self, place_of: str = 'Birth') -> list:
         """a list of alternative names
 
         :param place_of: Passed in value concatenates to 'PlaceOfBirth|Death' \
@@ -301,10 +299,10 @@ class PyLobidPerson(PyLobidClient):
             result = []
         return result
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.gnd_id
 
-    def __init__(self, gnd_id, fetch_related=False):
+    def __init__(self, gnd_id: str, fetch_related: bool = False) -> None:
         """ initializes the class
 
         :param gnd_id: any kind of GND_URI/URL
