@@ -1,13 +1,10 @@
 import re
 import requests
-
 from jsonpath_ng import parse
-
 from . utils import extract_coords
 from typing import Union
 
 class PyLobidClient():
-
     """Main Class to interact with LOBID-API """
 
     def extract_id(self, url: str) -> Union[str, bool]:
@@ -112,7 +109,7 @@ class PyLobidClient():
 
 
 class PyLobidPlace(PyLobidClient):
-    """ A python class representing a Person Entity """
+    """ A python class representing a Place Entity """
 
     def __init__(self, gnd_id: str, fetch_related: bool = False) -> None:
         """ initializes the class
@@ -264,13 +261,13 @@ class PyLobidPerson(PyLobidClient):
         return coords_str
 
     def get_coords(self, place_of: str = 'Birth') -> list:
-        """get a list of coordiantes
+        """get a list of coordinates
 
         :param place_of: Passed in value concatenates to 'PlaceOfBirth|Death' \
         defaults to 'Birth'
         :type place_of: str
 
-        :return: A list of longitute, latitude coords like ['+009.689780', '+051.210970']
+        :return: A list of longitude, latitude coords like ['+009.689780', '+051.210970']
         :rtype: list
 
         """
