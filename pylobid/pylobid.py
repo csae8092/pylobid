@@ -42,7 +42,7 @@ class PyLobidClient():
         request_url = self.get_entity_lobid_url(url)
         try:
             response = requests.request("GET", request_url, headers=self.HEADERS)
-        except Exception as e:
+        except requests.exceptions.RequestException as e:
             print(f"Request to LOBID-API for GND-URL {url} failed due to Error: {e}")
             return {}
         return response.json() if response.ok else {}
@@ -55,7 +55,7 @@ class PyLobidClient():
         """
         try:
             result = [(x['collection']['abbr'], x['id']) for x in self.ent_dict['sameAs']]
-        except Exception as e:
+        except KeyError as e:
             result = []
         return result
 
