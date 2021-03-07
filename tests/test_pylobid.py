@@ -119,6 +119,16 @@ class TestPylobidClient(unittest.TestCase):
             f"should be {pl_client.BASE_URL}"
         )
 
+    def test_005_url_parser(self):
+        for input_str, id_str  in TEST_URL_PARSER_ARRAY:
+            pl_client = pl.PyLobidClient(input_str)
+            gnd_url = f"{pl_client.BASE_URL}/{id_str}"
+            self.assertEqual(
+                pl_client.gnd_url,
+                gnd_url,
+                f"gnd_url should be {gnd_url}"
+            )
+
 
 class TestPyLobidPerson(unittest.TestCase):
     """Tests for `pylobid` package."""
