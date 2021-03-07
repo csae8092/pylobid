@@ -1,8 +1,8 @@
 import re
 
 
-def extract_coords(some_str):
-    """utitly function to extract coordinates from a (WKT) string
+def extract_coords(some_str: str) -> list:
+    """Utility function to extract coordinates from a (WKT) string
 
     :param some_str: A string providing coordinates
     :type some_str: str
