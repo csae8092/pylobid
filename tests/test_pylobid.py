@@ -59,7 +59,7 @@ class TestPylobidPlace(unittest.TestCase):
     def test_004_same_as(self):
         id = "https://d-nb.info/gnd/4004168-2"
         same_as = [
-            ('GeoNames', 'http://sws.geonames.org/2782067'),
+            # ('GeoNames', 'http://sws.geonames.org/2782067'),
             ('VIAF', 'http://viaf.org/viaf/234093638'),
             ('WIKIDATA', 'http://www.wikidata.org/entity/Q486450'),
             ('DNB', 'https://d-nb.info/gnd/2005587-0'),

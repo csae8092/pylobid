@@ -54,7 +54,9 @@ class PyLobidClient():
         :rtype: list
         """
         try:
-            result = [(x['collection']['abbr'], x['id']) for x in self.ent_dict['sameAs']]
+            result = [
+                (x['collection'].get('abbr', 'no_abbr'), x['id']) for x in self.ent_dict['sameAs']
+            ]
         except KeyError as e:
             result = []
         return result
