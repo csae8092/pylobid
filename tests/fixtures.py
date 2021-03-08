@@ -99,7 +99,6 @@ TEST_ORG_IDS = [
     ("http://lobid.org/gnd/4012995-0", False),
     ("https://d-nb.info/gnd/4056905-6", False),
     ('http://d-nb.info/gnd/4011750-9', True),
-    ('http://d-nb.info/gnd/4534475-9', True),
     ('http://d-nb.info/gnd/2168247-1', True),
     ('http://d-nb.info/gnd/82742-3', True),
     ('http://d-nb.info/gnd/11486-8', True),
