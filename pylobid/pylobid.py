@@ -43,6 +43,16 @@ class PyLobidClient():
         """Return a list of alternative norm-data-ids."""
         return self.get_same_as()
 
+    @property
+    def alt_names(self) -> list:
+        """Return a list of alternative names."""
+        return self.get_alt_names()
+
+    @property
+    def pref_name(self) -> str:
+        """Return the preferred name."""
+        return self.get_pref_name()
+
     def extract_id(self, url: str) -> Union[str, bool]:
         """extracts the GND-ID from an GND-URL
 
@@ -116,13 +126,14 @@ class PyLobidClient():
     def __repr__(self) -> str:
         return f'<PyLobidClient {self.gnd_url}>'
 
-    def __init__(self, gnd_id: str = None) -> None:
+    def __init__(self, gnd_id: str = None, fetch_related: bool = False) -> None:
         """Class constructor"""
         self.BASE_URL = "http://lobid.org/gnd"
         self.ID_PATTERN = "([0-9]\w*-*[0-9]\w*)"
         self.coords_xpath = parse('$..hasGeometry')
         self.coords_regex = r'[+|-]\d+(?:\.\d*)?'
         self.pref_alt_names_xpath = parse('$.variantName')
+        self.fetch_related = fetch_related
         self.HEADERS = {
             'Accept': 'application/json'
         }
@@ -136,21 +147,6 @@ class PyLobidClient():
 
 class PyLobidPlace(PyLobidClient):
     """ A python class representing a Place Entity """
-
-    def __init__(self, gnd_id: str, fetch_related: bool = False) -> None:
-        """ initializes the class
-
-        :param gnd_id: any kind of GND_URI/URL
-        :type gnd_id: str
-        :param fetch_related: should related objects be fetched
-        :type fetch_related: bool
-
-        :return: A PyLobidPlace instance
-        """
-        super().__init__(gnd_id)
-        self.coords = self.get_coords()
-        self.alt_names = self.get_alt_names()
-        self.pref_name = self.get_pref_name()
 
     def get_coords_str(self) -> str:
         """get a string of coordinates
@@ -172,6 +168,11 @@ class PyLobidPlace(PyLobidClient):
         coords_str = self.get_coords_str()
         return extract_coords(coords_str)
 
+    @property
+    def coords(self) -> list:
+        """Return a list of coordinates."""
+        return self.get_coords()
+
     def __repr__(self) -> str:
         return f'<PyLobidPlace {self.gnd_url}>'
 
@@ -179,20 +180,10 @@ class PyLobidPlace(PyLobidClient):
 class PyLobidOrg(PyLobidClient):
     """ A python class representing an Organisation Entity """
 
-    def __init__(self, gnd_id: str, fetch_related: bool = False) -> None:
-        """ initializes the class
-
-        :param gnd_id: any kind of GND_URI/URL
-        :type gnd_id: str
-        :param fetch_related: should related objects be fetched
-        :type fetch_related: bool
-
-        :return: A PyLobidOrg instance
-        """
-        super().__init__(gnd_id)
-        self.alt_names = self.get_alt_names()
-        self.pref_name = self.get_pref_name()
-        self.located_in = self.ent_dict.get('placeOfBusiness', [])
+    @property
+    def located_in(self) -> list:
+        """Return a list of locations."""
+        return self.ent_dict.get('placeOfBusiness', [])
 
     def __repr__(self) -> str:
         return f'<PyLobidOrg {self.gnd_url}>'
@@ -303,11 +294,9 @@ class PyLobidPerson(PyLobidClient):
 
         :return: A PyLobidPerson instance
         """
-        super().__init__(gnd_id)
+        super().__init__(gnd_id, fetch_related)
         if self.is_person:
             self.ent_dict.update(pylobid_born={}, pylobid_died={})
-        self.pref_name = self.get_pref_name()
-        self.fetch_related = fetch_related
         self.pref_name_xpath = parse('$.preferredName')
         if self.fetch_related and self.is_person:
             self.ent_dict['pylobid_born'] = self.place_of_dict()
@@ -331,4 +320,3 @@ class PyLobidPerson(PyLobidClient):
             'alt_names': self.get_place_alt_name(place_of='Death')
         }
         self.life_span = self.get_life_dates()
-
