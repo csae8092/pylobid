@@ -84,13 +84,7 @@ class PyLobidClient():
         :return: A list of tuples like ('GeoNames', 'http://sws.geonames.org/2782067'),
         :rtype: list
         """
-        try:
-            result = [
-                (x['collection'].get('abbr', 'no_abbr'), x['id']) for x in self.ent_dict['sameAs']
-            ]
-        except KeyError as e:
-            result = []
-        return result
+        return [(x['collection'].get('abbr', 'no_abbr'), x['id']) for x in self.ent_dict['sameAs']]
 
     def get_pref_name(self) -> str:
         """ returns the preferred name
