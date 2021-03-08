@@ -106,6 +106,10 @@ TEST_ORG_IDS = [
     ('http://d-nb.info/gnd/1600912-5', True),
 ]
 
+TEST_FACTORY = [(element[0], "is_org") for element in TEST_ORG_IDS if element[1]]
+TEST_FACTORY += [(element[0], "is_place") for element in TEST_PLACE_IDS if element[1]]
+TEST_FACTORY += [(element['id'], "is_person") for element in TEST_PERSON_DICTS]
+
 TEST_ORG_NAMES_LOCATIONS = [
     {
         'id': 'http://d-nb.info/gnd/4443305-0',
