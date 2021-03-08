@@ -20,22 +20,27 @@ class PyLobidClient():
 
     @property
     def is_place(self) -> bool:
+        """Return True if this instance is a place entity, False otherwise."""
         return 'PlaceOrGeographicName' in self.ent_type
 
     @property
     def is_org(self) -> bool:
+        """Return True if this instance is an organization entity, False otherwise."""
         return 'CorporateBody' in self.ent_type
 
     @property
     def is_person(self) -> bool:
+        """Return True if this instance is a person entity, False otherwise."""
         return 'Person' in self.ent_type
 
     @property
     def ent_type(self) -> list:
+        """Return the entity type."""
         return self.ent_dict.get('type', False)
 
     @property
-    def same_as(self):
+    def same_as(self) -> list:
+        """Return a list of alternative norm-data-ids."""
         return self.get_same_as()
 
     def extract_id(self, url: str) -> Union[str, bool]:
@@ -155,9 +160,9 @@ class PyLobidPlace(PyLobidClient):
         return coords_str
 
     def get_coords(self) -> list:
-        """get a list of coordiantes
+        """get a list of coordinates
 
-        :return: A list of longitute, latitude coords like ['+009.689780', '+051.210970']
+        :return: A list of longitude, latitude coords like ['+009.689780', '+051.210970']
         :rtype: list
 
         """
