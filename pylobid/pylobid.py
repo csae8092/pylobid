@@ -231,12 +231,8 @@ class PyLobidPerson(PyLobidClient):
         :rtype: dict
 
         """
-        result = self.place_of_values(place_of)
-        if result:
-            place_id = result['id']
-            return PyLobidPerson(place_id).ent_dict
-        else:
-            return {}
+        place_id = self.place_of_values(place_of).get('id')
+        return {} if place_id is None else PyLobidPerson(place_id).ent_dict
 
     def get_coords_str(self, place_of: str = 'Birth') -> str:
         """get a string of coordinates
