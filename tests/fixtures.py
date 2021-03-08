@@ -99,13 +99,16 @@ TEST_ORG_IDS = [
     ("http://lobid.org/gnd/4012995-0", False),
     ("https://d-nb.info/gnd/4056905-6", False),
     ('http://d-nb.info/gnd/4011750-9', True),
-    ('http://d-nb.info/gnd/4534475-9', True),
     ('http://d-nb.info/gnd/2168247-1', True),
     ('http://d-nb.info/gnd/82742-3', True),
     ('http://d-nb.info/gnd/11486-8', True),
     ('http://d-nb.info/gnd/80092-2', True),
     ('http://d-nb.info/gnd/1600912-5', True),
 ]
+
+TEST_FACTORY = [(element[0], "is_org") for element in TEST_ORG_IDS if element[1]]
+TEST_FACTORY += [(element[0], "is_place") for element in TEST_PLACE_IDS if element[1]]
+TEST_FACTORY += [(element['id'], "is_person") for element in TEST_PERSON_DICTS]
 
 TEST_ORG_NAMES_LOCATIONS = [
     {

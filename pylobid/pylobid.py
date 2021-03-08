@@ -8,6 +8,35 @@ from typing import Union
 class PyLobidClient():
     """Main Class to interact with LOBID-API """
 
+    def factory(self):
+        """Return a matching instance for the GND URL or Id
+
+        - Type `PlaceOrGeographicName` returns a `PyLobidPlace` instance.
+        - Type `CorporateBody` returns a `PyLobidOrg` instance.
+        - Type `Person` returns a `PyLobidPerson` instance.
+        - All other types a `PyLobidPerson` instance
+
+        :return: An matching object for the GND URL or Id
+        :rtype: `PyLobidPlace`, `PyLobidOrg`, `PyLobidPerson`, `PyLobidPerson`
+
+        """
+        if self.ent_dict == {}:
+            raise ValueError(f'No data found for {self.gnd_url}')
+        if not self.ent_type:
+            raise ValueError(f'Unknown type for {self.gnd_url}')
+        if self.is_person:
+            output = PyLobidPerson(gnd_id=None, fetch_related=self.fetch_related)
+            output.process_data(data=self.ent_dict)
+        elif self.is_org:
+            output = PyLobidOrg(gnd_id=None)
+            output.process_data(data=self.ent_dict)
+        elif self.is_place:
+            output = PyLobidPlace(gnd_id=None)
+            output.process_data(data=self.ent_dict)
+        else:
+            return self
+        return output
+
     @property
     def gnd_id(self) -> str:
         """Return the GND ID, e.g. 118650130"""
@@ -42,6 +71,16 @@ class PyLobidClient():
     def same_as(self) -> list:
         """Return a list of alternative norm-data-ids."""
         return self.get_same_as()
+
+    @property
+    def alt_names(self) -> list:
+        """Return a list of alternative names."""
+        return self.get_alt_names()
+
+    @property
+    def pref_name(self) -> str:
+        """Return the preferred name."""
+        return self.get_pref_name()
 
     def extract_id(self, url: str) -> Union[str, bool]:
         """extracts the GND-ID from an GND-URL
@@ -113,41 +152,47 @@ class PyLobidClient():
     def __str__(self) -> str:
         return self.BASE_URL
 
-    def __init__(self, gnd_id: str = None) -> None:
+    def __repr__(self) -> str:
+        return f'<PyLobidClient {self.gnd_url}>'
+
+    def __init__(self, gnd_id: str = None, fetch_related: bool = False) -> None:
         """Class constructor"""
         self.BASE_URL = "http://lobid.org/gnd"
         self.ID_PATTERN = "([0-9]\w*-*[0-9]\w*)"
         self.coords_xpath = parse('$..hasGeometry')
         self.coords_regex = r'[+|-]\d+(?:\.\d*)?'
         self.pref_alt_names_xpath = parse('$.variantName')
+        self.fetch_related = fetch_related
         self.HEADERS = {
             'Accept': 'application/json'
         }
-        if gnd_id is not None:
+        self.__gnd_id = None
+        self.ent_dict = {}
+        self.process_data(gnd_id=gnd_id)
+
+    def process_data(self, gnd_id: str = None, data: dict = None):
+        """Fetch and/or process entity data
+
+        :param gnd_id: any kind of GND_URI/URL
+        :type gnd_id: str, optional
+        :param data: an already fetched ent_dict
+        :type data: dict, optional
+
+        .. note::
+            The arguments `gnd_id` and `data` are mutually exclusive.
+        """
+        if data is not None and gnd_id is not None:
+            raise ValueError('gnd_id and data mutually exclusive parameters')
+        if data is not None and 'id' in data:
+            _ = self.get_entity_lobid_url(data.get('id'))
+            self.ent_dict = data
+        elif gnd_id is not None:
             _ = self.get_entity_lobid_url(gnd_id)
             self.ent_dict = self.get_entity_json()
-        else:
-            self.__gnd_id = None
-            self.ent_dict = {}
 
 
 class PyLobidPlace(PyLobidClient):
     """ A python class representing a Place Entity """
-
-    def __init__(self, gnd_id: str, fetch_related: bool = False) -> None:
-        """ initializes the class
-
-        :param gnd_id: any kind of GND_URI/URL
-        :type gnd_id: str
-        :param fetch_related: should related objects be fetched
-        :type fetch_related: bool
-
-        :return: A PyLobidPlace instance
-        """
-        super().__init__(gnd_id)
-        self.coords = self.get_coords()
-        self.alt_names = self.get_alt_names()
-        self.pref_name = self.get_pref_name()
 
     def get_coords_str(self) -> str:
         """get a string of coordinates
@@ -169,24 +214,25 @@ class PyLobidPlace(PyLobidClient):
         coords_str = self.get_coords_str()
         return extract_coords(coords_str)
 
+    @property
+    def coords(self) -> list:
+        """Return a list of coordinates."""
+        return self.get_coords()
+
+    def __repr__(self) -> str:
+        return f'<PyLobidPlace {self.gnd_url}>'
+
 
 class PyLobidOrg(PyLobidClient):
     """ A python class representing an Organisation Entity """
 
-    def __init__(self, gnd_id: str, fetch_related: bool = False) -> None:
-        """ initializes the class
+    @property
+    def located_in(self) -> list:
+        """Return a list of locations."""
+        return self.ent_dict.get('placeOfBusiness', [])
 
-        :param gnd_id: any kind of GND_URI/URL
-        :type gnd_id: str
-        :param fetch_related: should related objects be fetched
-        :type fetch_related: bool
-
-        :return: A PyLobidOrg instance
-        """
-        super().__init__(gnd_id)
-        self.alt_names = self.get_alt_names()
-        self.pref_name = self.get_pref_name()
-        self.located_in = self.ent_dict.get('placeOfBusiness', [])
+    def __repr__(self) -> str:
+        return f'<PyLobidOrg {self.gnd_url}>'
 
 
 class PyLobidPerson(PyLobidClient):
@@ -281,21 +327,15 @@ class PyLobidPerson(PyLobidClient):
     def __str__(self) -> str:
         return self.gnd_url
 
-    def __init__(self, gnd_id: str, fetch_related: bool = False) -> None:
-        """ initializes the class
+    def __repr__(self) -> str:
+        return f'<PyLobidPerson {self.gnd_url}>'
 
-        :param gnd_id: any kind of GND_URI/URL
-        :type gnd_id: str
-        :param fetch_related: should related objects be fetched
-        :type fetch_related: bool
-
-        :return: A PyLobidPerson instance
-        """
-        super().__init__(gnd_id)
+    def process_data(self, gnd_id: str = None, data: dict = None) -> None:
+        super().process_data(gnd_id=gnd_id, data=data)
+        if self.ent_dict == {}:
+            return
         if self.is_person:
             self.ent_dict.update(pylobid_born={}, pylobid_died={})
-        self.pref_name = self.get_pref_name()
-        self.fetch_related = fetch_related
         self.pref_name_xpath = parse('$.preferredName')
         if self.fetch_related and self.is_person:
             self.ent_dict['pylobid_born'] = self.place_of_dict()
@@ -319,4 +359,3 @@ class PyLobidPerson(PyLobidClient):
             'alt_names': self.get_place_alt_name(place_of='Death')
         }
         self.life_span = self.get_life_dates()
-

@@ -120,7 +120,7 @@ class TestPylobidClient(unittest.TestCase):
         )
 
     def test_005_url_parser(self):
-        for input_str, id_str  in TEST_URL_PARSER_ARRAY:
+        for input_str, id_str in TEST_URL_PARSER_ARRAY:
             pl_client = pl.PyLobidClient(input_str)
             gnd_url = f"{pl_client.BASE_URL}/{id_str}"
             self.assertEqual(
@@ -129,6 +129,13 @@ class TestPylobidClient(unittest.TestCase):
                 f"gnd_url should be {gnd_url}"
             )
 
+    def test_006_factory(self):
+        for gnd_id, entity_type in TEST_FACTORY:
+            entity_client = pl.PyLobidClient(gnd_id).factory()
+            self.assertTrue(
+                getattr(entity_client, entity_type),
+                f"Entity should be {entity_type}"
+            )
 
 class TestPyLobidPerson(unittest.TestCase):
     """Tests for `pylobid` package."""
