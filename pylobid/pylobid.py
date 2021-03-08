@@ -113,6 +113,9 @@ class PyLobidClient():
     def __str__(self) -> str:
         return self.BASE_URL
 
+    def __repr__(self) -> str:
+        return f'<PyLobidClient {self.gnd_url}>'
+
     def __init__(self, gnd_id: str = None) -> None:
         """Class constructor"""
         self.BASE_URL = "http://lobid.org/gnd"
@@ -169,6 +172,9 @@ class PyLobidPlace(PyLobidClient):
         coords_str = self.get_coords_str()
         return extract_coords(coords_str)
 
+    def __repr__(self) -> str:
+        return f'<PyLobidPlace {self.gnd_url}>'
+
 
 class PyLobidOrg(PyLobidClient):
     """ A python class representing an Organisation Entity """
@@ -187,6 +193,9 @@ class PyLobidOrg(PyLobidClient):
         self.alt_names = self.get_alt_names()
         self.pref_name = self.get_pref_name()
         self.located_in = self.ent_dict.get('placeOfBusiness', [])
+
+    def __repr__(self) -> str:
+        return f'<PyLobidOrg {self.gnd_url}>'
 
 
 class PyLobidPerson(PyLobidClient):
@@ -280,6 +289,9 @@ class PyLobidPerson(PyLobidClient):
 
     def __str__(self) -> str:
         return self.gnd_url
+
+    def __repr__(self) -> str:
+        return f'<PyLobidPerson {self.gnd_url}>'
 
     def __init__(self, gnd_id: str, fetch_related: bool = False) -> None:
         """ initializes the class
