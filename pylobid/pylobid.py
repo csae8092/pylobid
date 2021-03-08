@@ -4,6 +4,7 @@ from jsonpath_ng import parse
 from . utils import extract_coords
 from typing import Union
 
+
 class PyLobidClient():
     """Main Class to interact with LOBID-API """
 
@@ -32,6 +33,10 @@ class PyLobidClient():
     @property
     def ent_type(self) -> list:
         return self.ent_dict.get('type', False)
+
+    @property
+    def same_as(self):
+        return self.get_same_as()
 
     def extract_id(self, url: str) -> Union[str, bool]:
         """extracts the GND-ID from an GND-URL
@@ -143,7 +148,6 @@ class PyLobidPlace(PyLobidClient):
         super().__init__(gnd_id)
         self.coords = self.get_coords()
         self.alt_names = self.get_alt_names()
-        self.same_as = self.get_same_as()
         self.pref_name = self.get_pref_name()
 
     def get_coords_str(self) -> str:
@@ -182,7 +186,6 @@ class PyLobidOrg(PyLobidClient):
         """
         super().__init__(gnd_id)
         self.alt_names = self.get_alt_names()
-        self.same_as = self.get_same_as()
         self.pref_name = self.get_pref_name()
         self.located_in = self.ent_dict.get('placeOfBusiness', [])
 
@@ -321,4 +324,4 @@ class PyLobidPerson(PyLobidClient):
             'alt_names': self.get_place_alt_name(place_of='Death')
         }
         self.life_span = self.get_life_dates()
-        self.same_as = self.get_same_as()
+
