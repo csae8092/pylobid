@@ -62,6 +62,15 @@ TEST_IDS_ARRAY = [
     "http://lobid.org/gnd/4075434-0"
 ]
 
+TEST_URL_PARSER_ARRAY = [
+    ("http://d-nb.info/gnd/118650130", "118650130"),
+    ("http://d-nb.info/gnd/4003366-1", "4003366-1"),
+    ("https://d-nb.info/gnd/16254097-8", "16254097-8"),
+    ("141768134", "141768134"),
+    ("http://lobid.org/gnd/12328631X", "12328631X"),
+    ("http://lobid.org/gnd/4075434-0", "4075434-0")
+]
+
 TEST_STRINGS_WKT = [
     (
         "[[{'type': 'Point', 'asWKT': ['Point ( +023.599440 +038.463610 )']}]]",
