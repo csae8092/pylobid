@@ -2,8 +2,26 @@
 Usage
 =====
 
+Getting started
+---------------
+
+.. code-block:: python
+
+    from pylobid.pylobid import PyLobClient
+    gnd_id = "http://d-nb.info/gnd/119315122"
+    py_ent = PyLobidClient(gnd_id, fetch_related=True).factory()
+    print(repr(py_ent))
+    <PyLobidPerson http://lobid.org/gnd/119315122>
+
+`PyLobidClient().factory()` returns the following instances based on the provided entity type:
+
+- Type `PlaceOrGeographicName` returns a PyLobidPlace` instance.
+- Type `CorporateBody` returns a `PyLobidOrg` instance.
+- Type `Person` returns a `PyLobidPerson` instance.
+- All other types a `PyLobidPerson` instance
+
 Persons
---------
+-------
 
 To use pylobid in a project::
 
@@ -41,7 +59,7 @@ To use pylobid in a project::
 
 
 Places
---------
+------
 
 How to use PyLobidPlace object::
 
@@ -62,7 +80,7 @@ How to use PyLobidPlace object::
 
 
 Organisations
---------
+-------------
 
 How to use PyLobidOrg object::
 

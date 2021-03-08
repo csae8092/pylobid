@@ -8,6 +8,35 @@ from typing import Union
 class PyLobidClient():
     """Main Class to interact with LOBID-API """
 
+    def factory(self):
+        """Return a matching instance for the GND URL or Id
+
+        - Type `PlaceOrGeographicName` returns a `PyLobidPlace` instance.
+        - Type `CorporateBody` returns a `PyLobidOrg` instance.
+        - Type `Person` returns a `PyLobidPerson` instance.
+        - All other types a `PyLobidPerson` instance
+
+        :return: An matching object for the GND URL or Id
+        :rtype: `PyLobidPlace`, `PyLobidOrg`, `PyLobidPerson`, `PyLobidPerson`
+
+        """
+        if self.ent_dict == {}:
+            raise ValueError(f'No data found for {self.gnd_url}')
+        if not self.ent_type:
+            raise ValueError(f'Unknown type for {self.gnd_url}')
+        if self.is_person:
+            output = PyLobidPerson(gnd_id=None, fetch_related=self.fetch_related)
+            output.process_data(data=self.ent_dict)
+        elif self.is_org:
+            output = PyLobidOrg(gnd_id=None)
+            output.process_data(data=self.ent_dict)
+        elif self.is_place:
+            output = PyLobidPlace(gnd_id=None)
+            output.process_data(data=self.ent_dict)
+        else:
+            return self
+        return output
+
     @property
     def gnd_id(self) -> str:
         """Return the GND ID, e.g. 118650130"""
@@ -137,12 +166,29 @@ class PyLobidClient():
         self.HEADERS = {
             'Accept': 'application/json'
         }
-        if gnd_id is not None:
+        self.__gnd_id = None
+        self.ent_dict = {}
+        self.process_data(gnd_id=gnd_id)
+
+    def process_data(self, gnd_id: str = None, data: dict = None):
+        """Fetch and/or process entity data
+
+        :param gnd_id: any kind of GND_URI/URL
+        :type gnd_id: str, optional
+        :param data: an already fetched ent_dict
+        :type data: dict, optional
+
+        .. note::
+            The arguments `gnd_id` and `data` are mutually exclusive.
+        """
+        if data is not None and gnd_id is not None:
+            raise ValueError('gnd_id and data mutually exclusive parameters')
+        if data is not None and 'id' in data:
+            _ = self.get_entity_lobid_url(data.get('id'))
+            self.ent_dict = data
+        elif gnd_id is not None:
             _ = self.get_entity_lobid_url(gnd_id)
             self.ent_dict = self.get_entity_json()
-        else:
-            self.__gnd_id = None
-            self.ent_dict = {}
 
 
 class PyLobidPlace(PyLobidClient):
@@ -284,17 +330,10 @@ class PyLobidPerson(PyLobidClient):
     def __repr__(self) -> str:
         return f'<PyLobidPerson {self.gnd_url}>'
 
-    def __init__(self, gnd_id: str, fetch_related: bool = False) -> None:
-        """ initializes the class
-
-        :param gnd_id: any kind of GND_URI/URL
-        :type gnd_id: str
-        :param fetch_related: should related objects be fetched
-        :type fetch_related: bool
-
-        :return: A PyLobidPerson instance
-        """
-        super().__init__(gnd_id, fetch_related)
+    def process_data(self, gnd_id: str = None, data: dict = None) -> None:
+        super().process_data(gnd_id=gnd_id, data=data)
+        if self.ent_dict == {}:
+            return
         if self.is_person:
             self.ent_dict.update(pylobid_born={}, pylobid_died={})
         self.pref_name_xpath = parse('$.preferredName')
