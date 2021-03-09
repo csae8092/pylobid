@@ -121,9 +121,10 @@ class PyLobidClient():
         try:
             response = requests.request("GET", url, headers=self.HEADERS)
         except requests.exceptions.RequestException as e:
-            print(f"Request to LOBID-API for GND-URL {url} failed due to Error: {e}")
-            return {}
-        return response.json() if response.ok else {}
+            raise e from None
+        if not response.ok:
+            raise ValueError(f'Could not find a GND Entity for Id "{self.gnd_id}"')
+        return response.json()
 
     def get_same_as(self) -> list:
         """ returns a list of alternative norm-data-ids
