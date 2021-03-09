@@ -2,7 +2,6 @@ import re
 import requests
 from jsonpath_ng import parse
 from . utils import extract_coords
-from typing import Union
 
 
 class GNDIdError(ValueError):
@@ -10,17 +9,18 @@ class GNDIdError(ValueError):
 
 
 class GNDNotFoundError(Exception):
-    """Exception raised if the API returns Not Found for a GND-ID"""
+    """Exception raised if the API returns Not Found for a GND-ID."""
 
 
 class GNDAPIError(Exception):
     """Broad exception if something unexpected happens."""
 
+
 class PyLobidClient():
-    """Main Class to interact with LOBID-API """
+    """Main Class to interact with LOBID-API."""
 
     def factory(self):
-        """Return a matching instance for the GND URL or Id
+        """Return a matching instance for the GND URL or ID.
 
         - Type `PlaceOrGeographicName` returns a `PyLobidPlace` instance.
         - Type `CorporateBody` returns a `PyLobidOrg` instance.
@@ -29,7 +29,6 @@ class PyLobidClient():
 
         :return: An matching object for the GND URL or Id
         :rtype: `PyLobidPlace`, `PyLobidOrg`, `PyLobidPerson`, `PyLobidPerson`
-
         """
         if self.ent_dict == {}:
             raise ValueError(f'No data found for {self.gnd_url}')
@@ -50,7 +49,7 @@ class PyLobidClient():
 
     @property
     def gnd_id(self) -> str:
-        """Return the GND ID, e.g. 118650130"""
+        """Return the GND ID, e.g. 118650130."""
         return self.__gnd_id
 
     @property
@@ -76,7 +75,7 @@ class PyLobidClient():
     @property
     def ent_type(self) -> list:
         """Return the entity type."""
-        return self.ent_dict.get('type', False)
+        return self.ent_dict.get('type', [])
 
     @property
     def same_as(self) -> list:
@@ -93,15 +92,15 @@ class PyLobidClient():
         """Return the preferred name."""
         return self.get_pref_name()
 
-    def extract_id(self, url: str) -> Union[str, bool]:
-        """extracts the GND-ID from an GND-URL
+    def extract_id(self, url: str) -> str:
+        """Extract the GND-ID from an GND-URL.
 
         :param url: A GND-URL, e.g. http://d-nb.info/gnd/118650130
         :type url: str
 
-        :raises: GNDIdError
+        :raises: GNDIdError if no GND-ID is found.
         :return: The GND-ID, e.g. 118650130
-        :rtype: str, bool
+        :rtype: str
         """
         gnd_id = re.search(self.ID_PATTERN, url)
         if gnd_id is None:
@@ -121,27 +120,25 @@ class PyLobidClient():
         return self.gnd_url
 
     def get_entity_json(self, url: str = None) -> dict:
-        """fetches the LOBID-JSON response of a given GND-URL
+        """Get the LOBID-JSON response of a given GND-URL.
 
         :param url: A GND_URL
         :type url: str, optional
 
+        :raises: GNDNotFoundError, GNDAPIError
         :return: The matching JSON representation fetched from LOBID
         :rtype: dict
         """
         url = self.gnd_url if url is None else self.get_entity_lobid_url(url)
-        try:
-            response = requests.request("GET", url, headers=self.HEADERS)
-        except requests.exceptions.RequestException as e:
-            raise e from None
+        response = requests.get(url, headers={'Accept': 'application/json'})
         if response.status_code == 404:
             raise GNDNotFoundError(f'Could not find a GND Entity for ID "{self.gnd_id}"')
-        elif not response.ok:
+        if not response.ok:
             raise GNDAPIError(f'GND API error code: {response.status_code}')
         return response.json()
 
     def get_same_as(self) -> list:
-        """ returns a list of alternative norm-data-ids
+        """Get the list of alternative norm-data-ids.
 
         :return: A list of tuples like ('GeoNames', 'http://sws.geonames.org/2782067'),
         :rtype: list
@@ -149,7 +146,7 @@ class PyLobidClient():
         return [(x['collection'].get('abbr', 'no_abbr'), x['id']) for x in self.ent_dict['sameAs']]
 
     def get_pref_name(self) -> str:
-        """ returns the preferred name
+        """Get the preferred name.
 
         :return: The preferred Name vale, e.g. 'Assmann, Richard'
         :rtype: str
@@ -158,11 +155,10 @@ class PyLobidClient():
         return result
 
     def get_alt_names(self) -> list:
-        """a list of alternative names
+        """Get the list of alternative names.
 
         :return: a list of alternative names
         :rtype: list
-
         """
         ent_dict = self.ent_dict
         return next(iter([match.value for match in self.pref_alt_names_xpath.find(ent_dict)]), [])
@@ -174,30 +170,26 @@ class PyLobidClient():
         return f'<PyLobidClient {self.gnd_url}>'
 
     def __init__(self, gnd_id: str = None, fetch_related: bool = False) -> None:
-        """Class constructor"""
+        """Class constructor."""
         self.BASE_URL = "http://lobid.org/gnd"
-        self.ID_PATTERN = "([0-9]\w*-*[0-9]\w*)"
+        self.ID_PATTERN = r'([0-9]\w*-*[0-9]\w*)'
         self.coords_xpath = parse('$..hasGeometry')
         self.coords_regex = r'[+|-]\d+(?:\.\d*)?'
         self.pref_alt_names_xpath = parse('$.variantName')
         self.fetch_related = fetch_related
-        self.HEADERS = {
-            'Accept': 'application/json'
-        }
         self.__gnd_id = None
         self.ent_dict = {}
         self.process_data(gnd_id=gnd_id)
 
-    def process_data(self, gnd_id: str = None, data: dict = None):
-        """Fetch and/or process entity data
+    def process_data(self, gnd_id: str = None, data: dict = None) -> None:
+        """Fetch and/or process entity data.
+
+        The arguments `gnd_id` and `data` are mutually exclusive.
 
         :param gnd_id: any kind of GND_URI/URL
         :type gnd_id: str, optional
         :param data: an already fetched ent_dict
         :type data: dict, optional
-
-        .. note::
-            The arguments `gnd_id` and `data` are mutually exclusive.
         """
         if data is not None and gnd_id is not None:
             raise ValueError('gnd_id and data mutually exclusive parameters')
@@ -210,24 +202,22 @@ class PyLobidClient():
 
 
 class PyLobidPlace(PyLobidClient):
-    """ A python class representing a Place Entity """
+    """A python class representing a Place Entity."""
 
     def get_coords_str(self) -> str:
-        """get a string of coordinates
+        """Get a string of coordinates.
 
         :return: A string containing coordinates
         :rtype: str
-
         """
         coords_str = f"{[match.value for match in self.coords_xpath.find(self.ent_dict)]}"
         return coords_str
 
     def get_coords(self) -> list:
-        """get a list of coordinates
+        """Get a list of coordinates.
 
         :return: A list of longitude, latitude coords like ['+009.689780', '+051.210970']
         :rtype: list
-
         """
         coords_str = self.get_coords_str()
         return extract_coords(coords_str)
@@ -242,7 +232,7 @@ class PyLobidPlace(PyLobidClient):
 
 
 class PyLobidOrg(PyLobidClient):
-    """ A python class representing an Organisation Entity """
+    """A python class representing an Organisation Entity."""
 
     @property
     def located_in(self) -> list:
@@ -254,14 +244,13 @@ class PyLobidOrg(PyLobidClient):
 
 
 class PyLobidPerson(PyLobidClient):
-    """ A python class representing a Person Entity """
+    """A python class representing a Person Entity."""
 
     def get_life_dates(self) -> dict:
-        """ returns birth- and death dates
+        """Get birth- and death dates.
 
         :return: A dict with keys birth_date_str and death_date_str
         :rtype: dict
-
         """
         return {
             "birth_date_str": next(iter(self.ent_dict.get('dateOfBirth', [])), ''),
@@ -269,7 +258,7 @@ class PyLobidPerson(PyLobidClient):
         }
 
     def place_of_values(self, place_of: str = 'Birth') -> dict:
-        """find values for PlaceOfBirth/Death
+        """Find values for PlaceOfBirth/Death.
 
         :param place_of: Passed in value concatenates to 'PlaceOfBirth|Death' \
         defaults to 'Birth'
@@ -277,14 +266,13 @@ class PyLobidPerson(PyLobidClient):
 
         :return: The ID of the Place
         :rtype: dict
-
         """
         value = f"placeOf{place_of}"
         result = self.ent_dict.get(value, False)
         return result[0] if isinstance(result, list) else {}
 
     def place_of_dict(self, place_of: str = 'Birth') -> dict:
-        """get the LOBID-JSON of a PlaceOfBirth|Death (if present)
+        """Get the LOBID-JSON of a PlaceOfBirth|Death (if present).
 
         :param place_of: Passed in value concatenates to 'PlaceOfBirth|Death' \
         defaults to 'Birth'
@@ -292,13 +280,12 @@ class PyLobidPerson(PyLobidClient):
 
         :return: The LOBID-JSON of the PlaceOfBirth|Death
         :rtype: dict
-
         """
         place_id = self.place_of_values(place_of).get('id')
-        return {} if place_id is None else PyLobidPerson(place_id).ent_dict
+        return {} if place_id is None else PyLobidPlace(place_id).ent_dict
 
     def get_coords_str(self, place_of: str = 'Birth') -> str:
-        """get a string of coordinates
+        """Get a string of coordinates.
 
         :param place_of: Passed in value concatenates to 'PlaceOfBirth|Death' \
         defaults to 'Birth'
@@ -306,7 +293,6 @@ class PyLobidPerson(PyLobidClient):
 
         :return: A string containing coordinates
         :rtype: str
-
         """
         place_of_key = "pylobid_born" if place_of == "Birth" else "pylobid_died"
         ent_dict = self.ent_dict.get(place_of_key, {})
@@ -314,7 +300,7 @@ class PyLobidPerson(PyLobidClient):
         return coords_str
 
     def get_coords(self, place_of: str = 'Birth') -> list:
-        """get a list of coordinates
+        """Get a list of coordinates.
 
         :param place_of: Passed in value concatenates to 'PlaceOfBirth|Death' \
         defaults to 'Birth'
@@ -322,13 +308,12 @@ class PyLobidPerson(PyLobidClient):
 
         :return: A list of longitude, latitude coords like ['+009.689780', '+051.210970']
         :rtype: list
-
         """
         coords_str = self.get_coords_str(place_of=place_of)
         return extract_coords(coords_str)
 
     def get_place_alt_name(self, place_of: str = 'Birth') -> list:
-        """a list of alternative names
+        """Get the list of alternative names.
 
         :param place_of: Passed in value concatenates to 'PlaceOfBirth|Death' \
         defaults to 'Birth'
@@ -336,7 +321,6 @@ class PyLobidPerson(PyLobidClient):
 
         :return: a list of alternative names
         :rtype: list
-
         """
         place_of_key = "pylobid_born" if place_of == "Birth" else "pylobid_died"
         ent_dict = self.ent_dict.get(place_of_key, {})
@@ -349,6 +333,15 @@ class PyLobidPerson(PyLobidClient):
         return f'<PyLobidPerson {self.gnd_url}>'
 
     def process_data(self, gnd_id: str = None, data: dict = None) -> None:
+        """Fetch and/or process entity data.
+
+        The arguments `gnd_id` and `data` are mutually exclusive.
+
+        :param gnd_id: any kind of GND_URI/URL
+        :type gnd_id: str, optional
+        :param data: an already fetched ent_dict
+        :type data: dict, optional
+        """
         super().process_data(gnd_id=gnd_id, data=data)
         if self.ent_dict == {}:
             return

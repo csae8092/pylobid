@@ -11,7 +11,10 @@ TEST_PERSON_DICTS = [
             'name': 'Wien',
             'coords': ['+016.371690', '+048.208199']
         },
-        'life_span': {'birth_date_str': '1873-12-23', 'death_date_str': '1933-03-15'}
+        'life_span': {
+            'birth_date_str': '1873-12-23',
+            'death_date_str': '1933-03-15'
+        }
     },
     {
         'id': "http://d-nb.info/gnd/116586869",
@@ -21,7 +24,10 @@ TEST_PERSON_DICTS = [
         'pylobid_died': {
             'id': ''
         },
-        'life_span': {'birth_date_str': '1874', 'death_date_str': ''}
+        'life_span': {
+            'birth_date_str': '1874',
+            'death_date_str': ''
+        }
     },
     {
         'id': "1069009253",

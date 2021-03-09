@@ -15,10 +15,18 @@ Getting started
 
 `PyLobidClient().factory()` returns the following instances based on the provided entity type:
 
-- Type `PlaceOrGeographicName` returns a PyLobidPlace` instance.
+- Type `PlaceOrGeographicName` returns a `PyLobidPlace` instance.
 - Type `CorporateBody` returns a `PyLobidOrg` instance.
 - Type `Person` returns a `PyLobidPerson` instance.
 - All other types a `PyLobidPerson` instance
+
+`PyLobidClient` and its derivatives can raise the following exceptions:
+
+- `GNDIdError` If the GND-ID cannot be parsed from the provided URL or ID string.
+- `GNDNotFoundError` If the GND cannot be found and the API endpoint responds with `404 Not Found`.
+- `GNDAPIError` If the API endpoint response code is anything other than 200 or 404.
+
+`GNDIdError` is a derivative of `ValueError`. All requests are done with the `requests` module and none of its exceptions are caught by this module.
 
 Persons
 -------
