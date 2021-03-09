@@ -91,7 +91,10 @@ class PyLobidClient():
         :return: The GND-ID, e.g. 118650130
         :rtype: str, bool
         """
-        return next(iter(re.findall(self.ID_PATTERN, url)), False)
+        gnd_id = re.search(self.ID_PATTERN, url)
+        if gnd_id is None:
+            raise ValueError(f'Could not find GND Id in "{url}"')
+        return gnd_id.group()
 
     def get_entity_lobid_url(self, url: str) -> str:
         """creates a lobid-entity URL from an GND-URL
