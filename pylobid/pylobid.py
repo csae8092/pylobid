@@ -5,6 +5,10 @@ from . utils import extract_coords
 from typing import Union
 
 
+class GNDIdError(ValueError):
+    """Exception raised if the GND-ID is invalid."""
+
+
 class PyLobidClient():
     """Main Class to interact with LOBID-API """
 
@@ -88,12 +92,13 @@ class PyLobidClient():
         :param url: A GND-URL, e.g. http://d-nb.info/gnd/118650130
         :type url: str
 
+        :raises: GNDIdError
         :return: The GND-ID, e.g. 118650130
         :rtype: str, bool
         """
         gnd_id = re.search(self.ID_PATTERN, url)
         if gnd_id is None:
-            raise ValueError(f'Could not find GND Id in "{url}"')
+            raise GNDIdError(f'Could not find GND-ID in "{url}"')
         return gnd_id.group()
 
     def get_entity_lobid_url(self, url: str) -> str:
