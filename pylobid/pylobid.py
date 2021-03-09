@@ -9,6 +9,13 @@ class GNDIdError(ValueError):
     """Exception raised if the GND-ID is invalid."""
 
 
+class GNDNotFoundError(Exception):
+    """Exception raised if the API returns Not Found for a GND-ID"""
+
+
+class GNDAPIError(Exception):
+    """Broad exception if something unexpected happens."""
+
 class PyLobidClient():
     """Main Class to interact with LOBID-API """
 
@@ -127,8 +134,10 @@ class PyLobidClient():
             response = requests.request("GET", url, headers=self.HEADERS)
         except requests.exceptions.RequestException as e:
             raise e from None
-        if not response.ok:
-            raise ValueError(f'Could not find a GND Entity for Id "{self.gnd_id}"')
+        if response.status_code == 404:
+            raise GNDNotFoundError(f'Could not find a GND Entity for ID "{self.gnd_id}"')
+        elif not response.ok:
+            raise GNDAPIError(f'GND API error code: {response.status_code}')
         return response.json()
 
     def get_same_as(self) -> list:
