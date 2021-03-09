@@ -43,6 +43,18 @@ TEST_PERSON_DICTS = [
     }
 ]
 
+TEST_INVALID_URLS = [
+    "?!invalid_id",
+    "example.com/",
+    "https://dnb.de",
+    "",
+    "http://lobid.org/gnd"
+]
+
+TEST_UNKNOWN_IDS = [
+    "01234-4321",
+    "0123abc-0123def"
+]
 
 TEST_IDS_DICT = {
     "persons": [

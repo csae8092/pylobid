@@ -137,6 +137,19 @@ class TestPylobidClient(unittest.TestCase):
                 f"Entity should be {entity_type}"
             )
 
+    def test_007_invalid_urls(self):
+        for gnd_url in TEST_INVALID_URLS:
+            with self.subTest(gnd_url=gnd_url):
+                with self.assertRaises(pl.GNDIdError):
+                    _ = pl.PyLobidClient(gnd_url)
+
+    def test_008_unkown_ids(self):
+        for gnd_id in TEST_UNKNOWN_IDS:
+            with self.subTest(gnd_id=gnd_id):
+                with self.assertRaises(pl.GNDNotFoundError):
+                    _ = pl.PyLobidClient(gnd_id)
+
+
 class TestPyLobidPerson(unittest.TestCase):
     """Tests for `pylobid` package."""
 
