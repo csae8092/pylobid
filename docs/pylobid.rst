@@ -12,6 +12,14 @@ pylobid.pylobid module
     :undoc-members:
     :show-inheritance:
 
+pylobid.validators module
+-------------------------
+
+.. automodule:: pylobid.validators
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 pylobid.utils module
 --------------------
 
