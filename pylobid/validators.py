@@ -17,11 +17,7 @@ class GNDValidator:
     """
 
     def __init__(self, entity_flag: str = None, message: str = None) -> None:
-        """Class constructor.
-
-        :param: entity_type: The entity type to check for.
-        :param message: Message to display if validation fails.
-        """
+        """Class constructor."""
         self.entity_flag = entity_flag
         self.message = message
 
@@ -44,3 +40,43 @@ class GNDValidator:
         if self.entity_flag is not None and not getattr(gnd_entity, self.entity_flag, False):
             self.message = f'Entity type {gnd_entity.ent_type}'
             raise wtforms.validators.ValidationError(self.message)
+
+
+class GNDPlaceEntity(GNDValidator):
+    """Validator class for place entities.
+
+    :param: Message to display if validation fails.
+    :raises: ValidationError is the GND type does not match the set entity type.
+    """
+
+    def __init__(self, message: str = None) -> None:
+        """Class constructor."""
+        super().__init__(entity_flag='is_place')
+        self.message = message or 'The provided GND ID is not a place entity'
+
+
+class GNDPersonEntity(GNDValidator):
+    """Validator class for person entities.
+
+    :param: Message to display if validation fails.
+    :raises: ValidationError is the GND type does not match the set entity type.
+    """
+
+    def __init__(self, message: str = None) -> None:
+        """Class constructor."""
+        super().__init__(entity_flag='is_person')
+        self.message = message or 'The provided GND ID is not a person entity'
+
+
+class GNDOrgEntity(GNDValidator):
+    """Validator for org. entities.
+
+    :param: Message to display if validation fails.
+    :raises: ValidationError is the GND type does not match the set entity type.
+    """
+
+    def __init__(self, message: str = None) -> None:
+        """Class constructor."""
+        super().__init__(entity_flag='is_org', message=message)
+        self.message = message or 'The provided GND ID is not an organization entity'
+
