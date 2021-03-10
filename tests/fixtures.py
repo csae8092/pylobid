@@ -101,6 +101,13 @@ TEST_STRINGS_WKT = [
     )
 ]
 
+TEST_PERSON_IDS = [
+    ("http://d-nb.info/gnd/119315122", True),
+    ("http://d-nb.info/gnd/116586869", True),
+    ("1069009253", True),
+    ("136037585", True),
+    ("http://lobid.org/gnd/4012995-0", False)
+]
 
 TEST_PLACE_IDS = [
     ("http://lobid.org/gnd/4012995-0", True),
