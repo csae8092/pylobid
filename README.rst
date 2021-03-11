@@ -6,8 +6,8 @@ pylobid
 .. image:: https://img.shields.io/pypi/v/pylobid.svg
         :target: https://pypi.python.org/pypi/pylobid
 
-.. image:: https://img.shields.io/travis/csae8092/pylobid.svg
-        :target: https://travis-ci.com/csae8092/pylobid
+.. image:: https://github.com/csae8092/pylobid/actions/workflows/build.yml/badge.svg
+        :target: https://github.com/csae8092/pylobid/actions/workflows/build.yml
 
 .. image:: https://readthedocs.org/projects/pylobid/badge/?version=latest
         :target: https://pylobid.readthedocs.io/en/latest/?badge=latest
