@@ -29,6 +29,7 @@ Features
 
 * Harmonize GND-URIs and URLS
 * wrap up several LOBID-API requests in a single methods
+* Validate inputs from WTForms against the LOBID-API
 
 Credits
 -------

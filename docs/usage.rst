@@ -105,3 +105,40 @@ How to use PyLobidOrg object::
     same_as: [('VIAF', 'http://viaf.org/viaf/310513758'), ('WIKIDATA', 'http://www.wikidata.org/entity/Q3603948'), ('DNB', 'https://d-nb.info/gnd/1085251314'), ('DNB', 'https://d-nb.info/gnd/4443305-0/about')]
 
     pref_name: Accademia Roveretana degli Agiati
+
+
+
+WTForms validators
+------------------
+
+The `pylobid` module contains a validator for `WTForms <https://wtforms.readthedocs.io/en/3.0.x/>`_. With `pylobid.validators` you can validate the input from forms.
+
+- Check if the provided GND URL or ID exists
+- Check if the entity is a Person, Place or Organization.
+
+.. code-block:: python
+
+    import wtforms
+    from pylobid import validators
+
+    class GNDPersonForm(wtforms.Form):
+        gnd_str = wtforms.StringField(
+            label='GND ID or URL',
+            validators=[validators.GNDPersonEntity()])
+
+    form = GNDPersonFrom()
+    # ... Do your form thing ...
+    if form.validate():
+        print('Form validation success')
+    else:
+        for error in form.errors:
+            print(error)
+
+Available validators:
+
+- `validators.GNDPersonEntity()`
+- `validators.GNDPlaceEntity()`
+- `validators.GNDOrgEntity()`
+- `validators.GNDValidator()`
+
+
