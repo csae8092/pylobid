@@ -6,6 +6,13 @@ from pylobid import utils
 from pylobid import pylobid as pl
 from .fixtures import *
 
+BADEN_ALT_NAMES = [
+    "Baden (Wienerwald)",
+    "Baden bei Wien",
+    "Stadtgemeinde Baden",
+    "Stadtgemeinde Baden bei Wien"
+]
+
 
 class TestUtilsFunctions(unittest.TestCase):
     """Tests for utils package."""
@@ -40,14 +47,10 @@ class TestPylobidPlace(unittest.TestCase):
 
     def test_003_check_alt_names(self):
         gnd_id = "https://d-nb.info/gnd/4004168-2"
-        alt_names = [
-            'Baden, Wienerwald',
-            'Baden bei Wien',
-            'Stadtgemeinde Baden',
-            'Stadtgemeinde Baden bei Wien'
-        ]
         pl_place = pl.PyLobidPlace(gnd_id, fetch_related=False)
-        self.assertEqual(pl_place.alt_names, alt_names, f"should be {alt_names}")
+        self.assertEqual(
+            pl_place.alt_names, BADEN_ALT_NAMES, f"should be {BADEN_ALT_NAMES}"
+        )
 
     def test_004_same_as(self):
         gnd_id = "https://d-nb.info/gnd/4004168-2"
@@ -71,14 +74,8 @@ class TestPylobidPlace(unittest.TestCase):
 
     def test_006_alt_name(self):
         gnd_id = "https://d-nb.info/gnd/4004168-2"
-        alt_names = [
-            "Baden, Wienerwald",
-            "Baden bei Wien",
-            "Stadtgemeinde Baden",
-            "Stadtgemeinde Baden bei Wien"
-        ]
         pl_place = pl.PyLobidPlace(gnd_id, fetch_related=False)
-        for item in alt_names:
+        for item in BADEN_ALT_NAMES:
             with self.subTest(alt_name=item):
                 self.assertTrue(item in pl_place.alt_names)
 
