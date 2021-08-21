@@ -7,7 +7,7 @@ Getting started
 
 .. code-block:: python
 
-    from pylobid.pylobid import PyLobClient
+    from pylobid.pylobid import PyLobidClient
     gnd_id = "http://d-nb.info/gnd/119315122"
     py_ent = PyLobidClient(gnd_id, fetch_related=True).factory()
     print(repr(py_ent))
