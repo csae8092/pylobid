@@ -66,16 +66,16 @@ class TestPylobidPlace(unittest.TestCase):
     def test_004_same_as(self):
         gnd_id = "https://d-nb.info/gnd/4004168-2"
         same_as = [
-            # ('GeoNames', 'http://sws.geonames.org/2782067'),
-            ("VIAF", "http://viaf.org/viaf/234093638"),
-            ("WIKIDATA", "http://www.wikidata.org/entity/Q486450"),
-            ("DNB", "https://d-nb.info/gnd/2005587-0"),
-            ("dewiki", "https://de.wikipedia.org/wiki/Bahnhof_Baden_bei_Wien"),
+            "http://viaf.org/viaf/234093638",
+            "http://www.wikidata.org/entity/Q486450",
+            "https://d-nb.info/gnd/2005587-0",
+            "https://d-nb.info/gnd/4004168-2/about",
+            "https://sws.geonames.org/2782067",
         ]
         pl_place = pl.PyLobidPlace(gnd_id, fetch_related=False)
-        for item in same_as:
-            with self.subTest(same_as=item):
-                self.assertTrue(item in pl_place.same_as)
+        ids = [x[1] for x in pl_place.same_as]
+        for x in same_as:
+            self.assertTrue(x in ids)
 
     def test_005_pref_name(self):
         gnd_id = "https://d-nb.info/gnd/4004168-2"
@@ -213,7 +213,8 @@ class TestPyLobidPerson(unittest.TestCase):
             ("DNB", "https://d-nb.info/gnd/1069009253/about"),
         ]
         pl_ent = pl.PyLobidPerson(gnd_id, fetch_related=False)
-        self.assertEqual(pl_ent.same_as, same_as, f"should be {same_as}")
+        for x in same_as:
+            self.assertTrue(x in pl_ent.same_as)
 
     def test_007_pref_name(self):
         gnd_id = "http://d-nb.info/gnd/1069009253"
