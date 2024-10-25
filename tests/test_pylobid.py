@@ -4,13 +4,24 @@
 import unittest
 from pylobid import utils
 from pylobid import pylobid as pl
-from .fixtures import *
+from tests.fixtures import (
+    TEST_STRINGS_WKT,
+    TEST_PLACE_IDS,
+    TEST_IDS_ARRAY,
+    TEST_URL_PARSER_ARRAY,
+    TEST_FACTORY,
+    TEST_IDS_DICT,
+    TEST_INVALID_URLS,
+    TEST_ORG_NAMES_LOCATIONS,
+    TEST_PERSON_DICTS,
+    TEST_UNKNOWN_IDS,
+)
 
 BADEN_ALT_NAMES = [
     "Baden (Wienerwald)",
     "Baden bei Wien",
     "Stadtgemeinde Baden",
-    "Stadtgemeinde Baden bei Wien"
+    "Stadtgemeinde Baden bei Wien",
 ]
 
 
@@ -41,7 +52,7 @@ class TestPylobidPlace(unittest.TestCase):
 
     def test_002_check_coords(self):
         gnd_id = "https://d-nb.info/gnd/4066009-6"
-        coords = ['+016.371690', '+048.208199']
+        coords = ["+016.371690", "+048.208199"]
         pl_place = pl.PyLobidPlace(gnd_id, fetch_related=False)
         self.assertEqual(pl_place.coords, coords, f"should be {coords}")
 
@@ -56,10 +67,10 @@ class TestPylobidPlace(unittest.TestCase):
         gnd_id = "https://d-nb.info/gnd/4004168-2"
         same_as = [
             # ('GeoNames', 'http://sws.geonames.org/2782067'),
-            ('VIAF', 'http://viaf.org/viaf/234093638'),
-            ('WIKIDATA', 'http://www.wikidata.org/entity/Q486450'),
-            ('DNB', 'https://d-nb.info/gnd/2005587-0'),
-            ('dewiki', 'https://de.wikipedia.org/wiki/Bahnhof_Baden_bei_Wien'),
+            ("VIAF", "http://viaf.org/viaf/234093638"),
+            ("WIKIDATA", "http://www.wikidata.org/entity/Q486450"),
+            ("DNB", "https://d-nb.info/gnd/2005587-0"),
+            ("dewiki", "https://de.wikipedia.org/wiki/Bahnhof_Baden_bei_Wien"),
         ]
         pl_place = pl.PyLobidPlace(gnd_id, fetch_related=False)
         for item in same_as:
@@ -68,7 +79,7 @@ class TestPylobidPlace(unittest.TestCase):
 
     def test_005_pref_name(self):
         gnd_id = "https://d-nb.info/gnd/4004168-2"
-        pref_name = 'Baden (Niederösterreich)'
+        pref_name = "Baden (Niederösterreich)"
         pl_place = pl.PyLobidPlace(gnd_id, fetch_related=False)
         self.assertEqual(pl_place.pref_name, pref_name, f"should be {pref_name}")
 
@@ -88,25 +99,31 @@ class TestPylobidClient(unittest.TestCase):
         for item in TEST_IDS_ARRAY:
             with self.subTest(gnd_str=item):
                 lobid_url = pl_client.get_entity_lobid_url(item)
-                self.assertEqual(lobid_url[0], 'h', "should be 'h'")
+                self.assertEqual(lobid_url[0], "h", "should be 'h'")
 
     def test_002_get_lobid_json(self):
         pl_client = pl.PyLobidClient()
         for item in TEST_IDS_ARRAY:
             with self.subTest(gnd_str=item):
                 lobid_json = pl_client.get_entity_json(item)
-                self.assertEqual(type(lobid_json), dict, f"{type(lobid_json)} should be a dict")
+                self.assertEqual(
+                    type(lobid_json), dict, f"{type(lobid_json)} should be a dict"
+                )
 
     def test_003_str(self):
         pl_client = pl.PyLobidClient()
-        self.assertEqual(pl_client.__str__(), pl_client.BASE_URL, f"should be {pl_client.BASE_URL}")
+        self.assertEqual(
+            pl_client.__str__(), pl_client.BASE_URL, f"should be {pl_client.BASE_URL}"
+        )
 
     def test_005_url_parser(self):
         for input_str, id_str in TEST_URL_PARSER_ARRAY:
             with self.subTest(input_str=input_str, id_str=id_str):
                 pl_client = pl.PyLobidClient(input_str)
                 gnd_url = f"{pl_client.BASE_URL}/{id_str}"
-                self.assertEqual(pl_client.gnd_url, gnd_url, f"gnd_url should be {gnd_url}")
+                self.assertEqual(
+                    pl_client.gnd_url, gnd_url, f"gnd_url should be {gnd_url}"
+                )
 
     def test_006_factory(self):
         for gnd_id, entity_type in TEST_FACTORY:
@@ -114,7 +131,7 @@ class TestPylobidClient(unittest.TestCase):
                 entity_client = pl.PyLobidClient(gnd_id).factory()
                 self.assertTrue(
                     getattr(entity_client, entity_type),
-                    f"Entity should be {entity_type}"
+                    f"Entity should be {entity_type}",
                 )
 
     def test_007_invalid_urls(self):
@@ -140,7 +157,7 @@ class TestPyLobidPerson(unittest.TestCase):
                 self.assertEqual(
                     type(pl_ent.ent_type),
                     list,
-                    f"type of {pl_ent.ent_type} should be a list"
+                    f"type of {pl_ent.ent_type} should be a list",
                 )
 
     def test_001_str(self):
@@ -149,7 +166,7 @@ class TestPyLobidPerson(unittest.TestCase):
         self.assertEqual(pl_ent.__str__(), lobid_url, f"should be {lobid_url}")
 
     def test_002_is_person(self):
-        for item in TEST_IDS_DICT['persons']:
+        for item in TEST_IDS_DICT["persons"]:
             with self.subTest(gnd_id=item):
                 pl_ent = pl.PyLobidPerson(item)
                 self.assertTrue(pl_ent.is_person)
@@ -160,45 +177,47 @@ class TestPyLobidPerson(unittest.TestCase):
                 pl_ent = pl.PyLobidPerson(item)
                 if pl_ent.is_person:
                     ent_dict = pl_ent.ent_dict
-                    self.assertTrue('pylobid_born' in ent_dict.keys())
+                    self.assertTrue("pylobid_born" in ent_dict.keys())
 
     def test_004_born_died_keys(self):
         for item in TEST_PERSON_DICTS:
             with self.subTest(person=item):
-                pl_ent = pl.PyLobidPerson(item['id'], fetch_related=True)
+                pl_ent = pl.PyLobidPerson(item["id"], fetch_related=True)
                 self.assertEqual(
-                    pl_ent.ent_dict['pylobid_born'].get('id', ''),
-                    item['pylobid_born']['id'],
-                    f"should be: {item['pylobid_born']['id']}"
+                    pl_ent.ent_dict["pylobid_born"].get("id", ""),
+                    item["pylobid_born"]["id"],
+                    f"should be: {item['pylobid_born']['id']}",
                 )
                 self.assertEqual(
-                    pl_ent.ent_dict['pylobid_died'].get('id', ''),
-                    item['pylobid_died']['id'],
-                    f"should be: {item['pylobid_died']['id']}"
+                    pl_ent.ent_dict["pylobid_died"].get("id", ""),
+                    item["pylobid_died"]["id"],
+                    f"should be: {item['pylobid_died']['id']}",
                 )
 
     def test_005_lifespans(self):
         for item in TEST_PERSON_DICTS:
             with self.subTest(person=item):
-                pl_ent = pl.PyLobidPerson(item['id'])
+                pl_ent = pl.PyLobidPerson(item["id"])
                 lifespan = pl_ent.get_life_dates()
-                if 'life_span' in item.keys():
-                    self.assertEqual( lifespan, item['life_span'], f"should be {item['life_span']}")
+                if "life_span" in item.keys():
+                    self.assertEqual(
+                        lifespan, item["life_span"], f"should be {item['life_span']}"
+                    )
                 else:
                     self.assertEqual(type(lifespan), dict, "should be a dict")
 
     def test_006_same_as(self):
         gnd_id = "1069009253"
         same_as = [
-            ('VIAF', 'http://viaf.org/viaf/120106865'),
-            ('DNB', 'https://d-nb.info/gnd/1069009253/about')
+            ("VIAF", "http://viaf.org/viaf/120106865"),
+            ("DNB", "https://d-nb.info/gnd/1069009253/about"),
         ]
         pl_ent = pl.PyLobidPerson(gnd_id, fetch_related=False)
         self.assertEqual(pl_ent.same_as, same_as, f"should be {same_as}")
 
     def test_007_pref_name(self):
         gnd_id = "http://d-nb.info/gnd/1069009253"
-        pref_name = 'Assmann, Richard'
+        pref_name = "Assmann, Richard"
         pl_item = pl.PyLobidPerson(gnd_id, fetch_related=False)
         self.assertEqual(pl_item.pref_name, pref_name, f"should be {pref_name}")
 
@@ -209,18 +228,19 @@ class TestPylobidOrg(unittest.TestCase):
     def test_001_pref_name(self):
         for item in TEST_ORG_NAMES_LOCATIONS:
             with self.subTest(org=item):
-                pl_item = pl.PyLobidOrg(item['id'])
+                pl_item = pl.PyLobidOrg(item["id"])
                 self.assertEqual(
                     pl_item.pref_name,
-                    item['pref_name'], f"{pl_item.pref_name} should be {item['pref_name']}"
+                    item["pref_name"],
+                    f"{pl_item.pref_name} should be {item['pref_name']}",
                 )
 
     def test_002_located_in(self):
         for item in TEST_ORG_NAMES_LOCATIONS:
             with self.subTest(org=item):
-                pl_item = pl.PyLobidOrg(item['id'])
+                pl_item = pl.PyLobidOrg(item["id"])
                 self.assertEqual(
                     pl_item.located_in,
-                    item['located_in'],
-                    f"{pl_item.located_in} should be {item['located_in']}"
+                    item["located_in"],
+                    f"{pl_item.located_in} should be {item['located_in']}",
                 )

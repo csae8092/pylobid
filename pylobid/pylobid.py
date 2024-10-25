@@ -1,7 +1,7 @@
 import re
 import requests
 from jsonpath_ng import parse
-from . utils import extract_coords
+from .utils import extract_coords
 
 
 class GNDIdError(ValueError):
@@ -16,7 +16,7 @@ class GNDAPIError(Exception):
     """Broad exception if something unexpected happens."""
 
 
-class PyLobidClient():
+class PyLobidClient:
     """Main Class to interact with LOBID-API."""
 
     def factory(self):
@@ -31,9 +31,9 @@ class PyLobidClient():
         :rtype: `PyLobidPlace`, `PyLobidOrg`, `PyLobidPerson`, `PyLobidPerson`
         """
         if self.ent_dict == {}:
-            raise ValueError(f'No data found for {self.gnd_url}')
+            raise ValueError(f"No data found for {self.gnd_url}")
         if not self.ent_type:
-            raise ValueError(f'Unknown type for {self.gnd_url}')
+            raise ValueError(f"Unknown type for {self.gnd_url}")
         if self.is_person:
             output = PyLobidPerson(gnd_id=None, fetch_related=self.fetch_related)
             output.process_data(data=self.ent_dict)
@@ -60,22 +60,22 @@ class PyLobidClient():
     @property
     def is_place(self) -> bool:
         """Return True if this instance is a place entity, False otherwise."""
-        return 'PlaceOrGeographicName' in self.ent_type
+        return "PlaceOrGeographicName" in self.ent_type
 
     @property
     def is_org(self) -> bool:
         """Return True if this instance is an organization entity, False otherwise."""
-        return 'CorporateBody' in self.ent_type
+        return "CorporateBody" in self.ent_type
 
     @property
     def is_person(self) -> bool:
         """Return True if this instance is a person entity, False otherwise."""
-        return 'Person' in self.ent_type
+        return "Person" in self.ent_type
 
     @property
     def ent_type(self) -> list:
         """Return the entity type."""
-        return self.ent_dict.get('type', [])
+        return self.ent_dict.get("type", [])
 
     @property
     def same_as(self) -> list:
@@ -130,11 +130,13 @@ class PyLobidClient():
         :rtype: dict
         """
         url = self.gnd_url if url is None else self.get_entity_lobid_url(url)
-        response = requests.get(url, headers={'Accept': 'application/json'})
+        response = requests.get(url, headers={"Accept": "application/json"})
         if response.status_code == 404:
-            raise GNDNotFoundError(f'Could not find a GND Entity for ID "{self.gnd_id}"')
+            raise GNDNotFoundError(
+                f'Could not find a GND Entity for ID "{self.gnd_id}"'
+            )
         if not response.ok:
-            raise GNDAPIError(f'GND API error code: {response.status_code}')
+            raise GNDAPIError(f"GND API error code: {response.status_code}")
         return response.json()
 
     def get_same_as(self) -> list:
@@ -143,7 +145,10 @@ class PyLobidClient():
         :return: A list of tuples like ('GeoNames', 'http://sws.geonames.org/2782067'),
         :rtype: list
         """
-        return [(x['collection'].get('abbr', 'no_abbr'), x['id']) for x in self.ent_dict['sameAs']]
+        return [
+            (x["collection"].get("abbr", "no_abbr"), x["id"])
+            for x in self.ent_dict["sameAs"]
+        ]
 
     def get_pref_name(self) -> str:
         """Get the preferred name.
@@ -151,7 +156,7 @@ class PyLobidClient():
         :return: The preferred Name vale, e.g. 'Assmann, Richard'
         :rtype: str
         """
-        result = self.ent_dict.get('preferredName', '')
+        result = self.ent_dict.get("preferredName", "")
         return result
 
     def get_alt_names(self) -> list:
@@ -161,21 +166,24 @@ class PyLobidClient():
         :rtype: list
         """
         ent_dict = self.ent_dict
-        return next(iter([match.value for match in self.pref_alt_names_xpath.find(ent_dict)]), [])
+        return next(
+            iter([match.value for match in self.pref_alt_names_xpath.find(ent_dict)]),
+            [],
+        )
 
     def __str__(self) -> str:
         return self.BASE_URL
 
     def __repr__(self) -> str:
-        return f'<PyLobidClient {self.gnd_url}>'
+        return f"<PyLobidClient {self.gnd_url}>"
 
     def __init__(self, gnd_id: str = None, fetch_related: bool = False) -> None:
         """Class constructor."""
         self.BASE_URL = "http://lobid.org/gnd"
-        self.ID_PATTERN = r'([0-9]\w*-*[0-9]\w*)'
-        self.coords_xpath = parse('$..hasGeometry')
-        self.coords_regex = r'[+|-]\d+(?:\.\d*)?'
-        self.pref_alt_names_xpath = parse('$.variantName')
+        self.ID_PATTERN = r"([0-9]\w*-*[0-9]\w*)"
+        self.coords_xpath = parse("$..hasGeometry")
+        self.coords_regex = r"[+|-]\d+(?:\.\d*)?"
+        self.pref_alt_names_xpath = parse("$.variantName")
         self.fetch_related = fetch_related
         self.__gnd_id = None
         self.ent_dict = {}
@@ -192,9 +200,9 @@ class PyLobidClient():
         :type data: dict, optional
         """
         if data is not None and gnd_id is not None:
-            raise ValueError('gnd_id and data mutually exclusive parameters')
-        if data is not None and 'id' in data:
-            _ = self.get_entity_lobid_url(data.get('id'))
+            raise ValueError("gnd_id and data mutually exclusive parameters")
+        if data is not None and "id" in data:
+            _ = self.get_entity_lobid_url(data.get("id"))
             self.ent_dict = data
         elif gnd_id is not None:
             _ = self.get_entity_lobid_url(gnd_id)
@@ -210,7 +218,9 @@ class PyLobidPlace(PyLobidClient):
         :return: A string containing coordinates
         :rtype: str
         """
-        coords_str = f"{[match.value for match in self.coords_xpath.find(self.ent_dict)]}"
+        coords_str = (
+            f"{[match.value for match in self.coords_xpath.find(self.ent_dict)]}"
+        )
         return coords_str
 
     def get_coords(self) -> list:
@@ -228,7 +238,7 @@ class PyLobidPlace(PyLobidClient):
         return self.get_coords()
 
     def __repr__(self) -> str:
-        return f'<PyLobidPlace {self.gnd_url}>'
+        return f"<PyLobidPlace {self.gnd_url}>"
 
 
 class PyLobidOrg(PyLobidClient):
@@ -237,10 +247,10 @@ class PyLobidOrg(PyLobidClient):
     @property
     def located_in(self) -> list:
         """Return a list of locations."""
-        return self.ent_dict.get('placeOfBusiness', [])
+        return self.ent_dict.get("placeOfBusiness", [])
 
     def __repr__(self) -> str:
-        return f'<PyLobidOrg {self.gnd_url}>'
+        return f"<PyLobidOrg {self.gnd_url}>"
 
 
 class PyLobidPerson(PyLobidClient):
@@ -253,11 +263,11 @@ class PyLobidPerson(PyLobidClient):
         :rtype: dict
         """
         return {
-            "birth_date_str": next(iter(self.ent_dict.get('dateOfBirth', [])), ''),
-            "death_date_str": next(iter(self.ent_dict.get('dateOfDeath', [])), '')
+            "birth_date_str": next(iter(self.ent_dict.get("dateOfBirth", [])), ""),
+            "death_date_str": next(iter(self.ent_dict.get("dateOfDeath", [])), ""),
         }
 
-    def place_of_values(self, place_of: str = 'Birth') -> dict:
+    def place_of_values(self, place_of: str = "Birth") -> dict:
         """Find values for PlaceOfBirth/Death.
 
         :param place_of: Passed in value concatenates to 'PlaceOfBirth|Death' \
@@ -271,7 +281,7 @@ class PyLobidPerson(PyLobidClient):
         result = self.ent_dict.get(value, False)
         return result[0] if isinstance(result, list) else {}
 
-    def place_of_dict(self, place_of: str = 'Birth') -> dict:
+    def place_of_dict(self, place_of: str = "Birth") -> dict:
         """Get the LOBID-JSON of a PlaceOfBirth|Death (if present).
 
         :param place_of: Passed in value concatenates to 'PlaceOfBirth|Death' \
@@ -281,10 +291,10 @@ class PyLobidPerson(PyLobidClient):
         :return: The LOBID-JSON of the PlaceOfBirth|Death
         :rtype: dict
         """
-        place_id = self.place_of_values(place_of).get('id')
+        place_id = self.place_of_values(place_of).get("id")
         return {} if place_id is None else PyLobidPlace(place_id).ent_dict
 
-    def get_coords_str(self, place_of: str = 'Birth') -> str:
+    def get_coords_str(self, place_of: str = "Birth") -> str:
         """Get a string of coordinates.
 
         :param place_of: Passed in value concatenates to 'PlaceOfBirth|Death' \
@@ -299,7 +309,7 @@ class PyLobidPerson(PyLobidClient):
         coords_str = f"{[match.value for match in self.coords_xpath.find(ent_dict)]}"
         return coords_str
 
-    def get_coords(self, place_of: str = 'Birth') -> list:
+    def get_coords(self, place_of: str = "Birth") -> list:
         """Get a list of coordinates.
 
         :param place_of: Passed in value concatenates to 'PlaceOfBirth|Death' \
@@ -312,7 +322,7 @@ class PyLobidPerson(PyLobidClient):
         coords_str = self.get_coords_str(place_of=place_of)
         return extract_coords(coords_str)
 
-    def get_place_alt_name(self, place_of: str = 'Birth') -> list:
+    def get_place_alt_name(self, place_of: str = "Birth") -> list:
         """Get the list of alternative names.
 
         :param place_of: Passed in value concatenates to 'PlaceOfBirth|Death' \
@@ -324,13 +334,16 @@ class PyLobidPerson(PyLobidClient):
         """
         place_of_key = "pylobid_born" if place_of == "Birth" else "pylobid_died"
         ent_dict = self.ent_dict.get(place_of_key, {})
-        return next(iter([match.value for match in self.pref_alt_names_xpath.find(ent_dict)]), [])
+        return next(
+            iter([match.value for match in self.pref_alt_names_xpath.find(ent_dict)]),
+            [],
+        )
 
     def __str__(self) -> str:
         return self.gnd_url
 
     def __repr__(self) -> str:
-        return f'<PyLobidPerson {self.gnd_url}>'
+        return f"<PyLobidPerson {self.gnd_url}>"
 
     def process_data(self, gnd_id: str = None, data: dict = None) -> None:
         """Fetch and/or process entity data.
@@ -347,26 +360,28 @@ class PyLobidPerson(PyLobidClient):
             return
         if self.is_person:
             self.ent_dict.update(pylobid_born={}, pylobid_died={})
-        self.pref_name_xpath = parse('$.preferredName')
+        self.pref_name_xpath = parse("$.preferredName")
         if self.fetch_related and self.is_person:
-            self.ent_dict['pylobid_born'] = self.place_of_dict()
-            if self.place_of_values().get('id', '') == self.place_of_values(place_of="Death").get('id', ''):
-                self.ent_dict['pylobid_died'] = self.ent_dict['pylobid_born']
+            self.ent_dict["pylobid_born"] = self.place_of_dict()
+            if self.place_of_values().get("id", "") == self.place_of_values(
+                place_of="Death"
+            ).get("id", ""):
+                self.ent_dict["pylobid_died"] = self.ent_dict["pylobid_born"]
             else:
-                self.ent_dict['pylobid_died'] = self.place_of_dict(place_of='Death')
+                self.ent_dict["pylobid_died"] = self.place_of_dict(place_of="Death")
 
         self.birth_place = {
-            'person_id': self.gnd_id,
-            'name': self.place_of_values().get('label', ''),
-            'id': self.place_of_values().get('id', ''),
-            'coords': self.get_coords(),
-            'alt_names': self.get_place_alt_name()
+            "person_id": self.gnd_id,
+            "name": self.place_of_values().get("label", ""),
+            "id": self.place_of_values().get("id", ""),
+            "coords": self.get_coords(),
+            "alt_names": self.get_place_alt_name(),
         }
         self.death_place = {
-            'person_id': self.gnd_id,
-            'name': self.place_of_values(place_of='Death').get('label', ''),
-            'id': self.place_of_values(place_of='Death').get('id', ''),
-            'coords': self.get_coords(place_of='Death'),
-            'alt_names': self.get_place_alt_name(place_of='Death')
+            "person_id": self.gnd_id,
+            "name": self.place_of_values(place_of="Death").get("label", ""),
+            "id": self.place_of_values(place_of="Death").get("id", ""),
+            "coords": self.get_coords(place_of="Death"),
+            "alt_names": self.get_place_alt_name(place_of="Death"),
         }
         self.life_span = self.get_life_dates()

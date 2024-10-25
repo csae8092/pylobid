@@ -2,7 +2,14 @@
 """Tests for `pylobid_validators` package."""
 
 import unittest
-from .fixtures import *
+from tests.fixtures import (
+    TEST_PLACE_IDS,
+    TEST_ORG_IDS,
+    TEST_UNKNOWN_IDS,
+    TEST_PERSON_IDS,
+    TEST_INVALID_URLS,
+    TEST_FACTORY
+)
 
 try:
     import wtforms
@@ -17,19 +24,19 @@ class TestPylobidValidators(unittest.TestCase):
 
     def setUp(self) -> None:
         if not wtforms:
-            self.skipTest('wtforms not installed')
+            self.skipTest("wtforms not installed")
 
         class GNDPersonForm(wtforms.Form):
-            gnd_str = wtforms.StringField('GND Id', [validators.GNDPersonEntity()])
+            gnd_str = wtforms.StringField("GND Id", [validators.GNDPersonEntity()])
 
         class GNDPlaceForm(wtforms.Form):
-            gnd_str = wtforms.StringField('GND Id', [validators.GNDPlaceEntity()])
+            gnd_str = wtforms.StringField("GND Id", [validators.GNDPlaceEntity()])
 
         class GNDOrgForm(wtforms.Form):
-            gnd_str = wtforms.StringField('GND Id', [validators.GNDOrgEntity()])
+            gnd_str = wtforms.StringField("GND Id", [validators.GNDOrgEntity()])
 
         class GNDForm(wtforms.Form):
-            gnd_str = wtforms.StringField('GND Id', [validators.GNDValidator()])
+            gnd_str = wtforms.StringField("GND Id", [validators.GNDValidator()])
 
         self.GNDPersonForm = GNDPersonForm
         self.GNDPlaceForm = GNDPlaceForm
@@ -60,8 +67,10 @@ class TestPylobidValidators(unittest.TestCase):
     def test_004_field_types(self):
         for field in [wtforms.StringField, wtforms.URLField]:
             with self.subTest(field=field):
+
                 class Form(wtforms.Form):
-                    gnd_str = field('GND Id', [validators.GNDPlaceEntity()])
+                    gnd_str = field("GND Id", [validators.GNDPlaceEntity()])
+
                 for gnd_str, is_valid in TEST_PLACE_IDS:
                     with self.subTest(gnd_str=gnd_str):
                         form = Form()
