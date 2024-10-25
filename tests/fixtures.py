@@ -159,7 +159,7 @@ TEST_ORG_NAMES_LOCATIONS = [
     },
     {
         "id": "http://d-nb.info/gnd/2168247-1",
-        "pref_name": "Carl Gerold’s Sohn Verlagsbuchhandlung",
+        "pref_name": "Carl Gerold's Sohn Verlagsbuchhandlung",
         "located_in": [{"id": "https://d-nb.info/gnd/4066009-6", "label": "Wien"}],
     },
     {
