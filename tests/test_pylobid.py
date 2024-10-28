@@ -15,6 +15,7 @@ from tests.fixtures import (
     TEST_ORG_NAMES_LOCATIONS,
     TEST_PERSON_DICTS,
     TEST_UNKNOWN_IDS,
+    TEST_WORK_FIXTURES,
 )
 
 BADEN_ALT_NAMES = [
@@ -224,7 +225,7 @@ class TestPyLobidPerson(unittest.TestCase):
 
 
 class TestPylobidOrg(unittest.TestCase):
-    """Tests for `pylobid` package."""
+    """Tests for `pylobid.TestPylobidOrg`"""
 
     def test_001_pref_name(self):
         for item in TEST_ORG_NAMES_LOCATIONS:
@@ -245,3 +246,14 @@ class TestPylobidOrg(unittest.TestCase):
                     item["located_in"],
                     f"{pl_item.located_in} should be {item['located_in']}",
                 )
+
+
+class TestPylobidWork(unittest.TestCase):
+    """Tests for `pylobid.TestPylobidWork`"""
+
+    def test_001_works(self):
+        for x in TEST_WORK_FIXTURES:
+            pl_ent = pl.PyLobidClient(x[0])
+            item = pl_ent.factory()
+            self.assertEqual(item.date_of_creation, x[1])
+            self.assertEqual(item.creators, x[2])
