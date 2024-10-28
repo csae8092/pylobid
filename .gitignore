@@ -107,3 +107,5 @@ env/
 # IDE settings
 .vscode/
 *.ipynb
+
+docs/README.md
