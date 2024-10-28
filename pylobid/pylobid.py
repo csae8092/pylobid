@@ -273,7 +273,7 @@ class PyLobidWork(PyLobidClient):
             list: _description_
         """
         creators = []
-        for y in ["author", "firstComposer", "librettist"]:
+        for y in ["firstAuthor", "author", "firstComposer", "librettist"]:
             for x in self.ent_dict.get(y, []):
                 x["role"] = y
                 creators.append(x)
