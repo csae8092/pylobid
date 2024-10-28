@@ -1,12 +1,10 @@
 """WTForms GND validator module."""
+
 from typing import Union
 import wtforms
 from pylobid import pylobid
 
-GNDWTFormsFields = Union[
-    wtforms.fields.StringField,
-    wtforms.fields.URLField
-]
+GNDWTFormsFields = Union[wtforms.fields.StringField, wtforms.fields.URLField]
 
 
 class GNDValidator:
@@ -31,14 +29,19 @@ class GNDValidator:
         try:
             gnd_entity = pylobid.PyLobidClient(field.data).factory()
         except pylobid.GNDIdError as error:
-            raise wtforms.validators.ValidationError(f'{field.data} is not a valid GND Id/URL') \
-                from error
+            raise wtforms.validators.ValidationError(
+                f"{field.data} is not a valid GND Id/URL"
+            ) from error
         except pylobid.GNDNotFoundError as error:
             raise wtforms.validators.ValidationError(error) from error
         if not gnd_entity.ent_type:
-            raise wtforms.validators.ValidationError(f'Unknown GND type for {gnd_entity.gnd_url}')
-        if self.entity_flag is not None and not getattr(gnd_entity, self.entity_flag, False):
-            self.message = f'Entity type {gnd_entity.ent_type}'
+            raise wtforms.validators.ValidationError(
+                f"Unknown GND type for {gnd_entity.gnd_url}"
+            )
+        if self.entity_flag is not None and not getattr(
+            gnd_entity, self.entity_flag, False
+        ):
+            self.message = f"Entity type {gnd_entity.ent_type}"
             raise wtforms.validators.ValidationError(self.message)
 
 
@@ -51,8 +54,8 @@ class GNDPlaceEntity(GNDValidator):
 
     def __init__(self, message: str = None) -> None:
         """Class constructor."""
-        super().__init__(entity_flag='is_place')
-        self.message = message or 'The provided GND ID is not a place entity'
+        super().__init__(entity_flag="is_place")
+        self.message = message or "The provided GND ID is not a place entity"
 
 
 class GNDPersonEntity(GNDValidator):
@@ -64,8 +67,8 @@ class GNDPersonEntity(GNDValidator):
 
     def __init__(self, message: str = None) -> None:
         """Class constructor."""
-        super().__init__(entity_flag='is_person')
-        self.message = message or 'The provided GND ID is not a person entity'
+        super().__init__(entity_flag="is_person")
+        self.message = message or "The provided GND ID is not a person entity"
 
 
 class GNDOrgEntity(GNDValidator):
@@ -77,6 +80,5 @@ class GNDOrgEntity(GNDValidator):
 
     def __init__(self, message: str = None) -> None:
         """Class constructor."""
-        super().__init__(entity_flag='is_org', message=message)
-        self.message = message or 'The provided GND ID is not an organization entity'
-
+        super().__init__(entity_flag="is_org", message=message)
+        self.message = message or "The provided GND ID is not an organization entity"

@@ -1,0 +1,10 @@
+site_name: pylobid
+
+theme: readthedocs
+
+plugins:
+  - mkdocstrings
+
+nav:
+- Home: README.md
+- API-Documentation: reference.md

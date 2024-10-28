@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pylobid"
+version = "2.0.0"
+description = "A lobid-REST-API client"
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [
+    { name = "Peter Andorfer", email = "p.andorfer@gmail.com" },
+    { name = "Christian Lölkes", email = "christian.loelkes@gmail.com" },
+]
+requires-python = ">=3.6"
+keywords = ["lobid"]
+dependencies = ['requests>=2.32.3,<3', "jsonpath-ng>=1.7.0,<2"]
+
+[project.urls]
+Repository = "https://github.com/csae8092/pylobid"
+
+[tool.setuptools]
+packages = ["pylobid",]
