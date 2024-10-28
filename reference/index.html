@@ -1,0 +1,2358 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>API-Documentation - pylobid</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../assets/_mkdocstrings.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "API-Documentation";
+        var mkdocs_page_input_path = "reference.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> pylobid
+        </a>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">API-Documentation</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#pylobid">pylobid</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#pylobid.pylobid">pylobid</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#pylobid.pylobid.GNDAPIError">GNDAPIError</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#pylobid.pylobid.GNDIdError">GNDIdError</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#pylobid.pylobid.GNDNotFoundError">GNDNotFoundError</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#pylobid.pylobid.PyLobidClient">PyLobidClient</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#pylobid.pylobid.PyLobidClient.alt_names">alt_names</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#pylobid.pylobid.PyLobidClient.ent_type">ent_type</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#pylobid.pylobid.PyLobidClient.gnd_id">gnd_id</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#pylobid.pylobid.PyLobidClient.gnd_url">gnd_url</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#pylobid.pylobid.PyLobidClient.is_org">is_org</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#pylobid.pylobid.PyLobidClient.is_person">is_person</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#pylobid.pylobid.PyLobidClient.is_place">is_place</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#pylobid.pylobid.PyLobidClient.pref_name">pref_name</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#pylobid.pylobid.PyLobidClient.same_as">same_as</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#pylobid.pylobid.PyLobidClient.__init__">__init__</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#pylobid.pylobid.PyLobidClient.extract_id">extract_id</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#pylobid.pylobid.PyLobidClient.factory">factory</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#pylobid.pylobid.PyLobidClient.get_alt_names">get_alt_names</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#pylobid.pylobid.PyLobidClient.get_entity_json">get_entity_json</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#pylobid.pylobid.PyLobidClient.get_entity_lobid_url">get_entity_lobid_url</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#pylobid.pylobid.PyLobidClient.get_pref_name">get_pref_name</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#pylobid.pylobid.PyLobidClient.get_same_as">get_same_as</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#pylobid.pylobid.PyLobidClient.process_data">process_data</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#pylobid.pylobid.PyLobidOrg">PyLobidOrg</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#pylobid.pylobid.PyLobidOrg.located_in">located_in</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#pylobid.pylobid.PyLobidPerson">PyLobidPerson</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#pylobid.pylobid.PyLobidPerson.get_coords">get_coords</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#pylobid.pylobid.PyLobidPerson.get_coords_str">get_coords_str</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#pylobid.pylobid.PyLobidPerson.get_life_dates">get_life_dates</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#pylobid.pylobid.PyLobidPerson.get_place_alt_name">get_place_alt_name</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#pylobid.pylobid.PyLobidPerson.place_of_dict">place_of_dict</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#pylobid.pylobid.PyLobidPerson.place_of_values">place_of_values</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#pylobid.pylobid.PyLobidPerson.process_data">process_data</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#pylobid.pylobid.PyLobidPlace">PyLobidPlace</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#pylobid.pylobid.PyLobidPlace.coords">coords</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#pylobid.pylobid.PyLobidPlace.get_coords">get_coords</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#pylobid.pylobid.PyLobidPlace.get_coords_str">get_coords_str</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#pylobidutils">pylobid.utils</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#pylobid.utils">utils</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#pylobid.utils.extract_coords">extract_coords</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#pylobidvalidators">pylobid.validators</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#pylobid.validators">validators</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#pylobid.validators.GNDOrgEntity">GNDOrgEntity</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#pylobid.validators.GNDOrgEntity.__init__">__init__</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#pylobid.validators.GNDPersonEntity">GNDPersonEntity</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#pylobid.validators.GNDPersonEntity.__init__">__init__</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#pylobid.validators.GNDPlaceEntity">GNDPlaceEntity</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#pylobid.validators.GNDPlaceEntity.__init__">__init__</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#pylobid.validators.GNDValidator">GNDValidator</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#pylobid.validators.GNDValidator.__call__">__call__</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#pylobid.validators.GNDValidator.__init__">__init__</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">pylobid</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">API-Documentation</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="api-documentation">API Documentation</h1>
+<p>This part of the project documentation focuses on
+an <strong>information-oriented</strong> approach. Use it as a
+reference for the technical implementation of the
+<code>pylobid</code> project code.</p>
+<h2 id="pylobid">pylobid</h2>
+<p>main module
+</p>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<a id="pylobid.pylobid"></a>
+    <div class="doc doc-contents first">
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="pylobid.pylobid.GNDAPIError" class="doc doc-heading">
+            <code>GNDAPIError</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code>Exception</code></p>
+
+
+        <p>Broad exception if something unexpected happens.</p>
+
+
+
+
+
+
+              <details class="quote">
+                <summary>Source code in <code>pylobid/pylobid.py</code></summary>
+                <pre class="highlight"><code class="language-python">class GNDAPIError(Exception):
+    """Broad exception if something unexpected happens."""</code></pre>
+              </details>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="pylobid.pylobid.GNDIdError" class="doc doc-heading">
+            <code>GNDIdError</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code>ValueError</code></p>
+
+
+        <p>Exception raised if the GND-ID is invalid.</p>
+
+
+
+
+
+
+              <details class="quote">
+                <summary>Source code in <code>pylobid/pylobid.py</code></summary>
+                <pre class="highlight"><code class="language-python">class GNDIdError(ValueError):
+    """Exception raised if the GND-ID is invalid."""</code></pre>
+              </details>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="pylobid.pylobid.GNDNotFoundError" class="doc doc-heading">
+            <code>GNDNotFoundError</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code>Exception</code></p>
+
+
+        <p>Exception raised if the API returns Not Found for a GND-ID.</p>
+
+
+
+
+
+
+              <details class="quote">
+                <summary>Source code in <code>pylobid/pylobid.py</code></summary>
+                <pre class="highlight"><code class="language-python">class GNDNotFoundError(Exception):
+    """Exception raised if the API returns Not Found for a GND-ID."""</code></pre>
+              </details>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="pylobid.pylobid.PyLobidClient" class="doc doc-heading">
+            <code>PyLobidClient</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+
+        <p>Main Class to interact with LOBID-API.</p>
+
+
+
+
+
+
+              <details class="quote">
+                <summary>Source code in <code>pylobid/pylobid.py</code></summary>
+                <pre class="highlight"><code class="language-python">class PyLobidClient:
+    """Main Class to interact with LOBID-API."""
+
+    def factory(self):
+        """Return a matching instance for the GND URL or ID.
+
+        - Type `PlaceOrGeographicName` returns a `PyLobidPlace` instance.
+        - Type `CorporateBody` returns a `PyLobidOrg` instance.
+        - Type `Person` returns a `PyLobidPerson` instance.
+        - All other types a `PyLobidPerson` instance
+
+        :return: An matching object for the GND URL or Id
+        :rtype: `PyLobidPlace`, `PyLobidOrg`, `PyLobidPerson`, `PyLobidPerson`
+        """
+        if self.ent_dict == {}:
+            raise ValueError(f"No data found for {self.gnd_url}")
+        if not self.ent_type:
+            raise ValueError(f"Unknown type for {self.gnd_url}")
+        if self.is_person:
+            output = PyLobidPerson(gnd_id=None, fetch_related=self.fetch_related)
+            output.process_data(data=self.ent_dict)
+        elif self.is_org:
+            output = PyLobidOrg(gnd_id=None)
+            output.process_data(data=self.ent_dict)
+        elif self.is_place:
+            output = PyLobidPlace(gnd_id=None)
+            output.process_data(data=self.ent_dict)
+        else:
+            return self
+        return output
+
+    @property
+    def gnd_id(self) -&gt; str:
+        """Return the GND ID, e.g. 118650130."""
+        return self.__gnd_id
+
+    @property
+    def gnd_url(self) -&gt; str:
+        """Return the GND URL e.g. http://d-nb.info/gnd/118650130"""
+        return f"{self.BASE_URL}/{self.gnd_id}" if self.gnd_id is not None else False
+
+    @property
+    def is_place(self) -&gt; bool:
+        """Return True if this instance is a place entity, False otherwise."""
+        return "PlaceOrGeographicName" in self.ent_type
+
+    @property
+    def is_org(self) -&gt; bool:
+        """Return True if this instance is an organization entity, False otherwise."""
+        return "CorporateBody" in self.ent_type
+
+    @property
+    def is_person(self) -&gt; bool:
+        """Return True if this instance is a person entity, False otherwise."""
+        return "Person" in self.ent_type
+
+    @property
+    def ent_type(self) -&gt; list:
+        """Return the entity type."""
+        return self.ent_dict.get("type", [])
+
+    @property
+    def same_as(self) -&gt; list:
+        """Return a list of alternative norm-data-ids."""
+        return self.get_same_as()
+
+    @property
+    def alt_names(self) -&gt; list:
+        """Return a list of alternative names."""
+        return self.get_alt_names()
+
+    @property
+    def pref_name(self) -&gt; str:
+        """Return the preferred name."""
+        return self.get_pref_name()
+
+    def extract_id(self, url: str) -&gt; str:
+        """Extract the GND-ID from an GND-URL.
+
+        :param url: A GND-URL, e.g. http://d-nb.info/gnd/118650130
+        :type url: str
+
+        :raises: GNDIdError if no GND-ID is found.
+        :return: The GND-ID, e.g. 118650130
+        :rtype: str
+        """
+        gnd_id = re.search(self.ID_PATTERN, url)
+        if gnd_id is None:
+            raise GNDIdError(f'Could not find GND-ID in "{url}"')
+        return gnd_id.group()
+
+    def get_entity_lobid_url(self, url: str) -&gt; str:
+        """creates a lobid-entity URL from an GND-URL
+
+        :param url: A GND-URL, e.g. http://d-nb.info/gnd/118650130
+        :type url: str
+
+        :return: A LOBID-ENTITY-URL, e.g. http://lobid.org/gnd/116000562
+        :rtype: str
+        """
+        self.__gnd_id = self.extract_id(url)
+        return self.gnd_url
+
+    def get_entity_json(self, url: str = None) -&gt; dict:
+        """Get the LOBID-JSON response of a given GND-URL.
+
+        :param url: A GND_URL
+        :type url: str, optional
+
+        :raises: GNDNotFoundError, GNDAPIError
+        :return: The matching JSON representation fetched from LOBID
+        :rtype: dict
+        """
+        url = self.gnd_url if url is None else self.get_entity_lobid_url(url)
+        response = requests.get(url, headers={"Accept": "application/json"})
+        if response.status_code == 404:
+            raise GNDNotFoundError(
+                f'Could not find a GND Entity for ID "{self.gnd_id}"'
+            )
+        if not response.ok:
+            raise GNDAPIError(f"GND API error code: {response.status_code}")
+        return response.json()
+
+    def get_same_as(self) -&gt; list:
+        """Get the list of alternative norm-data-ids.
+
+        :return: A list of tuples like ('GeoNames', 'http://sws.geonames.org/2782067'),
+        :rtype: list
+        """
+        return [
+            (x["collection"].get("abbr", "no_abbr"), x["id"])
+            for x in self.ent_dict["sameAs"]
+        ]
+
+    def get_pref_name(self) -&gt; str:
+        """Get the preferred name.
+
+        :return: The preferred Name vale, e.g. 'Assmann, Richard'
+        :rtype: str
+        """
+        result = self.ent_dict.get("preferredName", "")
+        return result
+
+    def get_alt_names(self) -&gt; list:
+        """Get the list of alternative names.
+
+        :return: a list of alternative names
+        :rtype: list
+        """
+        ent_dict = self.ent_dict
+        return next(
+            iter([match.value for match in self.pref_alt_names_xpath.find(ent_dict)]),
+            [],
+        )
+
+    def __str__(self) -&gt; str:
+        return self.BASE_URL
+
+    def __repr__(self) -&gt; str:
+        return f"&lt;PyLobidClient {self.gnd_url}&gt;"
+
+    def __init__(self, gnd_id: str = None, fetch_related: bool = False) -&gt; None:
+        """Class constructor."""
+        self.BASE_URL = "http://lobid.org/gnd"
+        self.ID_PATTERN = r"([0-9]\w*-*[0-9]\w*)"
+        self.coords_xpath = parse("$..hasGeometry")
+        self.coords_regex = r"[+|-]\d+(?:\.\d*)?"
+        self.pref_alt_names_xpath = parse("$.variantName")
+        self.fetch_related = fetch_related
+        self.__gnd_id = None
+        self.ent_dict = {}
+        self.process_data(gnd_id=gnd_id)
+
+    def process_data(self, gnd_id: str = None, data: dict = None) -&gt; None:
+        """Fetch and/or process entity data.
+
+        The arguments `gnd_id` and `data` are mutually exclusive.
+
+        :param gnd_id: any kind of GND_URI/URL
+        :type gnd_id: str, optional
+        :param data: an already fetched ent_dict
+        :type data: dict, optional
+        """
+        if data is not None and gnd_id is not None:
+            raise ValueError("gnd_id and data mutually exclusive parameters")
+        if data is not None and "id" in data:
+            _ = self.get_entity_lobid_url(data.get("id"))
+            self.ent_dict = data
+        elif gnd_id is not None:
+            _ = self.get_entity_lobid_url(gnd_id)
+            self.ent_dict = self.get_entity_json()</code></pre>
+              </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="pylobid.pylobid.PyLobidClient.alt_names" class="doc doc-heading">
+            <code class="highlight language-python">alt_names: list</code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Return a list of alternative names.</p>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="pylobid.pylobid.PyLobidClient.ent_type" class="doc doc-heading">
+            <code class="highlight language-python">ent_type: list</code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Return the entity type.</p>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="pylobid.pylobid.PyLobidClient.gnd_id" class="doc doc-heading">
+            <code class="highlight language-python">gnd_id: str</code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Return the GND ID, e.g. 118650130.</p>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="pylobid.pylobid.PyLobidClient.gnd_url" class="doc doc-heading">
+            <code class="highlight language-python">gnd_url: str</code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Return the GND URL e.g. http://d-nb.info/gnd/118650130</p>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="pylobid.pylobid.PyLobidClient.is_org" class="doc doc-heading">
+            <code class="highlight language-python">is_org: bool</code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Return True if this instance is an organization entity, False otherwise.</p>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="pylobid.pylobid.PyLobidClient.is_person" class="doc doc-heading">
+            <code class="highlight language-python">is_person: bool</code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Return True if this instance is a person entity, False otherwise.</p>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="pylobid.pylobid.PyLobidClient.is_place" class="doc doc-heading">
+            <code class="highlight language-python">is_place: bool</code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Return True if this instance is a place entity, False otherwise.</p>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="pylobid.pylobid.PyLobidClient.pref_name" class="doc doc-heading">
+            <code class="highlight language-python">pref_name: str</code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Return the preferred name.</p>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="pylobid.pylobid.PyLobidClient.same_as" class="doc doc-heading">
+            <code class="highlight language-python">same_as: list</code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Return a list of alternative norm-data-ids.</p>
+    </div>
+
+</div>
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="pylobid.pylobid.PyLobidClient.__init__" class="doc doc-heading">
+            <code class="highlight language-python">__init__(gnd_id=None, fetch_related=False)</code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Class constructor.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>pylobid/pylobid.py</code></summary>
+              <pre class="highlight"><code class="language-python">def __init__(self, gnd_id: str = None, fetch_related: bool = False) -&gt; None:
+    """Class constructor."""
+    self.BASE_URL = "http://lobid.org/gnd"
+    self.ID_PATTERN = r"([0-9]\w*-*[0-9]\w*)"
+    self.coords_xpath = parse("$..hasGeometry")
+    self.coords_regex = r"[+|-]\d+(?:\.\d*)?"
+    self.pref_alt_names_xpath = parse("$.variantName")
+    self.fetch_related = fetch_related
+    self.__gnd_id = None
+    self.ent_dict = {}
+    self.process_data(gnd_id=gnd_id)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="pylobid.pylobid.PyLobidClient.extract_id" class="doc doc-heading">
+            <code class="highlight language-python">extract_id(url)</code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Extract the GND-ID from an GND-URL.</p>
+<p>:param url: A GND-URL, e.g. http://d-nb.info/gnd/118650130
+:type url: str</p>
+<p>:raises: GNDIdError if no GND-ID is found.
+:return: The GND-ID, e.g. 118650130
+:rtype: str</p>
+
+            <details class="quote">
+              <summary>Source code in <code>pylobid/pylobid.py</code></summary>
+              <pre class="highlight"><code class="language-python">def extract_id(self, url: str) -&gt; str:
+    """Extract the GND-ID from an GND-URL.
+
+    :param url: A GND-URL, e.g. http://d-nb.info/gnd/118650130
+    :type url: str
+
+    :raises: GNDIdError if no GND-ID is found.
+    :return: The GND-ID, e.g. 118650130
+    :rtype: str
+    """
+    gnd_id = re.search(self.ID_PATTERN, url)
+    if gnd_id is None:
+        raise GNDIdError(f'Could not find GND-ID in "{url}"')
+    return gnd_id.group()</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="pylobid.pylobid.PyLobidClient.factory" class="doc doc-heading">
+            <code class="highlight language-python">factory()</code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Return a matching instance for the GND URL or ID.</p>
+<ul>
+<li>Type <code>PlaceOrGeographicName</code> returns a <code>PyLobidPlace</code> instance.</li>
+<li>Type <code>CorporateBody</code> returns a <code>PyLobidOrg</code> instance.</li>
+<li>Type <code>Person</code> returns a <code>PyLobidPerson</code> instance.</li>
+<li>All other types a <code>PyLobidPerson</code> instance</li>
+</ul>
+<p>:return: An matching object for the GND URL or Id
+:rtype: <code>PyLobidPlace</code>, <code>PyLobidOrg</code>, <code>PyLobidPerson</code>, <code>PyLobidPerson</code></p>
+
+            <details class="quote">
+              <summary>Source code in <code>pylobid/pylobid.py</code></summary>
+              <pre class="highlight"><code class="language-python">def factory(self):
+    """Return a matching instance for the GND URL or ID.
+
+    - Type `PlaceOrGeographicName` returns a `PyLobidPlace` instance.
+    - Type `CorporateBody` returns a `PyLobidOrg` instance.
+    - Type `Person` returns a `PyLobidPerson` instance.
+    - All other types a `PyLobidPerson` instance
+
+    :return: An matching object for the GND URL or Id
+    :rtype: `PyLobidPlace`, `PyLobidOrg`, `PyLobidPerson`, `PyLobidPerson`
+    """
+    if self.ent_dict == {}:
+        raise ValueError(f"No data found for {self.gnd_url}")
+    if not self.ent_type:
+        raise ValueError(f"Unknown type for {self.gnd_url}")
+    if self.is_person:
+        output = PyLobidPerson(gnd_id=None, fetch_related=self.fetch_related)
+        output.process_data(data=self.ent_dict)
+    elif self.is_org:
+        output = PyLobidOrg(gnd_id=None)
+        output.process_data(data=self.ent_dict)
+    elif self.is_place:
+        output = PyLobidPlace(gnd_id=None)
+        output.process_data(data=self.ent_dict)
+    else:
+        return self
+    return output</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="pylobid.pylobid.PyLobidClient.get_alt_names" class="doc doc-heading">
+            <code class="highlight language-python">get_alt_names()</code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Get the list of alternative names.</p>
+<p>:return: a list of alternative names
+:rtype: list</p>
+
+            <details class="quote">
+              <summary>Source code in <code>pylobid/pylobid.py</code></summary>
+              <pre class="highlight"><code class="language-python">def get_alt_names(self) -&gt; list:
+    """Get the list of alternative names.
+
+    :return: a list of alternative names
+    :rtype: list
+    """
+    ent_dict = self.ent_dict
+    return next(
+        iter([match.value for match in self.pref_alt_names_xpath.find(ent_dict)]),
+        [],
+    )</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="pylobid.pylobid.PyLobidClient.get_entity_json" class="doc doc-heading">
+            <code class="highlight language-python">get_entity_json(url=None)</code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Get the LOBID-JSON response of a given GND-URL.</p>
+<p>:param url: A GND_URL
+:type url: str, optional</p>
+<p>:raises: GNDNotFoundError, GNDAPIError
+:return: The matching JSON representation fetched from LOBID
+:rtype: dict</p>
+
+            <details class="quote">
+              <summary>Source code in <code>pylobid/pylobid.py</code></summary>
+              <pre class="highlight"><code class="language-python">def get_entity_json(self, url: str = None) -&gt; dict:
+    """Get the LOBID-JSON response of a given GND-URL.
+
+    :param url: A GND_URL
+    :type url: str, optional
+
+    :raises: GNDNotFoundError, GNDAPIError
+    :return: The matching JSON representation fetched from LOBID
+    :rtype: dict
+    """
+    url = self.gnd_url if url is None else self.get_entity_lobid_url(url)
+    response = requests.get(url, headers={"Accept": "application/json"})
+    if response.status_code == 404:
+        raise GNDNotFoundError(
+            f'Could not find a GND Entity for ID "{self.gnd_id}"'
+        )
+    if not response.ok:
+        raise GNDAPIError(f"GND API error code: {response.status_code}")
+    return response.json()</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="pylobid.pylobid.PyLobidClient.get_entity_lobid_url" class="doc doc-heading">
+            <code class="highlight language-python">get_entity_lobid_url(url)</code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>creates a lobid-entity URL from an GND-URL</p>
+<p>:param url: A GND-URL, e.g. http://d-nb.info/gnd/118650130
+:type url: str</p>
+<p>:return: A LOBID-ENTITY-URL, e.g. http://lobid.org/gnd/116000562
+:rtype: str</p>
+
+            <details class="quote">
+              <summary>Source code in <code>pylobid/pylobid.py</code></summary>
+              <pre class="highlight"><code class="language-python">def get_entity_lobid_url(self, url: str) -&gt; str:
+    """creates a lobid-entity URL from an GND-URL
+
+    :param url: A GND-URL, e.g. http://d-nb.info/gnd/118650130
+    :type url: str
+
+    :return: A LOBID-ENTITY-URL, e.g. http://lobid.org/gnd/116000562
+    :rtype: str
+    """
+    self.__gnd_id = self.extract_id(url)
+    return self.gnd_url</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="pylobid.pylobid.PyLobidClient.get_pref_name" class="doc doc-heading">
+            <code class="highlight language-python">get_pref_name()</code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Get the preferred name.</p>
+<p>:return: The preferred Name vale, e.g. 'Assmann, Richard'
+:rtype: str</p>
+
+            <details class="quote">
+              <summary>Source code in <code>pylobid/pylobid.py</code></summary>
+              <pre class="highlight"><code class="language-python">def get_pref_name(self) -&gt; str:
+    """Get the preferred name.
+
+    :return: The preferred Name vale, e.g. 'Assmann, Richard'
+    :rtype: str
+    """
+    result = self.ent_dict.get("preferredName", "")
+    return result</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="pylobid.pylobid.PyLobidClient.get_same_as" class="doc doc-heading">
+            <code class="highlight language-python">get_same_as()</code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Get the list of alternative norm-data-ids.</p>
+<p>:return: A list of tuples like ('GeoNames', 'http://sws.geonames.org/2782067'),
+:rtype: list</p>
+
+            <details class="quote">
+              <summary>Source code in <code>pylobid/pylobid.py</code></summary>
+              <pre class="highlight"><code class="language-python">def get_same_as(self) -&gt; list:
+    """Get the list of alternative norm-data-ids.
+
+    :return: A list of tuples like ('GeoNames', 'http://sws.geonames.org/2782067'),
+    :rtype: list
+    """
+    return [
+        (x["collection"].get("abbr", "no_abbr"), x["id"])
+        for x in self.ent_dict["sameAs"]
+    ]</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="pylobid.pylobid.PyLobidClient.process_data" class="doc doc-heading">
+            <code class="highlight language-python">process_data(gnd_id=None, data=None)</code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Fetch and/or process entity data.</p>
+<p>The arguments <code>gnd_id</code> and <code>data</code> are mutually exclusive.</p>
+<p>:param gnd_id: any kind of GND_URI/URL
+:type gnd_id: str, optional
+:param data: an already fetched ent_dict
+:type data: dict, optional</p>
+
+            <details class="quote">
+              <summary>Source code in <code>pylobid/pylobid.py</code></summary>
+              <pre class="highlight"><code class="language-python">def process_data(self, gnd_id: str = None, data: dict = None) -&gt; None:
+    """Fetch and/or process entity data.
+
+    The arguments `gnd_id` and `data` are mutually exclusive.
+
+    :param gnd_id: any kind of GND_URI/URL
+    :type gnd_id: str, optional
+    :param data: an already fetched ent_dict
+    :type data: dict, optional
+    """
+    if data is not None and gnd_id is not None:
+        raise ValueError("gnd_id and data mutually exclusive parameters")
+    if data is not None and "id" in data:
+        _ = self.get_entity_lobid_url(data.get("id"))
+        self.ent_dict = data
+    elif gnd_id is not None:
+        _ = self.get_entity_lobid_url(gnd_id)
+        self.ent_dict = self.get_entity_json()</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="pylobid.pylobid.PyLobidOrg" class="doc doc-heading">
+            <code>PyLobidOrg</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="pylobid.pylobid.PyLobidClient" href="#pylobid.pylobid.PyLobidClient">PyLobidClient</a></code></p>
+
+
+        <p>A python class representing an Organisation Entity.</p>
+
+
+
+
+
+
+              <details class="quote">
+                <summary>Source code in <code>pylobid/pylobid.py</code></summary>
+                <pre class="highlight"><code class="language-python">class PyLobidOrg(PyLobidClient):
+    """A python class representing an Organisation Entity."""
+
+    @property
+    def located_in(self) -&gt; list:
+        """Return a list of locations."""
+        return self.ent_dict.get("placeOfBusiness", [])
+
+    def __repr__(self) -&gt; str:
+        return f"&lt;PyLobidOrg {self.gnd_url}&gt;"</code></pre>
+              </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="pylobid.pylobid.PyLobidOrg.located_in" class="doc doc-heading">
+            <code class="highlight language-python">located_in: list</code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Return a list of locations.</p>
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="pylobid.pylobid.PyLobidPerson" class="doc doc-heading">
+            <code>PyLobidPerson</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="pylobid.pylobid.PyLobidClient" href="#pylobid.pylobid.PyLobidClient">PyLobidClient</a></code></p>
+
+
+        <p>A python class representing a Person Entity.</p>
+
+
+
+
+
+
+              <details class="quote">
+                <summary>Source code in <code>pylobid/pylobid.py</code></summary>
+                <pre class="highlight"><code class="language-python">class PyLobidPerson(PyLobidClient):
+    """A python class representing a Person Entity."""
+
+    def get_life_dates(self) -&gt; dict:
+        """Get birth- and death dates.
+
+        :return: A dict with keys birth_date_str and death_date_str
+        :rtype: dict
+        """
+        return {
+            "birth_date_str": next(iter(self.ent_dict.get("dateOfBirth", [])), ""),
+            "death_date_str": next(iter(self.ent_dict.get("dateOfDeath", [])), ""),
+        }
+
+    def place_of_values(self, place_of: str = "Birth") -&gt; dict:
+        """Find values for PlaceOfBirth/Death.
+
+        :param place_of: Passed in value concatenates to 'PlaceOfBirth|Death' \
+        defaults to 'Birth'
+        :type place_of: str
+
+        :return: The ID of the Place
+        :rtype: dict
+        """
+        value = f"placeOf{place_of}"
+        result = self.ent_dict.get(value, False)
+        return result[0] if isinstance(result, list) else {}
+
+    def place_of_dict(self, place_of: str = "Birth") -&gt; dict:
+        """Get the LOBID-JSON of a PlaceOfBirth|Death (if present).
+
+        :param place_of: Passed in value concatenates to 'PlaceOfBirth|Death' \
+        defaults to 'Birth'
+        :type place_of: str
+
+        :return: The LOBID-JSON of the PlaceOfBirth|Death
+        :rtype: dict
+        """
+        place_id = self.place_of_values(place_of).get("id")
+        return {} if place_id is None else PyLobidPlace(place_id).ent_dict
+
+    def get_coords_str(self, place_of: str = "Birth") -&gt; str:
+        """Get a string of coordinates.
+
+        :param place_of: Passed in value concatenates to 'PlaceOfBirth|Death' \
+        defaults to 'Birth'
+        :type place_of: str
+
+        :return: A string containing coordinates
+        :rtype: str
+        """
+        place_of_key = "pylobid_born" if place_of == "Birth" else "pylobid_died"
+        ent_dict = self.ent_dict.get(place_of_key, {})
+        coords_str = f"{[match.value for match in self.coords_xpath.find(ent_dict)]}"
+        return coords_str
+
+    def get_coords(self, place_of: str = "Birth") -&gt; list:
+        """Get a list of coordinates.
+
+        :param place_of: Passed in value concatenates to 'PlaceOfBirth|Death' \
+        defaults to 'Birth'
+        :type place_of: str
+
+        :return: A list of longitude, latitude coords like ['+009.689780', '+051.210970']
+        :rtype: list
+        """
+        coords_str = self.get_coords_str(place_of=place_of)
+        return extract_coords(coords_str)
+
+    def get_place_alt_name(self, place_of: str = "Birth") -&gt; list:
+        """Get the list of alternative names.
+
+        :param place_of: Passed in value concatenates to 'PlaceOfBirth|Death' \
+        defaults to 'Birth'
+        :type place_of: str
+
+        :return: a list of alternative names
+        :rtype: list
+        """
+        place_of_key = "pylobid_born" if place_of == "Birth" else "pylobid_died"
+        ent_dict = self.ent_dict.get(place_of_key, {})
+        return next(
+            iter([match.value for match in self.pref_alt_names_xpath.find(ent_dict)]),
+            [],
+        )
+
+    def __str__(self) -&gt; str:
+        return self.gnd_url
+
+    def __repr__(self) -&gt; str:
+        return f"&lt;PyLobidPerson {self.gnd_url}&gt;"
+
+    def process_data(self, gnd_id: str = None, data: dict = None) -&gt; None:
+        """Fetch and/or process entity data.
+
+        The arguments `gnd_id` and `data` are mutually exclusive.
+
+        :param gnd_id: any kind of GND_URI/URL
+        :type gnd_id: str, optional
+        :param data: an already fetched ent_dict
+        :type data: dict, optional
+        """
+        super().process_data(gnd_id=gnd_id, data=data)
+        if self.ent_dict == {}:
+            return
+        if self.is_person:
+            self.ent_dict.update(pylobid_born={}, pylobid_died={})
+        self.pref_name_xpath = parse("$.preferredName")
+        if self.fetch_related and self.is_person:
+            self.ent_dict["pylobid_born"] = self.place_of_dict()
+            if self.place_of_values().get("id", "") == self.place_of_values(
+                place_of="Death"
+            ).get("id", ""):
+                self.ent_dict["pylobid_died"] = self.ent_dict["pylobid_born"]
+            else:
+                self.ent_dict["pylobid_died"] = self.place_of_dict(place_of="Death")
+
+        self.birth_place = {
+            "person_id": self.gnd_id,
+            "name": self.place_of_values().get("label", ""),
+            "id": self.place_of_values().get("id", ""),
+            "coords": self.get_coords(),
+            "alt_names": self.get_place_alt_name(),
+        }
+        self.death_place = {
+            "person_id": self.gnd_id,
+            "name": self.place_of_values(place_of="Death").get("label", ""),
+            "id": self.place_of_values(place_of="Death").get("id", ""),
+            "coords": self.get_coords(place_of="Death"),
+            "alt_names": self.get_place_alt_name(place_of="Death"),
+        }
+        self.life_span = self.get_life_dates()</code></pre>
+              </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="pylobid.pylobid.PyLobidPerson.get_coords" class="doc doc-heading">
+            <code class="highlight language-python">get_coords(place_of='Birth')</code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Get a list of coordinates.</p>
+<p>:param place_of: Passed in value concatenates to 'PlaceOfBirth|Death'         defaults to 'Birth'
+:type place_of: str</p>
+<p>:return: A list of longitude, latitude coords like ['+009.689780', '+051.210970']
+:rtype: list</p>
+
+            <details class="quote">
+              <summary>Source code in <code>pylobid/pylobid.py</code></summary>
+              <pre class="highlight"><code class="language-python">def get_coords(self, place_of: str = "Birth") -&gt; list:
+    """Get a list of coordinates.
+
+    :param place_of: Passed in value concatenates to 'PlaceOfBirth|Death' \
+    defaults to 'Birth'
+    :type place_of: str
+
+    :return: A list of longitude, latitude coords like ['+009.689780', '+051.210970']
+    :rtype: list
+    """
+    coords_str = self.get_coords_str(place_of=place_of)
+    return extract_coords(coords_str)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="pylobid.pylobid.PyLobidPerson.get_coords_str" class="doc doc-heading">
+            <code class="highlight language-python">get_coords_str(place_of='Birth')</code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Get a string of coordinates.</p>
+<p>:param place_of: Passed in value concatenates to 'PlaceOfBirth|Death'         defaults to 'Birth'
+:type place_of: str</p>
+<p>:return: A string containing coordinates
+:rtype: str</p>
+
+            <details class="quote">
+              <summary>Source code in <code>pylobid/pylobid.py</code></summary>
+              <pre class="highlight"><code class="language-python">def get_coords_str(self, place_of: str = "Birth") -&gt; str:
+    """Get a string of coordinates.
+
+    :param place_of: Passed in value concatenates to 'PlaceOfBirth|Death' \
+    defaults to 'Birth'
+    :type place_of: str
+
+    :return: A string containing coordinates
+    :rtype: str
+    """
+    place_of_key = "pylobid_born" if place_of == "Birth" else "pylobid_died"
+    ent_dict = self.ent_dict.get(place_of_key, {})
+    coords_str = f"{[match.value for match in self.coords_xpath.find(ent_dict)]}"
+    return coords_str</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="pylobid.pylobid.PyLobidPerson.get_life_dates" class="doc doc-heading">
+            <code class="highlight language-python">get_life_dates()</code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Get birth- and death dates.</p>
+<p>:return: A dict with keys birth_date_str and death_date_str
+:rtype: dict</p>
+
+            <details class="quote">
+              <summary>Source code in <code>pylobid/pylobid.py</code></summary>
+              <pre class="highlight"><code class="language-python">def get_life_dates(self) -&gt; dict:
+    """Get birth- and death dates.
+
+    :return: A dict with keys birth_date_str and death_date_str
+    :rtype: dict
+    """
+    return {
+        "birth_date_str": next(iter(self.ent_dict.get("dateOfBirth", [])), ""),
+        "death_date_str": next(iter(self.ent_dict.get("dateOfDeath", [])), ""),
+    }</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="pylobid.pylobid.PyLobidPerson.get_place_alt_name" class="doc doc-heading">
+            <code class="highlight language-python">get_place_alt_name(place_of='Birth')</code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Get the list of alternative names.</p>
+<p>:param place_of: Passed in value concatenates to 'PlaceOfBirth|Death'         defaults to 'Birth'
+:type place_of: str</p>
+<p>:return: a list of alternative names
+:rtype: list</p>
+
+            <details class="quote">
+              <summary>Source code in <code>pylobid/pylobid.py</code></summary>
+              <pre class="highlight"><code class="language-python">def get_place_alt_name(self, place_of: str = "Birth") -&gt; list:
+    """Get the list of alternative names.
+
+    :param place_of: Passed in value concatenates to 'PlaceOfBirth|Death' \
+    defaults to 'Birth'
+    :type place_of: str
+
+    :return: a list of alternative names
+    :rtype: list
+    """
+    place_of_key = "pylobid_born" if place_of == "Birth" else "pylobid_died"
+    ent_dict = self.ent_dict.get(place_of_key, {})
+    return next(
+        iter([match.value for match in self.pref_alt_names_xpath.find(ent_dict)]),
+        [],
+    )</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="pylobid.pylobid.PyLobidPerson.place_of_dict" class="doc doc-heading">
+            <code class="highlight language-python">place_of_dict(place_of='Birth')</code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Get the LOBID-JSON of a PlaceOfBirth|Death (if present).</p>
+<p>:param place_of: Passed in value concatenates to 'PlaceOfBirth|Death'         defaults to 'Birth'
+:type place_of: str</p>
+<p>:return: The LOBID-JSON of the PlaceOfBirth|Death
+:rtype: dict</p>
+
+            <details class="quote">
+              <summary>Source code in <code>pylobid/pylobid.py</code></summary>
+              <pre class="highlight"><code class="language-python">def place_of_dict(self, place_of: str = "Birth") -&gt; dict:
+    """Get the LOBID-JSON of a PlaceOfBirth|Death (if present).
+
+    :param place_of: Passed in value concatenates to 'PlaceOfBirth|Death' \
+    defaults to 'Birth'
+    :type place_of: str
+
+    :return: The LOBID-JSON of the PlaceOfBirth|Death
+    :rtype: dict
+    """
+    place_id = self.place_of_values(place_of).get("id")
+    return {} if place_id is None else PyLobidPlace(place_id).ent_dict</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="pylobid.pylobid.PyLobidPerson.place_of_values" class="doc doc-heading">
+            <code class="highlight language-python">place_of_values(place_of='Birth')</code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Find values for PlaceOfBirth/Death.</p>
+<p>:param place_of: Passed in value concatenates to 'PlaceOfBirth|Death'         defaults to 'Birth'
+:type place_of: str</p>
+<p>:return: The ID of the Place
+:rtype: dict</p>
+
+            <details class="quote">
+              <summary>Source code in <code>pylobid/pylobid.py</code></summary>
+              <pre class="highlight"><code class="language-python">def place_of_values(self, place_of: str = "Birth") -&gt; dict:
+    """Find values for PlaceOfBirth/Death.
+
+    :param place_of: Passed in value concatenates to 'PlaceOfBirth|Death' \
+    defaults to 'Birth'
+    :type place_of: str
+
+    :return: The ID of the Place
+    :rtype: dict
+    """
+    value = f"placeOf{place_of}"
+    result = self.ent_dict.get(value, False)
+    return result[0] if isinstance(result, list) else {}</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="pylobid.pylobid.PyLobidPerson.process_data" class="doc doc-heading">
+            <code class="highlight language-python">process_data(gnd_id=None, data=None)</code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Fetch and/or process entity data.</p>
+<p>The arguments <code>gnd_id</code> and <code>data</code> are mutually exclusive.</p>
+<p>:param gnd_id: any kind of GND_URI/URL
+:type gnd_id: str, optional
+:param data: an already fetched ent_dict
+:type data: dict, optional</p>
+
+            <details class="quote">
+              <summary>Source code in <code>pylobid/pylobid.py</code></summary>
+              <pre class="highlight"><code class="language-python">def process_data(self, gnd_id: str = None, data: dict = None) -&gt; None:
+    """Fetch and/or process entity data.
+
+    The arguments `gnd_id` and `data` are mutually exclusive.
+
+    :param gnd_id: any kind of GND_URI/URL
+    :type gnd_id: str, optional
+    :param data: an already fetched ent_dict
+    :type data: dict, optional
+    """
+    super().process_data(gnd_id=gnd_id, data=data)
+    if self.ent_dict == {}:
+        return
+    if self.is_person:
+        self.ent_dict.update(pylobid_born={}, pylobid_died={})
+    self.pref_name_xpath = parse("$.preferredName")
+    if self.fetch_related and self.is_person:
+        self.ent_dict["pylobid_born"] = self.place_of_dict()
+        if self.place_of_values().get("id", "") == self.place_of_values(
+            place_of="Death"
+        ).get("id", ""):
+            self.ent_dict["pylobid_died"] = self.ent_dict["pylobid_born"]
+        else:
+            self.ent_dict["pylobid_died"] = self.place_of_dict(place_of="Death")
+
+    self.birth_place = {
+        "person_id": self.gnd_id,
+        "name": self.place_of_values().get("label", ""),
+        "id": self.place_of_values().get("id", ""),
+        "coords": self.get_coords(),
+        "alt_names": self.get_place_alt_name(),
+    }
+    self.death_place = {
+        "person_id": self.gnd_id,
+        "name": self.place_of_values(place_of="Death").get("label", ""),
+        "id": self.place_of_values(place_of="Death").get("id", ""),
+        "coords": self.get_coords(place_of="Death"),
+        "alt_names": self.get_place_alt_name(place_of="Death"),
+    }
+    self.life_span = self.get_life_dates()</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="pylobid.pylobid.PyLobidPlace" class="doc doc-heading">
+            <code>PyLobidPlace</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="pylobid.pylobid.PyLobidClient" href="#pylobid.pylobid.PyLobidClient">PyLobidClient</a></code></p>
+
+
+        <p>A python class representing a Place Entity.</p>
+
+
+
+
+
+
+              <details class="quote">
+                <summary>Source code in <code>pylobid/pylobid.py</code></summary>
+                <pre class="highlight"><code class="language-python">class PyLobidPlace(PyLobidClient):
+    """A python class representing a Place Entity."""
+
+    def get_coords_str(self) -&gt; str:
+        """Get a string of coordinates.
+
+        :return: A string containing coordinates
+        :rtype: str
+        """
+        coords_str = (
+            f"{[match.value for match in self.coords_xpath.find(self.ent_dict)]}"
+        )
+        return coords_str
+
+    def get_coords(self) -&gt; list:
+        """Get a list of coordinates.
+
+        :return: A list of longitude, latitude coords like ['+009.689780', '+051.210970']
+        :rtype: list
+        """
+        coords_str = self.get_coords_str()
+        return extract_coords(coords_str)
+
+    @property
+    def coords(self) -&gt; list:
+        """Return a list of coordinates."""
+        return self.get_coords()
+
+    def __repr__(self) -&gt; str:
+        return f"&lt;PyLobidPlace {self.gnd_url}&gt;"</code></pre>
+              </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="pylobid.pylobid.PyLobidPlace.coords" class="doc doc-heading">
+            <code class="highlight language-python">coords: list</code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Return a list of coordinates.</p>
+    </div>
+
+</div>
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="pylobid.pylobid.PyLobidPlace.get_coords" class="doc doc-heading">
+            <code class="highlight language-python">get_coords()</code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Get a list of coordinates.</p>
+<p>:return: A list of longitude, latitude coords like ['+009.689780', '+051.210970']
+:rtype: list</p>
+
+            <details class="quote">
+              <summary>Source code in <code>pylobid/pylobid.py</code></summary>
+              <pre class="highlight"><code class="language-python">def get_coords(self) -&gt; list:
+    """Get a list of coordinates.
+
+    :return: A list of longitude, latitude coords like ['+009.689780', '+051.210970']
+    :rtype: list
+    """
+    coords_str = self.get_coords_str()
+    return extract_coords(coords_str)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="pylobid.pylobid.PyLobidPlace.get_coords_str" class="doc doc-heading">
+            <code class="highlight language-python">get_coords_str()</code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Get a string of coordinates.</p>
+<p>:return: A string containing coordinates
+:rtype: str</p>
+
+            <details class="quote">
+              <summary>Source code in <code>pylobid/pylobid.py</code></summary>
+              <pre class="highlight"><code class="language-python">def get_coords_str(self) -&gt; str:
+    """Get a string of coordinates.
+
+    :return: A string containing coordinates
+    :rtype: str
+    """
+    coords_str = (
+        f"{[match.value for match in self.coords_xpath.find(self.ent_dict)]}"
+    )
+    return coords_str</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+  </div>
+
+    </div>
+
+</div><h2 id="pylobidutils">pylobid.utils</h2>
+<p>some (one) utility function
+</p>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<a id="pylobid.utils"></a>
+    <div class="doc doc-contents first">
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="pylobid.utils.extract_coords" class="doc doc-heading">
+            <code class="highlight language-python">extract_coords(some_str)</code>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Utility function to extract coordinates from a (WKT) string</p>
+<p>:param some_str: A string providing coordinates
+:type some_str: str</p>
+<p>:return: A list with the coordinates
+:rtype: list</p>
+
+            <details class="quote">
+              <summary>Source code in <code>pylobid/utils.py</code></summary>
+              <pre class="highlight"><code class="language-python">def extract_coords(some_str: str) -&gt; list:
+    """Utility function to extract coordinates from a (WKT) string
+
+    :param some_str: A string providing coordinates
+    :type some_str: str
+
+    :return: A list with the coordinates
+    :rtype: list
+
+    """
+    regex = r"[+|-]\d+(?:\.\d*)?"
+    matches = re.findall(regex, some_str, re.MULTILINE)
+    return matches</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div><h2 id="pylobidvalidators">pylobid.validators</h2>
+<p>WTForms GND validator module.
+</p>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<a id="pylobid.validators"></a>
+    <div class="doc doc-contents first">
+
+        <p>WTForms GND validator module.</p>
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="pylobid.validators.GNDOrgEntity" class="doc doc-heading">
+            <code>GNDOrgEntity</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="pylobid.validators.GNDValidator" href="#pylobid.validators.GNDValidator">GNDValidator</a></code></p>
+
+
+        <p>Validator for org. entities.</p>
+<p>:param: Message to display if validation fails.
+:raises: ValidationError is the GND type does not match the set entity type.</p>
+
+
+
+
+
+
+              <details class="quote">
+                <summary>Source code in <code>pylobid/validators.py</code></summary>
+                <pre class="highlight"><code class="language-python">class GNDOrgEntity(GNDValidator):
+    """Validator for org. entities.
+
+    :param: Message to display if validation fails.
+    :raises: ValidationError is the GND type does not match the set entity type.
+    """
+
+    def __init__(self, message: str = None) -&gt; None:
+        """Class constructor."""
+        super().__init__(entity_flag="is_org", message=message)
+        self.message = message or "The provided GND ID is not an organization entity"</code></pre>
+              </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="pylobid.validators.GNDOrgEntity.__init__" class="doc doc-heading">
+            <code class="highlight language-python">__init__(message=None)</code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Class constructor.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>pylobid/validators.py</code></summary>
+              <pre class="highlight"><code class="language-python">def __init__(self, message: str = None) -&gt; None:
+    """Class constructor."""
+    super().__init__(entity_flag="is_org", message=message)
+    self.message = message or "The provided GND ID is not an organization entity"</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="pylobid.validators.GNDPersonEntity" class="doc doc-heading">
+            <code>GNDPersonEntity</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="pylobid.validators.GNDValidator" href="#pylobid.validators.GNDValidator">GNDValidator</a></code></p>
+
+
+        <p>Validator class for person entities.</p>
+<p>:param: Message to display if validation fails.
+:raises: ValidationError is the GND type does not match the set entity type.</p>
+
+
+
+
+
+
+              <details class="quote">
+                <summary>Source code in <code>pylobid/validators.py</code></summary>
+                <pre class="highlight"><code class="language-python">class GNDPersonEntity(GNDValidator):
+    """Validator class for person entities.
+
+    :param: Message to display if validation fails.
+    :raises: ValidationError is the GND type does not match the set entity type.
+    """
+
+    def __init__(self, message: str = None) -&gt; None:
+        """Class constructor."""
+        super().__init__(entity_flag="is_person")
+        self.message = message or "The provided GND ID is not a person entity"</code></pre>
+              </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="pylobid.validators.GNDPersonEntity.__init__" class="doc doc-heading">
+            <code class="highlight language-python">__init__(message=None)</code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Class constructor.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>pylobid/validators.py</code></summary>
+              <pre class="highlight"><code class="language-python">def __init__(self, message: str = None) -&gt; None:
+    """Class constructor."""
+    super().__init__(entity_flag="is_person")
+    self.message = message or "The provided GND ID is not a person entity"</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="pylobid.validators.GNDPlaceEntity" class="doc doc-heading">
+            <code>GNDPlaceEntity</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="pylobid.validators.GNDValidator" href="#pylobid.validators.GNDValidator">GNDValidator</a></code></p>
+
+
+        <p>Validator class for place entities.</p>
+<p>:param: Message to display if validation fails.
+:raises: ValidationError is the GND type does not match the set entity type.</p>
+
+
+
+
+
+
+              <details class="quote">
+                <summary>Source code in <code>pylobid/validators.py</code></summary>
+                <pre class="highlight"><code class="language-python">class GNDPlaceEntity(GNDValidator):
+    """Validator class for place entities.
+
+    :param: Message to display if validation fails.
+    :raises: ValidationError is the GND type does not match the set entity type.
+    """
+
+    def __init__(self, message: str = None) -&gt; None:
+        """Class constructor."""
+        super().__init__(entity_flag="is_place")
+        self.message = message or "The provided GND ID is not a place entity"</code></pre>
+              </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="pylobid.validators.GNDPlaceEntity.__init__" class="doc doc-heading">
+            <code class="highlight language-python">__init__(message=None)</code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Class constructor.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>pylobid/validators.py</code></summary>
+              <pre class="highlight"><code class="language-python">def __init__(self, message: str = None) -&gt; None:
+    """Class constructor."""
+    super().__init__(entity_flag="is_place")
+    self.message = message or "The provided GND ID is not a place entity"</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="pylobid.validators.GNDValidator" class="doc doc-heading">
+            <code>GNDValidator</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+
+        <p>Base class for GND validators.</p>
+<p>:param: Message to display if validation fails.
+:raises: ValidationError is the GND type does not match the set entity type.</p>
+
+
+
+
+
+
+              <details class="quote">
+                <summary>Source code in <code>pylobid/validators.py</code></summary>
+                <pre class="highlight"><code class="language-python">class GNDValidator:
+    """Base class for GND validators.
+
+    :param: Message to display if validation fails.
+    :raises: ValidationError is the GND type does not match the set entity type.
+    """
+
+    def __init__(self, entity_flag: str = None, message: str = None) -&gt; None:
+        """Class constructor."""
+        self.entity_flag = entity_flag
+        self.message = message
+
+    def __call__(self, form: wtforms.form.Form, field: GNDWTFormsFields) -&gt; None:
+        """Class call method.
+
+        :param form: A WTForms Form instance.
+        :param field: A WTForm Form Field instance.
+        :raises: ValidationError is the GND type does not match the set entity type.
+        """
+        try:
+            gnd_entity = pylobid.PyLobidClient(field.data).factory()
+        except pylobid.GNDIdError as error:
+            raise wtforms.validators.ValidationError(
+                f"{field.data} is not a valid GND Id/URL"
+            ) from error
+        except pylobid.GNDNotFoundError as error:
+            raise wtforms.validators.ValidationError(error) from error
+        if not gnd_entity.ent_type:
+            raise wtforms.validators.ValidationError(
+                f"Unknown GND type for {gnd_entity.gnd_url}"
+            )
+        if self.entity_flag is not None and not getattr(
+            gnd_entity, self.entity_flag, False
+        ):
+            self.message = f"Entity type {gnd_entity.ent_type}"
+            raise wtforms.validators.ValidationError(self.message)</code></pre>
+              </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="pylobid.validators.GNDValidator.__call__" class="doc doc-heading">
+            <code class="highlight language-python">__call__(form, field)</code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Class call method.</p>
+<p>:param form: A WTForms Form instance.
+:param field: A WTForm Form Field instance.
+:raises: ValidationError is the GND type does not match the set entity type.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>pylobid/validators.py</code></summary>
+              <pre class="highlight"><code class="language-python">def __call__(self, form: wtforms.form.Form, field: GNDWTFormsFields) -&gt; None:
+    """Class call method.
+
+    :param form: A WTForms Form instance.
+    :param field: A WTForm Form Field instance.
+    :raises: ValidationError is the GND type does not match the set entity type.
+    """
+    try:
+        gnd_entity = pylobid.PyLobidClient(field.data).factory()
+    except pylobid.GNDIdError as error:
+        raise wtforms.validators.ValidationError(
+            f"{field.data} is not a valid GND Id/URL"
+        ) from error
+    except pylobid.GNDNotFoundError as error:
+        raise wtforms.validators.ValidationError(error) from error
+    if not gnd_entity.ent_type:
+        raise wtforms.validators.ValidationError(
+            f"Unknown GND type for {gnd_entity.gnd_url}"
+        )
+    if self.entity_flag is not None and not getattr(
+        gnd_entity, self.entity_flag, False
+    ):
+        self.message = f"Entity type {gnd_entity.ent_type}"
+        raise wtforms.validators.ValidationError(self.message)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="pylobid.validators.GNDValidator.__init__" class="doc doc-heading">
+            <code class="highlight language-python">__init__(entity_flag=None, message=None)</code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Class constructor.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>pylobid/validators.py</code></summary>
+              <pre class="highlight"><code class="language-python">def __init__(self, entity_flag: str = None, message: str = None) -&gt; None:
+    """Class constructor."""
+    self.entity_flag = entity_flag
+    self.message = message</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href=".." class="btn btn-neutral float-left" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href=".." style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
