@@ -8,7 +8,7 @@ from tests.fixtures import (
     TEST_UNKNOWN_IDS,
     TEST_PERSON_IDS,
     TEST_INVALID_URLS,
-    TEST_FACTORY
+    TEST_FACTORY,
 )
 
 try:

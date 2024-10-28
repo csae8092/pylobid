@@ -40,6 +40,9 @@ class PyLobidClient:
         elif self.is_org:
             output = PyLobidOrg(gnd_id=None)
             output.process_data(data=self.ent_dict)
+        elif self.is_work:
+            output = PyLobidWork(gnd_id=None)
+            output.process_data(data=self.ent_dict)
         elif self.is_place:
             output = PyLobidPlace(gnd_id=None)
             output.process_data(data=self.ent_dict)
@@ -71,6 +74,11 @@ class PyLobidClient:
     def is_person(self) -> bool:
         """Return True if this instance is a person entity, False otherwise."""
         return "Person" in self.ent_type
+
+    @property
+    def is_work(self) -> bool:
+        """Return True if this instance is a work entity, False otherwise."""
+        return "Work" in self.ent_type
 
     @property
     def ent_type(self) -> list:
@@ -251,6 +259,42 @@ class PyLobidOrg(PyLobidClient):
 
     def __repr__(self) -> str:
         return f"<PyLobidOrg {self.gnd_url}>"
+
+
+class PyLobidWork(PyLobidClient):
+    """A python class representing a Work Entity"""
+
+    @property
+    def creators(self) -> list:
+        """provides a list of dicts providing information of all persons
+        involved in the creation of the work and their role
+
+        Returns:
+            list: _description_
+        """
+        creators = []
+        for y in ["author", "firstComposer", "librettist"]:
+            for x in self.ent_dict.get(y, []):
+                x["role"] = y
+                creators.append(x)
+        return creators
+
+    @property
+    def date_of_creation(self) -> str:
+        """returns the date of the works creations using `dateOfProduction`
+        if `dateOfProduction` is not provided `dateOfPublication` is used
+
+        Returns:
+            str: the prodcution or publication date of the work
+        """
+        date = ""
+        for x in ["dateOfProduction", "dateOfPublication"]:
+            try:
+                date = self.ent_dict[x][0]
+                break
+            except (KeyError, IndexError):
+                continue
+        return date
 
 
 class PyLobidPerson(PyLobidClient):

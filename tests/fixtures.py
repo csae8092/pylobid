@@ -170,3 +170,65 @@ TEST_ORG_NAMES_LOCATIONS = [
         ],
     },
 ]
+
+TEST_WORK_FIXTURES = [
+    [
+        "300102224",
+        "1833",
+        [
+            {
+                "id": "https://d-nb.info/gnd/118580779",
+                "label": "Mendelssohn Bartholdy, Felix",
+                "role": "firstComposer",
+            },
+            {
+                "id": "https://d-nb.info/gnd/118542192",
+                "label": "Grillparzer, Franz",
+                "role": "librettist",
+            },
+        ],
+    ],
+    [
+        "300109849",
+        "1786",
+        [
+            {
+                "id": "https://d-nb.info/gnd/118584596",
+                "label": "Mozart, Wolfgang Amadeus",
+                "role": "firstComposer",
+            },
+            {
+                "id": "https://d-nb.info/gnd/118678841",
+                "label": "Da Ponte, Lorenzo",
+                "role": "librettist",
+            },
+        ],
+    ],
+    [
+        "300229550",
+        "1823",
+        [
+            {
+                "id": "https://d-nb.info/gnd/118610961",
+                "label": "Schubert, Franz",
+                "role": "firstComposer",
+            },
+            {
+                "id": "https://d-nb.info/gnd/134672275",
+                "label": "Kupelwieser, Josef",
+                "role": "librettist",
+            },
+        ],
+    ],
+    [
+        "4006818-3",
+        "",
+        [
+            {
+                "id": "https://d-nb.info/gnd/118641549",
+                "label": "Paulus, Apostel, Heiliger",
+                "role": "author",
+            }
+        ],
+    ],
+]
