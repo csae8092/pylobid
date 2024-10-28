@@ -18,6 +18,7 @@ dependencies = ['requests>=2.32.3,<3', "jsonpath-ng>=1.7.0,<2"]
 
 [project.urls]
 Repository = "https://github.com/csae8092/pylobid"
+Documentation = "https://csae8092.github.io/pylobid/"
 
 [tool.setuptools]
 packages = ["pylobid",]
