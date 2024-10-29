@@ -255,5 +255,7 @@ class TestPylobidWork(unittest.TestCase):
         for x in TEST_WORK_FIXTURES:
             pl_ent = pl.PyLobidClient(x[0])
             item = pl_ent.factory()
-            self.assertEqual(item.date_of_creation, x[1])
-            self.assertEqual(item.creators, x[2])
+            self.assertEqual(item.creators, x[1])
+            self.assertEqual(item.date_of_creation, x[2])
+            self.assertEqual(item.date_of_production, x[3])
+            self.assertEqual(item.date_of_publication, x[4])

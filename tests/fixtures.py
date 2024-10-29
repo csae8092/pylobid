@@ -174,7 +174,6 @@ TEST_ORG_NAMES_LOCATIONS = [
 TEST_WORK_FIXTURES = [
     [
         "300102224",
-        "1833",
         [
             {
                 "id": "https://d-nb.info/gnd/118580779",
@@ -187,10 +186,12 @@ TEST_WORK_FIXTURES = [
                 "role": "librettist",
             },
         ],
+        "1835",
+        "1833",
+        "1835",
     ],
     [
         "300109849",
-        "1786",
         [
             {
                 "id": "https://d-nb.info/gnd/118584596",
@@ -203,10 +204,12 @@ TEST_WORK_FIXTURES = [
                 "role": "librettist",
             },
         ],
+        "1786",
+        "1786",
+        "1786",
     ],
     [
         "300229550",
-        "1823",
         [
             {
                 "id": "https://d-nb.info/gnd/118610961",
@@ -219,10 +222,12 @@ TEST_WORK_FIXTURES = [
                 "role": "librettist",
             },
         ],
+        "1823",
+        "1823",
+        "",
     ],
     [
         "4006818-3",
-        "",
         [
             {
                 "id": "https://d-nb.info/gnd/118641549",
@@ -230,5 +235,8 @@ TEST_WORK_FIXTURES = [
                 "role": "author",
             }
         ],
+        "",
+        "",
+        "",
     ],
 ]

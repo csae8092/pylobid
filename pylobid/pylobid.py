@@ -282,20 +282,38 @@ class PyLobidWork(PyLobidClient):
 
     @property
     def date_of_creation(self) -> str:
-        """returns the date of the works creations using `dateOfProduction`
-        if `dateOfProduction` is not provided `dateOfPublication` is used
+        """returns the date of the works creations using `dateOfPublication`
+        if `dateOfPublication` is not provided `dateOfProduction` is used
 
         Returns:
             str: the prodcution or publication date of the work
         """
         date = ""
-        for x in ["dateOfProduction", "dateOfPublication"]:
+        for x in ["dateOfPublication", "dateOfProduction"]:
             try:
                 date = self.ent_dict[x][0]
                 break
             except (KeyError, IndexError):
                 continue
         return date
+
+    @property
+    def date_of_production(self) -> str:
+        """returns the date of the works creations using `dateOfProduction`
+
+        Returns:
+            str: the prodcution date of the work
+        """
+        return self.ent_dict.get("dateOfProduction", [""])[0]
+
+    @property
+    def date_of_publication(self) -> str:
+        """returns the date of the works creations using `dateOfPublication`
+
+        Returns:
+            str: the publication date of the work
+        """
+        return self.ent_dict.get("dateOfPublication", [""])[0]
 
 
 class PyLobidPerson(PyLobidClient):
