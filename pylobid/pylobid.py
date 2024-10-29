@@ -25,6 +25,7 @@ class PyLobidClient:
         - Type `PlaceOrGeographicName` returns a `PyLobidPlace` instance.
         - Type `CorporateBody` returns a `PyLobidOrg` instance.
         - Type `Person` returns a `PyLobidPerson` instance.
+        - Type `Work` returns a `PyLobidWork` instance.
         - All other types a `PyLobidPerson` instance
 
         :return: An matching object for the GND URL or Id
