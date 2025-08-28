@@ -17,6 +17,14 @@
 - Wrap up several LOBID-API requests in single methods
 - Validate inputs from WTForms against the LOBID-API
 
+## Development
+
+### run tests
+```shell
+uv run coverage run -m pytest
+uv run coverage report
+```
+
 ## Credits
 
 

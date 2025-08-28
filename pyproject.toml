@@ -1,6 +1,6 @@
 [build-system]
-requires = ["setuptools"]
-build-backend = "setuptools.build_meta"
+requires = ["uv_build>=0.8.0,<0.9"]
+build-backend = "uv_build"
 
 [project]
 name = "pylobid"
@@ -12,9 +12,12 @@ authors = [
     { name = "Peter Andorfer", email = "p.andorfer@gmail.com" },
     { name = "Christian Lölkes", email = "christian.loelkes@gmail.com" },
 ]
-requires-python = ">=3.6"
+requires-python = ">=3.8"
 keywords = ["lobid"]
-dependencies = ['requests>=2.32.3,<3', "jsonpath-ng>=1.7.0,<2"]
+dependencies = [
+    "jsonpath-ng>=1.7.0",
+    "requests>=2.32.4",
+]
 
 [project.urls]
 Repository = "https://github.com/csae8092/pylobid"
@@ -22,3 +25,11 @@ Documentation = "https://csae8092.github.io/pylobid/"
 
 [tool.setuptools]
 packages = ["pylobid",]
+
+[dependency-groups]
+dev = [
+    "coverage>=7.6.1",
+    "ipykernel>=6.29.5",
+    "mkdocstrings[python]>=0.26.1",
+    "pytest>=8.3.5",
+]
