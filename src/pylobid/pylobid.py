@@ -1,6 +1,8 @@
 import re
+
 import requests
 from jsonpath_ng import parse
+
 from .utils import extract_coords
 
 
@@ -189,7 +191,7 @@ class PyLobidClient:
     def __init__(self, gnd_id: str = None, fetch_related: bool = False) -> None:
         """Class constructor."""
         self.BASE_URL = "http://lobid.org/gnd"
-        self.ID_PATTERN = r"([0-9]\w*-*[0-9]\w*)"
+        self.ID_PATTERN = r"([0-9]\w*-*\w*)"
         self.coords_xpath = parse("$..hasGeometry")
         self.coords_regex = r"[+|-]\d+(?:\.\d*)?"
         self.pref_alt_names_xpath = parse("$.variantName")
